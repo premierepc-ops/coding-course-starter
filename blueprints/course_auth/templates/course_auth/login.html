@@ -1,35 +1,47 @@
-{% extends "base.html" %}
-
-{% block title %}Sign in{% endblock %}
-
-{% block content %}
-<h1>Sign in</h1>
-
-{% if show_instructor %}
-  <p>Instructor login</p>
-  <form method="post">
-    <input type="hidden" name="instructor" value="1">
-    <label>
-      Password
-      <input type="password" name="password" required autofocus>
-    </label>
-    <button type="submit">Sign in as instructor</button>
-  </form>
-  <p><a href="{{ url_for('course_auth.login') }}">← Student sign-in</a></p>
-{% else %}
-  <p>Pick your name to open the quiz dashboard.</p>
-  <form method="post">
-    <label>
-      I am
-      <select name="slug" required>
-        <option value="">Choose…</option>
-        {% for learner in learners %}
-        <option value="{{ learner.slug }}">{{ learner.name }}</option>
-        {% endfor %}
-      </select>
-    </label>
-    <button type="submit">Continue</button>
-  </form>
-  <p><a href="{{ url_for('course_auth.login', instructor=1) }}">Instructor login</a></p>
-{% endif %}
-{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Sign in{% endblock %}
+
+{% block content %}
+<h1>Sign in</h1>
+
+{% if show_instructor %}
+  <p>Instructor login</p>
+  <form method="post">
+    <input type="hidden" name="instructor" value="1">
+    <label>
+      Password
+      <input type="password" name="password" required autofocus>
+    </label>
+    <button type="submit">Sign in as instructor</button>
+  </form>
+  <p><a href="{{ url_for('course_auth.login') }}">← Student sign-in</a></p>
+{% else %}
+  {% if not learners %}
+    <p>No learners are registered on this deploy yet. Fork the template, add your entry to <code>course_config.py</code>, and connect Railway to your fork.</p>
+  {% else %}
+    <p>Pick your name and enter the PIN your instructor gave you.</p>
+    <form method="post">
+      <label>
+        I am
+        <select name="slug" required>
+          <option value="">Choose…</option>
+          {% for learner in learners %}
+          <option value="{{ learner.slug }}">{{ learner.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        PIN
+        <input type="password" name="pin" {% if pin_required %}required{% endif %} autocomplete="current-password">
+      </label>
+      <button type="submit">Continue</button>
+    </form>
+    {% if not pin_required %}
+      <p class="muted">Local dev: PIN optional unless <code>LEARNER_PIN</code> is set.</p>
+    {% endif %}
+  {% endif %}
+  <p><a href="{{ url_for('course_auth.login', instructor=1) }}">Instructor login</a></p>
+{% endif %}
+{% endblock %}
+

@@ -10,6 +10,7 @@ Work top to bottom. Steps marked **[Instructor]** need the person running the co
 
 - Student has a **GitHub account**, **Cursor** (free Hobby), **Python 3**, and **Git**
 - **[Instructor]** Railway project connected to the student's fork (see step 5)
+- Read **`ARCHITECTURE.md`** if anything about forks, login, or privacy is unclear
 
 ## 1. Fork and clone
 
@@ -42,7 +43,10 @@ In `.env` (local) and Railway Variables (production):
 
 ```
 INSTRUCTOR_PASSWORD=your-private-password
+LEARNER_PIN=student-sign-in-pin
 ```
+
+Share `LEARNER_PIN` with the student only (text, in person — not in git). Without it, no one can sign in as the student on Railway.
 
 Instructor opens `/login?instructor=1` → `/quiz/admin` for GPA, wrong answers, and session notes.
 
@@ -51,7 +55,7 @@ Instructor opens `/login?instructor=1` → `/quiz/admin` for GPA, wrong answers,
 One project per student under your workspace:
 
 1. Create project, connect **their fork**, deploy on push to `main`
-2. Volume at `/data`, set `SECRET_KEY`, `DATA_DIR=/data`, `PORT=8080`, `INSTRUCTOR_PASSWORD`
+2. Volume at `/data`, set `SECRET_KEY`, `DATA_DIR=/data`, `PORT=8080`, `INSTRUCTOR_PASSWORD`, `LEARNER_PIN`
 3. Invite student as **Editor** (Project Settings → Members)
 
 ## 6. Phase 0 recon → run the course

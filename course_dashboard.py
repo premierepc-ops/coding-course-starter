@@ -197,9 +197,9 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
             )
         )
 
-    # Setup checklist — auto-check what we can infer
+    # Setup checklist — only auto-check what we can verify reliably
     setup_done = set()
-    if learner:
+    if slug and os.path.isfile(os.path.join(LEARNERS_DIR, slug, "LEARNER.md")):
         setup_done.add("learner")
     if current_user and getattr(current_user, "is_authenticated", False) and not getattr(
         current_user, "is_admin", False
@@ -207,8 +207,6 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
         setup_done.add("signin")
     if host and "railway.app" in host:
         setup_done.add("deploy")
-    if parsed.get(0, {}).get("status") == "complete":
-        setup_done.add("fork")
 
     setup = []
     for step in SETUP_STEPS:
