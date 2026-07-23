@@ -29,11 +29,9 @@ START_GUIDE = {
             "summary": "You need your own repo — not the shared template.",
             "directions": [
                 f"Open: {TEMPLATE_REPO}",
-                'This repo is a GitHub Template. Top right, click the green **Use this template** button.',
-                'Do not click Fork — that button is not on template repos.',
-                'Click **Create a new repository**.',
+                "Top right, click the green **Use this template** button, then **Create a new repository**.",
                 "Owner: your GitHub account (not premierepc-ops).",
-                "Repository name: jaqira-coding-course (all lowercase, hyphens OK).",
+                "Repository name: something like `yourname-coding-course` (lowercase, hyphens OK).",
                 "Visibility: **Private** — required. Your name and progress files must not be public on GitHub.",
                 "Leave everything else default. Click **Create repository**.",
                 "You now have your own repo. Copy its HTTPS URL from the green Code button — you need it in Step 3.",
@@ -70,7 +68,7 @@ START_GUIDE = {
             "title": "Sign in on this website",
             "summary": "So quizzes and your dashboard know it's you.",
             "directions": [
-                "Before sign-in works, your instructor registers you — either in course_config.py in your fork "
+                "Before sign-in works, your instructor registers you — either in course_config.py in your repo "
                 "or via Railway Variables (LEARNER_SLUG, LEARNER_NAME) on the live site.",
                 "Ask your instructor for your sign-in PIN (they set it — you don't pick it yourself).",
                 "Click Sign in in the top menu of this site.",
@@ -120,7 +118,7 @@ SETUP_STEPS = [
         "link": START_GUIDE["steps"][0]["link"],
     },
     {
-        "id": "fork",
+        "id": "own_repo",
         "step_num": 1,
         "label": "Make your own copy on GitHub",
         "manual": True,

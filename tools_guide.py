@@ -63,14 +63,14 @@ TOOLS_GUIDE = {
             "what": "Download a copy of a GitHub repo onto your computer so you can open and edit it in Cursor.",
         },
         {
-            "name": "Fork",
+            "name": "Use this template",
             "icon": "fork",
-            "what": "Your own copy of someone else's GitHub project. Phase 1 starts with **Use this template** on the course starter repo — that creates a new repo under your account.",
+            "what": "How you get your own private copy of the course starter on GitHub. In Phase 1, click the green **Use this template** button on the starter repo.",
         },
         {
             "name": "GitHub",
             "icon": "github",
-            "what": "A website that stores your project online. You get your own copy (a fork) to work in — not the shared template everyone else uses.",
+            "what": "Where your project lives online. Phase 1 creates your own private repo from the course template — not the shared starter everyone else sees.",
         },
         {
             "name": "Railway",
