@@ -4,7 +4,7 @@
 
 {% block content %}
 {% if show_welcome %}
-<div id="welcome-modal" class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+<div id="welcome-modal" class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" data-storage-key="{{ welcome_storage_key }}">
   <div class="welcome-backdrop" aria-hidden="true"></div>
   <div class="welcome-dialog panel">
     <div class="welcome-mascot">
@@ -258,7 +258,7 @@
 {% if show_welcome %}
 <script>
 (function () {
-  var KEY = "ppc-course-welcome-seen";
+  var KEY = modal.getAttribute("data-storage-key") || "ppc-course-welcome-v2";
   var modal = document.getElementById("welcome-modal");
   var content = document.getElementById("course-content");
   var btn = document.getElementById("welcome-start-btn");

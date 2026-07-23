@@ -261,6 +261,10 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
     current_phase = _current_phase_num(phases)
     all_sessions = sessions_for_nav(unlocked_phase, is_instructor, signed_in)
 
+    welcome_storage_key = "ppc-course-welcome-v2"
+    if slug:
+        welcome_storage_key = f"ppc-course-welcome-v2-{slug}"
+
     return {
         "learner": learner,
         "learner_name": learner["name"] if learner else None,
@@ -277,6 +281,7 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
         "start_guide_url": "/start",
         "show_welcome": not is_instructor,
         "welcome": WELCOME,
+        "welcome_storage_key": welcome_storage_key,
     }
 
 
