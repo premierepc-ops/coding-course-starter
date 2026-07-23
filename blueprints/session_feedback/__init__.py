@@ -60,7 +60,7 @@ def submit_feedback():
         worked=worked,
         didnt_work=didnt_work,
     )
-    flash("Phase notes saved — thank you. This helps us improve the course.")
+    flash("Debrief saved — thank you.")
     return redirect(request.form.get("return_to") or url_for("home"))
 
 

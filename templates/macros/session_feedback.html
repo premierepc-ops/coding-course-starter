@@ -1,59 +1,54 @@
-{% macro step_feedback(session_num, step_num, step_title, feedback_counts, recent_entries, return_to, can_submit, learners=None) %}
-{% if can_submit %}
-<div class="step-feedback panel-inset">
-  <h3 class="feedback-heading">Instructor notes</h3>
-  <p class="muted feedback-intro">
-    What worked? What didn't? For curriculum tweaks — not required for learners.
-    {% if feedback_counts.get(step_num) %}
-      <span class="feedback-count">{{ feedback_counts[step_num] }} note(s) on file.</span>
-    {% endif %}
-  </p>
-
-  {% if recent_entries %}
-  <div class="feedback-recent">
-    {% for entry in recent_entries %}
-    <article class="feedback-entry">
-      <p class="feedback-meta">
-        {{ entry.author_name or entry.author_role }}
-        {% if entry.learner_slug %} · {{ entry.learner_slug }}{% endif %}
-        · {{ entry.created_at[:16] }}
-      </p>
-      {% if entry.worked %}
-        <p><strong>Worked:</strong> {{ entry.worked }}</p>
-      {% endif %}
-      {% if entry.didnt_work %}
-        <p><strong>Didn't:</strong> {{ entry.didnt_work }}</p>
-      {% endif %}
-    </article>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  <form method="post" action="{{ url_for('session_feedback.submit_feedback') }}" class="feedback-form">
-    <input type="hidden" name="session_num" value="{{ session_num }}">
-    <input type="hidden" name="step_num" value="{{ step_num }}">
-    <input type="hidden" name="return_to" value="{{ return_to }}#step-{{ step_num }}">
-    {% if learners %}
-    <label>
-      About learner (optional)
-      <select name="learner_slug">
-        <option value="">General / whole class</option>
-        {% for learner in learners %}
-        <option value="{{ learner.slug }}">{{ learner.name }}</option>
-        {% endfor %}
-      </select>
-    </label>
-    {% endif %}
-    <label>
-      What worked
-      <textarea name="worked" rows="2" placeholder="Clear directions, good pacing, she got it fast…"></textarea>
-    </label>
-    <label>
-      What didn't work
-      <textarea name="didnt_work" rows="2" placeholder="Jargon, too fast, step 3 error confused her…"></textarea>
-    </label>
-    <button type="submit" class="button button-secondary">Save notes</button>
-  </form>
-</div>
-{% endif %}
-{% endmacro %}
+{% macro phase_debrief(session_num, feedback_counts, recent_entries, return_to, can_submit, is_instructor, learners=None) %}
+  {% if recent_entries %}
+  <div class="feedback-recent">
+    {% for entry in recent_entries %}
+    <article class="feedback-entry">
+      <p class="feedback-meta">
+        {{ entry.author_name or entry.author_role }}
+        {% if entry.learner_slug %} · {{ entry.learner_slug }}{% endif %}
+        · {{ entry.created_at[:16] }}
+      </p>
+      {% if entry.worked %}
+        <p><strong>Worked:</strong> {{ entry.worked }}</p>
+      {% endif %}
+      {% if entry.didnt_work %}
+        <p><strong>Didn't:</strong> {{ entry.didnt_work }}</p>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if can_submit %}
+  <div class="step-feedback panel-inset">
+    <form method="post" action="{{ url_for('session_feedback.submit_feedback') }}" class="feedback-form">
+      <input type="hidden" name="session_num" value="{{ session_num }}">
+      <input type="hidden" name="step_num" value="0">
+      <input type="hidden" name="return_to" value="{{ return_to }}#phase-debrief">
+      {% if is_instructor and learners %}
+      <label>
+        About learner (optional)
+        <select name="learner_slug">
+          <option value="">General</option>
+          {% for learner in learners %}
+          <option value="{{ learner.slug }}">{{ learner.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      {% endif %}
+      <label>
+        What worked for you?
+        <textarea name="worked" rows="2" placeholder="What clicked? What felt clear?"></textarea>
+      </label>
+      <label>
+        What didn't work?
+        <textarea name="didnt_work" rows="2" placeholder="What was confusing, too fast, or missing?"></textarea>
+      </label>
+      <button type="submit" class="button button-secondary">Submit debrief</button>
+    </form>
+  </div>
+  {% else %}
+  <p class="muted"><a href="{{ url_for('course_auth.login') }}">Sign in</a> to submit your phase debrief.</p>
+  {% endif %}
+{% endmacro %}
+
