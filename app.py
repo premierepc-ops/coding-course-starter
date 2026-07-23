@@ -1,8 +1,10 @@
 import os
+import re
 
 from dotenv import load_dotenv
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user
+from markupsafe import Markup, escape
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
@@ -169,6 +171,26 @@ def inject_nav():
         "unlocked_phase": unlocked,
         "learners_registered": LEARNERS,
     }
+
+
+@app.template_filter("linkify")
+def linkify_filter(text):
+    """Turn URLs and site paths in step directions into clickable links."""
+    if not text:
+        return Markup("")
+    s = str(escape(text))
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(
+        r'(https?://[^\s<>"\']+)',
+        r'<a href="\1" target="_blank" rel="noopener">\1</a>',
+        s,
+    )
+    s = re.sub(
+        r'(?<![\w/.])(/(?:tools|start|login|aboutme|guestbook|quiz(?:/[\w/.-]*)?|healthz|session/\d+)(?:/[\w/.-]*)?)(?![\w/])',
+        r'<a href="\1">\1</a>',
+        s,
+    )
+    return Markup(s)
 
 
 @app.template_global()

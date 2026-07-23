@@ -44,7 +44,7 @@
   <p class="muted step-summary">{{ step.summary }}</p>
   <ol class="direction-list">
     {% for line in step.directions %}
-      <li>{{ line }}</li>
+      <li>{{ line | linkify }}</li>
     {% endfor %}
   </ol>
   {% if step.link %}
