@@ -85,7 +85,8 @@
   <div class="results-header">
     <a href="{{ url_for('quiz.dashboard') }}" class="back">← Back to Dashboard</a>
     <h2>
-      {% if attempt.phase == 0 %}Final Test Results
+      {% if attempt.phase == 100 %}Final Test Results
+      {% elif attempt.phase == 0 %}Phase 0 Quiz Results
       {% else %}Phase {{ attempt.phase }} Results
       {% endif %}
     </h2>
@@ -131,10 +132,10 @@
   {% endfor %}
 
   <div class="actions">
-    {% if attempt.phase > 0 %}
-    <a href="{{ url_for('quiz.take_quiz', phase=attempt.phase) }}" class="btn btn-ghost">Retake Phase {{ attempt.phase }}</a>
-    {% else %}
+    {% if attempt.phase == 100 %}
     <a href="{{ url_for('quiz.final_test') }}" class="btn btn-ghost">Retake Final Test</a>
+    {% elif attempt.phase >= 0 %}
+    <a href="{{ url_for('quiz.take_quiz', phase=attempt.phase) }}" class="btn btn-ghost">Retake Phase {{ attempt.phase }}</a>
     {% endif %}
     <a href="{{ url_for('quiz.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
   </div>

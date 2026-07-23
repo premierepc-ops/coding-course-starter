@@ -11,7 +11,10 @@ quiz_bp = Blueprint("quiz", __name__, template_folder="templates")
 
 DB_PATH = db_path("quiz.db")
 
+FINAL_ATTEMPT_PHASE = 100
+
 PHASE_NAMES = {
+    0: "Meet Your Tools",
     1: "Tools, Terminal & First Code",
     2: "Python & Git Fluency",
     3: "Extending the Real App",
@@ -198,11 +201,18 @@ def generate_auto_feedback(phase, score, total, wrong_topics):
     elif pct >= 70:
         summary = "Passing, but several areas need reinforcement before moving on."
     elif pct >= 60:
-        summary = "Below expectations. Review Phase {} material before proceeding.".format(phase)
+        summary = "Below expectations. Review Phase {} material before proceeding.".format(
+            phase if phase not in (FINAL_ATTEMPT_PHASE, 0) else "this"
+        )
     else:
-        summary = "Significant gaps present. Phase {} material should be revisited in full.".format(phase)
+        summary = "Significant gaps present. Phase {} material should be revisited in full.".format(
+            phase if phase not in (FINAL_ATTEMPT_PHASE, 0) else "this"
+        )
 
-    phase_name = PHASE_NAMES.get(phase, "Final Test") if phase > 0 else "Final Test"
+    if phase == FINAL_ATTEMPT_PHASE:
+        phase_name = "Final Test"
+    else:
+        phase_name = PHASE_NAMES.get(phase, "Quiz")
 
     if wrong_topics:
         topic_counts = {}
@@ -215,7 +225,7 @@ def generate_auto_feedback(phase, score, total, wrong_topics):
         weak_section = " No significant weak areas identified."
 
     return "Phase {phase} ({name}) — {score}/{total} ({pct:.0f}%, {letter}). {summary}{weak}".format(
-        phase=phase if phase > 0 else "Final",
+        phase="Final" if phase == FINAL_ATTEMPT_PHASE else phase,
         name=phase_name,
         score=score,
         total=total,
@@ -239,7 +249,7 @@ def get_best_attempt(user_id, phase):
 def get_cumulative_gpa(user_id):
     db = get_db()
     rows = db.execute(
-        "SELECT phase, MAX(percentage) as best_pct FROM quiz_attempts WHERE user_id=? AND phase BETWEEN 1 AND 6 GROUP BY phase",
+        "SELECT phase, MAX(percentage) as best_pct FROM quiz_attempts WHERE user_id=? AND phase BETWEEN 0 AND 6 GROUP BY phase",
         (user_id,)
     ).fetchall()
     db.close()
@@ -263,7 +273,7 @@ def dashboard():
         abort(403)
     db = get_db()
     phase_data = []
-    for phase in range(1, 7):
+    for phase in range(0, 7):
         best = db.execute(
             "SELECT * FROM quiz_attempts WHERE user_id=? AND phase=? ORDER BY percentage DESC LIMIT 1",
             (current_user.id, phase)
@@ -280,8 +290,8 @@ def dashboard():
         })
 
     final_best = db.execute(
-        "SELECT * FROM quiz_attempts WHERE user_id=? AND phase=0 ORDER BY percentage DESC LIMIT 1",
-        (current_user.id,)
+        "SELECT * FROM quiz_attempts WHERE user_id=? AND phase=? ORDER BY percentage DESC LIMIT 1",
+        (current_user.id, FINAL_ATTEMPT_PHASE),
     ).fetchone()
 
     cumulative_gpa, _ = get_cumulative_gpa(current_user.id)
@@ -311,7 +321,7 @@ def dashboard():
 def take_quiz(phase):
     if not learner_for_user(current_user):
         abort(403)
-    if phase not in range(1, 7):
+    if phase not in range(0, 7):
         abort(404)
 
     db = get_db()
@@ -397,18 +407,20 @@ def final_test():
         abort(403)
     db = get_db()
 
-    # Require all 6 phase quizzes to be completed first
+    # Require phases 0–6 before the final
     completed_phases = db.execute(
-        "SELECT DISTINCT phase FROM quiz_attempts WHERE user_id=? AND phase BETWEEN 1 AND 6",
-        (current_user.id,)
+        "SELECT DISTINCT phase FROM quiz_attempts WHERE user_id=? AND phase BETWEEN 0 AND 6",
+        (current_user.id,),
     ).fetchall()
     completed_set = {r["phase"] for r in completed_phases}
-    if not all(p in completed_set for p in range(1, 7)):
+    if not all(p in completed_set for p in range(0, 7)):
         db.close()
-        missing = [p for p in range(1, 7) if p not in completed_set]
+        missing = [p for p in range(0, 7) if p not in completed_set]
         return render_template("quiz/final_locked.html", missing=missing, phase_names=PHASE_NAMES)
 
-    questions = db.execute("SELECT * FROM questions ORDER BY phase, id").fetchall()
+    questions = db.execute(
+        "SELECT * FROM questions WHERE phase BETWEEN 1 AND 6 OR phase = 7 ORDER BY phase, id"
+    ).fetchall()
 
     if request.method == "POST":
         score = 0
@@ -428,11 +440,11 @@ def final_test():
         pct = (score / total * 100) if total > 0 else 0
         gpa = percentage_to_gpa(pct)
         letter = percentage_to_letter(pct)
-        feedback = generate_auto_feedback(0, score, total, wrong_topics)
+        feedback = generate_auto_feedback(FINAL_ATTEMPT_PHASE, score, total, wrong_topics)
 
         cursor = db.execute(
             "INSERT INTO quiz_attempts (user_id, username, phase, score, total, percentage, gpa, letter_grade, auto_feedback) VALUES (?,?,?,?,?,?,?,?,?)",
-            (current_user.id, current_user.username, 0, score, total, pct, gpa, letter, feedback)
+            (current_user.id, current_user.username, FINAL_ATTEMPT_PHASE, score, total, pct, gpa, letter, feedback)
         )
         attempt_id = cursor.lastrowid
 
@@ -512,7 +524,7 @@ def admin_view():
         uid = s["user_id"]
         phase_rows = db.execute(
             """SELECT phase, MAX(percentage) as best_pct
-               FROM quiz_attempts WHERE user_id=? AND phase BETWEEN 1 AND 6
+               FROM quiz_attempts WHERE user_id=? AND phase BETWEEN 0 AND 6
                GROUP BY phase ORDER BY phase""",
             (uid,)
         ).fetchall()

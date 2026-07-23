@@ -20,6 +20,7 @@ PHASE_CATALOG = [
         "tagline": "Learn what GitHub, Python, Cursor, and the rest mean — before you install anything.",
         "links": [
             {"label": "Phase 0 — tool glossary", "href": "/tools", "min_phase": 0},
+            {"label": "Phase 0 quiz", "href": "/quiz/phase/0", "min_phase": 0},
             {"label": "Read recon.md", "href": None, "note": "In .learners/<slug>/ after your fork"},
         ],
     },
@@ -220,9 +221,9 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
     for spec in PHASE_CATALOG:
         num = spec["num"]
         info = parsed.get(num, {})
-        quiz = quiz_by_phase.get(num, {}) if num >= 1 else {}
+        quiz = quiz_by_phase.get(num, {}) if num >= 0 else {}
         status = info.get("status", "not_started")
-        if num >= 1 and quiz.get("passed") and status != "complete":
+        if num >= 0 and quiz.get("passed") and status != "complete":
             status = "in_progress" if status == "not_started" else status
 
         phases.append(
@@ -306,7 +307,7 @@ def _pick_next_action(phases, learner, current_user, setup, unlocked_phase, is_i
         if phase.num == 0:
             return {
                 "title": "Phase 0 — meet your tools",
-                "detail": "Read the tool glossary first. No installs until you know what GitHub, Python, Cursor, and Railway actually are.",
+                "detail": "Read the tool glossary, then take the Phase 0 quiz to check vocabulary.",
                 "href": "/tools",
                 "label": "Open Phase 0 — Meet your tools",
             }
@@ -387,7 +388,7 @@ def build_nav(current_user=None) -> dict:
             "home": True,
             "aboutme": phase >= 1,
             "guestbook": phase >= 3,
-            "quiz": phase >= 1,
+            "quiz": phase >= 0,
             "admin": False,
         }
 

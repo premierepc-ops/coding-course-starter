@@ -121,7 +121,7 @@
 <div class="quiz-wrap">
   <div class="quiz-header">
     <h2>{{ display_of(current_user.username) }}'s Quiz Dashboard</h2>
-    <p>10 questions per phase. Final test: all 100. No partial credit. Spare no punches.</p>
+    <p>10 questions per phase (Phases 0–6). Final test: 100 questions. No partial credit. Spare no punches.</p>
   </div>
 
   <div class="gpa-card">
@@ -166,11 +166,11 @@
     {% endfor %}
   </div>
 
-  {% set all_phases_done = phase_data | selectattr('best') | list | length == 6 %}
+  {% set all_phases_done = phase_data | selectattr('best') | list | length == 7 %}
   <div class="final-card {% if all_phases_done %}unlocked{% endif %}">
     <h3>Final Test — 100 Questions</h3>
     {% if all_phases_done %}
-      <p>All phases complete. This is the graduation test. Every question from every phase, plus synthesis questions. No notes, no lookups.</p>
+      <p>All phase quizzes complete (0–6). This is the graduation test — phases 1–6 plus synthesis. No notes, no lookups.</p>
       {% if final_best %}
         <div style="margin-bottom:1rem;font-weight:600;color:rgba(var(--text-rgb),0.9)">
           Best score: {{ final_best.score }}/{{ final_best.total }} &middot; {{ final_best.letter_grade }} &middot; {{ "%.1f"|format(final_best.gpa) }} GPA
@@ -180,9 +180,9 @@
         {% if final_best %}Retake Final Test{% else %}Take Final Test{% endif %}
       </a>
     {% else %}
-      <p>Complete all 6 phase quizzes to unlock the final test.</p>
+      <p>Complete all 7 phase quizzes (Phases 0–6) to unlock the final test.</p>
       <div style="font-size:0.85rem;color:rgba(var(--text-rgb),0.4)">
-        {{ phase_data | selectattr('best') | list | length }}/6 phases completed
+        {{ phase_data | selectattr('best') | list | length }}/7 phases completed
       </div>
     {% endif %}
   </div>

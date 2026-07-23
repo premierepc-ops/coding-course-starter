@@ -1,6 +1,7 @@
 # All quiz questions for the coding course.
+# phase 0 = Phase 0 "Meet your tools" quiz (10 questions, standalone)
 # phase 1-6 = phase quiz (10 questions each)
-# phase 0 = synthesis questions used in the final 100-question test alongside all phase questions
+# phase 7 = synthesis questions — final test only (not a standalone quiz)
 #
 # This file is the SINGLE SOURCE OF TRUTH for quiz content. Editing a question here
 # propagates to the live quiz on the next restart — BUT ONLY IF you bump QUESTIONS_VERSION
@@ -14,7 +15,7 @@
 # The literal token {{LEARNER}} in any question is replaced with the current learner's
 # name at render time (see personalize() in __init__.py). Numbers (ages, list values)
 # are scenario data and are intentionally NOT personalized.
-QUESTIONS_VERSION = 2
+QUESTIONS_VERSION = 3
 
 QUESTIONS = [
 
@@ -756,10 +757,10 @@ QUESTIONS = [
         "difficulty": 1
     },
 
-    # ===== SYNTHESIS (phase=0): Final test only — cross-phase integration =====
+    # ===== SYNTHESIS (phase=7): Final test only — cross-phase integration =====
 
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You are on a feature branch with committed but unpushed changes. The live site has a critical bug that needs a hotfix immediately. What is the correct process?",
         "a": "Push your feature branch and fix the bug there.",
         "b": "Stash or commit your work, switch to master, fix the bug on a new hotfix branch, PR it, then return to your feature branch.",
@@ -771,7 +772,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "A route needs to be admin-only. Which implementation is correct?",
         "a": "Add `if current_user.is_admin` inside the template only.",
         "b": "Add an `if not current_user.is_admin: return redirect('/')` check at the top of the route function.",
@@ -783,7 +784,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Your route does `name = request.form[\"name\"].upper()`. Users sometimes leave the field blank. What happens and how do you fix it?",
         "a": "Returns an empty string. No fix needed.",
         "b": "Raises a KeyError if the field is missing entirely. Use `request.form.get(\"name\", \"\")` then check if blank.",
@@ -795,7 +796,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You push a fix but the server logs show the old code path is still executing. The GitHub Actions deploy shows 'success'. Walk through your diagnosis in order.",
         "a": "Check git history → check branch → check server files → check process.",
         "b": "Check deploy log for the `systemctl restart` step → check `systemctl status family-site` → if still old code, restart manually and check for errors.",
@@ -807,7 +808,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You are building a form that accepts a user's bio. You want to allow basic HTML like `<b>` and `<i>`. What is the security risk and how should you handle it?",
         "a": "No risk — Jinja2 handles this automatically.",
         "b": "XSS risk. You must sanitize the input to allow only safe tags before storing or rendering with `| safe`.",
@@ -819,7 +820,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You query the database with `db.execute('SELECT * FROM items').fetchall()`. The result is a list of `sqlite3.Row` objects. How do you access the `title` field of the first row?",
         "a": "result[0][0]",
         "b": "result[0].title",
@@ -831,7 +832,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Your instructor reviews your PR and asks for changes before merging. What are your git steps?",
         "a": "Close the PR, make changes on master, open a new PR.",
         "b": "Make the changes locally on the same branch, commit them, and push — the PR updates automatically.",
@@ -843,7 +844,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "An `hx-get=\"/aboutme/refresh\"` attribute is on a `<div>`. The route returns `<p>Hello</p>`. Where does that HTML end up if there is no `hx-target` specified?",
         "a": "It replaces the entire page body.",
         "b": "It is discarded — hx-target is required.",
@@ -855,7 +856,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You realize you committed a test database file containing fake passwords to git and pushed it. What do you do?",
         "a": "Delete the file in a new commit — that is sufficient.",
         "b": "Nothing — they are fake passwords so there is no risk.",
@@ -867,7 +868,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Your feature fails in production with `KeyError: 'NEW_FEATURE_KEY'` but works locally. What is the cause and fix?",
         "a": "The Python version on the server is different.",
         "b": "A new environment variable exists in your local `.env` but was never added to the `.env` on the server.",
@@ -879,7 +880,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "How do you correctly handle a form value that should be an integer but might not be?",
         "a": "Just call `int(request.form.get('age'))` — Flask validates types automatically.",
         "b": "Use `int(request.form.get('age', 0))` — the default 0 prevents crashes.",
@@ -891,7 +892,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "A Jinja2 template has `{% if items %}{{ items[0].title }}{% else %}<p>No items.</p>{% endif %}`. When does the else block show?",
         "a": "When items is None.",
         "b": "When items is an empty list [].",
@@ -903,7 +904,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You need to update the server's `.env` file with a new secret. Why can you NOT just push the `.env` to GitHub to deploy it?",
         "a": "GitHub does not support `.env` files.",
         "b": ".env is in `.gitignore` and should never be committed — secrets in git are permanently exposed. SSH in to edit it directly on the server.",
@@ -915,7 +916,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You accidentally committed to `master` instead of a feature branch. You have NOT pushed yet. How do you fix it?",
         "a": "Nothing you can do — the commit is permanent.",
         "b": "Create the feature branch now: `git checkout -b feature-name`. The commit moves with you since HEAD moves.",
@@ -927,7 +928,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "When would you use a list vs a dict to store family member data?",
         "a": "Always use a list — dicts are only for configuration.",
         "b": "List when you just need ordered names. Dict when you need to look up data by name or store multiple fields per person.",
@@ -939,7 +940,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "`url_for('food.index')` in a Jinja2 template generates what URL?",
         "a": "/food_bp/index",
         "b": "Whatever URL the `index` function inside the `food` blueprint is registered to handle.",
@@ -951,7 +952,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Show the correct way to write a SQLite parameterized query that finds a recipe by ID.",
         "a": "db.execute(f'SELECT * FROM recipes WHERE id = {recipe_id}')",
         "b": "db.execute('SELECT * FROM recipes WHERE id = ' + str(recipe_id))",
@@ -963,7 +964,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "The deploy workflow excludes `static/uploads/`. Why?",
         "a": "Uploaded files are too large to transfer efficiently.",
         "b": "User-uploaded photos live on the server and should not be overwritten by deploys — they are not in the git repo.",
@@ -975,7 +976,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Every page on the family site shares the same nav, CSS, and layout without duplicating HTML. How is this achieved?",
         "a": "Flask automatically generates nav HTML for all pages.",
         "b": "Each template imports a nav component using JavaScript.",
@@ -987,7 +988,7 @@ QUESTIONS = [
         "difficulty": 1
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Your function is supposed to return a value but you see `None` when you print the result. What are three plausible causes?",
         "a": "The function is named wrong, the import failed, and Python is broken.",
         "b": "Missing `return` statement, `return` is inside a conditional that did not trigger, or the function returned early before the value was computed.",
@@ -999,7 +1000,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You and your instructor both edit `app.py`. He pushes first. What happens when you try to push?",
         "a": "Your push succeeds and overwrites his changes.",
         "b": "Git rejects your push and tells you to pull first, then merge.",
@@ -1011,7 +1012,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Why does the family site use separate `.db` files for each blueprint instead of one shared database?",
         "a": "SQLite cannot handle multiple tables in one file.",
         "b": "Each blueprint is more independent — it owns its own data, reducing coupling between features.",
@@ -1023,7 +1024,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "Flask's session cookie has `SESSION_COOKIE_HTTPONLY = True` set. What specific attack does this mitigate?",
         "a": "SQL injection via the session cookie.",
         "b": "JavaScript on the page reading the session cookie (used in XSS attacks to steal sessions).",
@@ -1035,7 +1036,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "The GitHub Actions runner is installed as a service on the VPS. Why does `sudo systemctl restart family-site` work in the workflow without a password prompt?",
         "a": "The runner runs as root.",
         "b": "The runner user has been granted passwordless sudo specifically for the `systemctl restart family-site` command via sudoers.",
@@ -1047,7 +1048,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "What is the practical difference between defining a function that modifies a global variable vs one that takes parameters and returns a value?",
         "a": "No difference — both approaches produce the same result.",
         "b": "Functions with parameters and returns are testable, reusable, and have no hidden side effects. Global-modifying functions are harder to reason about and debug.",
@@ -1059,7 +1060,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "A route queries the database for a record by ID from a URL parameter: `/recipe/999`. The ID does not exist. What should the route return?",
         "a": "An empty page.",
         "b": "A 500 Internal Server Error.",
@@ -1071,7 +1072,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "An HTMX route must return partial HTML rather than a full page. Why does returning a full rendered template with `{% extends 'base.html' %}` cause problems?",
         "a": "Flask does not allow render_template in HTMX routes.",
         "b": "HTMX injects the response HTML into a specific element — a full page response would inject a second nav, head, and body inside that element.",
@@ -1083,7 +1084,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "You are reviewing your capstone before demo night. You find a variable named `x` in a function. What should you do?",
         "a": "Leave it — single-letter variable names are standard in Python.",
         "b": "Rename it to something descriptive that explains what it holds.",
@@ -1095,7 +1096,7 @@ QUESTIONS = [
         "difficulty": 1
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "A family member clicks a button on your feature and nothing happens — no error, no response, just silence. Walk through the layers you would check.",
         "a": "CSS → HTML → JavaScript → Flask route → database",
         "b": "Browser console for JS errors → Network tab to see if a request was sent → Flask logs to see if the route received the request → route logic → database query",
@@ -1107,7 +1108,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "What is the correct way to serve user-uploaded files securely in Flask?",
         "a": "Put uploads in the `static/` folder and link to them directly.",
         "b": "Create a route that checks `@login_required`, finds the file by a safe path, and sends it with `send_from_directory`.",
@@ -1119,7 +1120,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "`git log --oneline` shows your recent commits. Why does this matter when something breaks in production?",
         "a": "It tells you which files were changed in each commit.",
         "b": "It lets you identify which commit introduced the bug and revert specifically to before it.",
@@ -1131,7 +1132,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "The site has a valid Let's Encrypt SSL certificate. What does this certificate prove to visitors?",
         "a": "The site's code has been security-audited.",
         "b": "The server at this domain is controlled by someone who had access to configure DNS or the web server at the time the certificate was issued.",
@@ -1143,7 +1144,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "`open('data.json')` works locally but raises `FileNotFoundError` in production. What is the most likely reason?",
         "a": "The Python version on the server is different.",
         "b": "The file path is relative — it resolves relative to the working directory, which differs between local and production.",
@@ -1155,7 +1156,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "After a user logs out, why is it important to call `logout_user()` rather than just deleting a cookie client-side?",
         "a": "Deleting a cookie is impossible from Python.",
         "b": "`logout_user()` invalidates the server-side session so stolen session data cannot be reused, and clears the cookie properly.",
@@ -1167,7 +1168,7 @@ QUESTIONS = [
         "difficulty": 3
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "What is the advantage of GitHub Actions deploying automatically over manually SSH-ing in each time?",
         "a": "GitHub Actions is faster than SSH.",
         "b": "Automation removes human error, ensures every deploy follows the same steps, creates an audit log of all deploys, and means anyone can ship by merging a PR.",
@@ -1179,7 +1180,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "A variable defined inside an `if` block in Python — is it accessible after the block ends?",
         "a": "No — Python uses block scope like JavaScript.",
         "b": "Yes — Python uses function scope. Variables defined anywhere in a function exist for the rest of that function.",
@@ -1191,7 +1192,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "A form has `method=\"GET\"` instead of `method=\"POST\"`. What is different about where the form data goes?",
         "a": "GET forms do not send any data.",
         "b": "GET form data appears in the URL as query parameters (visible, bookmarkable, cached). POST data is in the request body (not in the URL).",
@@ -1203,7 +1204,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "The site's current SECRET_KEY in `.env.example` is `change-me-to-a-long-random-string`. What should it actually be and why?",
         "a": "Any memorable phrase — the key just needs to exist.",
         "b": "A long, random string of at least 32 characters generated by a tool, never reused elsewhere.",
@@ -1215,7 +1216,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "`git add .` vs `git add specific-file.py` — when should you use each?",
         "a": "Always use `git add .` — it is faster.",
         "b": "Use `git add .` only in new projects with no sensitive files. Use specific file adds when you want control over exactly what goes into a commit.",
@@ -1227,7 +1228,7 @@ QUESTIONS = [
         "difficulty": 2
     },
     {
-        "phase": 0,
+        "phase": 7,
         "text": "What does `not (a and b)` equal in terms of `not a` and `not b`? (De Morgan's Law)",
         "a": "`not a and not b`",
         "b": "`not a or not b`",
@@ -1237,5 +1238,128 @@ QUESTIONS = [
         "explanation": "De Morgan's Law: `not (a and b)` equals `(not a) or (not b)`. And `not (a or b)` equals `(not a) and (not b)`. This matters when writing conditions: `if not (user.is_admin and user.is_active)` is the same as `if not user.is_admin or not user.is_active`. Understanding this prevents logic bugs in access control.",
         "topic": "python",
         "difficulty": 3
+    },
+
+    # ===== PHASE 0: Meet your tools — vocabulary check (standalone quiz) =====
+
+    {
+        "phase": 0,
+        "text": "In plain English, what is Git?",
+        "a": "A website where you store code online.",
+        "b": "A save-history system for code — snapshots with messages so you can track and undo changes.",
+        "c": "The app where you type Python on your laptop.",
+        "d": "The service that puts your website on the internet.",
+        "correct": "b",
+        "explanation": "Git runs on your computer and records commits. GitHub is the website; Railway is deploy. Git is the history of your project.",
+        "topic": "git",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What is a commit?",
+        "a": "Uploading code to GitHub.",
+        "b": "A saved snapshot of your code with a short message about what changed.",
+        "c": "A separate copy of the whole project for experiments.",
+        "d": "A request for your instructor to merge your branch.",
+        "correct": "b",
+        "explanation": "Commit = local save with a note. Push sends commits to GitHub. Branch = parallel line of work. PR = merge request.",
+        "topic": "git",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What does `git push` do?",
+        "a": "Saves a snapshot on your laptop only.",
+        "b": "Downloads a repo from GitHub to your computer.",
+        "c": "Uploads your commits from your laptop to GitHub.",
+        "d": "Creates your own copy of someone else's project.",
+        "correct": "c",
+        "explanation": "Push sends local commits to the remote (GitHub). Clone downloads. Fork creates your own GitHub copy.",
+        "topic": "git",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What is a fork on GitHub?",
+        "a": "A branch you create inside your repo.",
+        "b": "Your own copy of someone else's GitHub project on your account.",
+        "c": "Merging two branches together.",
+        "d": "Running code in the terminal.",
+        "correct": "b",
+        "explanation": "Fork = your repo copy on GitHub. Branch = line of work inside one repo. Session 1 starts with a fork (or Use this template).",
+        "topic": "github",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What does it mean to clone a repo?",
+        "a": "Copy someone else's repo on GitHub without downloading it.",
+        "b": "Download a copy of a GitHub repo onto your computer so you can edit it locally.",
+        "c": "Deploy the site to Railway.",
+        "d": "Duplicate a single file inside Cursor.",
+        "correct": "b",
+        "explanation": "Clone puts the project on your machine. Git: Clone in Cursor, or `git clone <url>` in the terminal.",
+        "topic": "git",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What is the terminal in Cursor?",
+        "a": "The AI chat panel.",
+        "b": "A text window where you type commands like `python hello.py` and see output.",
+        "c": "The file explorer on the left.",
+        "d": "The live website in your browser.",
+        "correct": "b",
+        "explanation": "Terminal = command line inside the editor. You run Python scripts and git commands there.",
+        "topic": "terminal",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What is Python in this course?",
+        "a": "The code editor you install.",
+        "b": "The website hosting your quizzes.",
+        "c": "A programming language — one way to write instructions the computer runs.",
+        "d": "The same thing as GitHub.",
+        "correct": "c",
+        "explanation": "Python is the language you write. Cursor is where you edit. This Flask app is written in Python.",
+        "topic": "python",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What does Railway do for this course app?",
+        "a": "Stores your Git history.",
+        "b": "Replaces GitHub.",
+        "c": "Hosts the live site on the internet — rebuilds when you push to GitHub.",
+        "d": "Only runs quizzes on your laptop.",
+        "correct": "c",
+        "explanation": "Railway connects to your GitHub repo and deploys pushes so anyone with the link sees your app.",
+        "topic": "railway",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What is a pull request (PR)?",
+        "a": "Downloading the latest code from GitHub.",
+        "b": "A request to merge your branch into the main project — reviewed before it goes live.",
+        "c": "A quiz you take at the end of a phase.",
+        "d": "A Python error message.",
+        "correct": "b",
+        "explanation": "PRs are how your instructor reviews changes before merge. You don't merge your own PRs in this course.",
+        "topic": "git",
+        "difficulty": 1
+    },
+    {
+        "phase": 0,
+        "text": "What is the AI assistant in Cursor best for in this course?",
+        "a": "Replacing you so you never type code.",
+        "b": "Exploring ideas, sketching examples, and showing what's possible — while you still understand what ships.",
+        "c": "Signing in to the quiz.",
+        "d": "Creating your Railway account automatically.",
+        "correct": "b",
+        "explanation": "AI is a tool you direct. You explain every line that goes live. It helps you learn faster, not skip learning.",
+        "topic": "cursor",
+        "difficulty": 1
     },
 ]

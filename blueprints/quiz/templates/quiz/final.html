@@ -96,7 +96,7 @@
       {% if q.phase != ns.current_phase %}
         {% set ns.current_phase = q.phase %}
         <div class="phase-section-label">
-          {% if q.phase == 0 %}Synthesis — Cross-Phase Integration
+          {% if q.phase == 7 %}Synthesis — Cross-Phase Integration
           {% else %}Phase {{ q.phase }}
           {% endif %}
         </div>

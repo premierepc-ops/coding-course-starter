@@ -157,7 +157,7 @@
       <div class="gpa-tile highlight">
         <div class="tile-label">Cumulative GPA</div>
         <div class="tile-value">{{ "%.2f"|format(ls.gpa_summary.cumulative) }}</div>
-        <div class="tile-sub">{{ ls.gpa_summary.phases_done }}/6 phases done</div>
+        <div class="tile-sub">{{ ls.gpa_summary.phases_done }}/7 phases done</div>
       </div>
       {% for pd in ls.gpa_summary.phases %}
       <div class="gpa-tile">
@@ -187,11 +187,11 @@
     <div class="attempt-top">
       <div>
         <div class="attempt-title">
-          <span class="phase-badge {% if a.attempt.phase == 0 %}final-badge{% endif %}">
-            {% if a.attempt.phase == 0 %}Final{% else %}Phase {{ a.attempt.phase }}{% endif %}
+          <span class="phase-badge {% if a.attempt.phase == 100 %}final-badge{% endif %}">
+            {% if a.attempt.phase == 100 %}Final{% else %}Phase {{ a.attempt.phase }}{% endif %}
           </span>
           {{ display_of(a.attempt.username) }}
-          {% if a.attempt.phase != 0 %}&nbsp;— {{ phase_names.get(a.attempt.phase, '') }}{% endif %}
+          {% if a.attempt.phase != 100 %}&nbsp;— {{ phase_names.get(a.attempt.phase, '') }}{% endif %}
         </div>
         <div class="attempt-meta">{{ a.attempt.completed_at[:16].replace('T', ' ') }} · attempt #{{ a.attempt_number }}</div>
       </div>
