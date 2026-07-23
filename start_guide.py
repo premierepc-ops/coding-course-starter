@@ -18,6 +18,8 @@ START_GUIDE = {
                 f"Open the template: {TEMPLATE_REPO}",
                 'Click the green "Use this template" button (top right).',
                 'Click "Create a new repository".',
+                "Name it something like jaqira-coding-course (all lowercase, use hyphens).",
+                "Leave it Public or Private — your choice. Click Create repository.",
                 "That new repo is yours. The rest of the course happens there.",
             ],
             "link": {"label": "Open the template on GitHub", "href": TEMPLATE_REPO},
