@@ -64,7 +64,7 @@ not the calendar, define progress.
 
 2. **The branch rule.** Practice files (anything in `lessons/<learner>/`) can go straight to `main` —
    they don't affect the deployed app structure much. **Anything that touches app code goes on a branch,
-   opens a PR, gets The instructor's review and merge.** No exceptions, no "just this once."
+   opens a PR, gets the instructor's review and merge.** No exceptions, no "just this once."
 
 3. **The git-only deploy rule.** No editing files in the Railway dashboard or on any server directly.
    Changes go through git → push → deploy. Direct edits drift and get overwritten.
@@ -86,7 +86,7 @@ not the calendar, define progress.
    - **Composer / Agent** for multi-file work — high usage; **one scoped prompt per milestone**, not ten micro-prompts.
    - **Chat (Ask mode)** to understand errors before asking Agent to fix — medium usage.
    - Open the **Cursor usage dashboard** at session start.
-   - If throttled mid-session: finish by hand; Your instructor upgrades to Pro only if it blocks graduation work.
+   - If throttled mid-session: finish by hand; the instructor upgrades to Pro only if it blocks graduation work.
 
 ---
 
@@ -349,7 +349,7 @@ matching the `get_db()` pattern — from scratch. *Debug:* give them a POST rout
 
 **Suggested activities:**
 - Walk the deploy path: commit → push → Railway build logs → Gunicorn start → `/healthz`.
-- Set `DATA_DIR=/data` and confirm volume mount (Your instructor helps first time).
+- Set `DATA_DIR=/data` and confirm volume mount (instructor helps first time).
 - Open PR for Phase 3 feature. Your instructor reviews and merges. Watch Railway redeploy.
 - Read runtime logs when something breaks; find the traceback.
 - **Debug drill:** "The change isn't showing" — hard refresh? wrong branch merged? deploy failed?
