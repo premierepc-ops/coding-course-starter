@@ -1,212 +1,183 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}Course Home{% endblock %}
 
-
-
 {% block content %}
+{% if show_welcome %}
+<div id="welcome-modal" class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+  <div class="welcome-backdrop" aria-hidden="true"></div>
+  <div class="welcome-dialog panel">
+    <div class="welcome-mascot">
+      <img src="{{ url_for('static', filename='images/byte.svg') }}" alt="{{ welcome.mascot_name }}, your course guide" width="120" height="120">
+      <span class="mascot-name">Hi, I'm {{ welcome.mascot_name }}!</span>
+    </div>
+    <p class="eyebrow">PremierePC · Coding course</p>
+    <h2 id="welcome-title" class="welcome-title">{{ welcome.headline }}{% if learner_name %}, {{ learner_name }}{% endif %}</h2>
+    <p class="lede">{{ welcome.intro }}</p>
 
+    <div class="welcome-columns">
+      <div>
+        <h3>This course helps you</h3>
+        <ul class="welcome-list">
+          {% for item in welcome.helps_you %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <h3>By the end, you'll be able to</h3>
+        <ul class="welcome-list">
+          {% for item in welcome.by_the_end %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="welcome-cta">
+      <button type="button" class="button" id="welcome-start-btn">{{ welcome.cta }}</button>
+      <p class="muted">{{ welcome.cta_sub }}</p>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div id="course-content" class="course-content{% if show_welcome %} course-content--waiting{% endif %}">
 <header class="hero">
-
   {% if learner_name %}
-
     <p class="eyebrow">PremierePC · Coding course</p>
-
     <h1>Welcome, {{ learner_name }}</h1>
-
     <p class="lede">Phase {{ current_phase }} is up next. Need help? <a href="/start">Start Here</a> has every step spelled out.</p>
-
   {% elif is_instructor %}
-
     <p class="eyebrow">Instructor view</p>
-
     <h1>Course dashboard</h1>
-
     <p class="lede">Students follow <a href="/start">Start Here</a>. Review attempts at <a href="/quiz/admin">/quiz/admin</a>.</p>
-
   {% else %}
-
     <p class="eyebrow">PremierePC · Coding course</p>
-
     <h1>Learn to code — step by step</h1>
-
-    <p class="lede">New here? Open <strong><a href="/start">Start Here</a></strong> first. It walks you through Session 1 in plain English — fork, install tools, sign in, write your first file.</p>
-
+    <p class="lede">New here? Open <strong><a href="/start">Start Here</a></strong> first. It walks you through Session 1 in plain English.</p>
   {% endif %}
-
   {% if is_live %}
-
     <span class="badge badge-live">Live on Railway</span>
-
   {% endif %}
-
 </header>
 
-
-
 <section class="panel next-panel">
-
   <h2>Do this next</h2>
-
   <p class="next-title">{{ next_action.title }}</p>
-
   <p class="muted">{{ next_action.detail }}</p>
-
   {% if next_action.href and next_action.label %}
-
     <a class="button" href="{{ next_action.href }}">{{ next_action.label }}</a>
-
   {% endif %}
-
 </section>
-
-
 
 {% if not signed_in and not is_instructor %}
-
 <section class="panel highlight-panel">
-
   <h2>Never coded before?</h2>
-
   <p>Don't start with the checklist below — open the full walkthrough first.</p>
-
   <a class="button" href="/start">Open Start Here (Session 1 guide)</a>
-
 </section>
-
 {% endif %}
 
-
-
 <section class="panel">
-
   <h2>Session 1 checklist</h2>
-
   <p class="muted section-note">Each item expands with directions. Full guide: <a href="/start">Start Here</a>.</p>
-
   <ol class="setup-list setup-list-detailed">
-
     {% for step in setup_steps %}
-
     <li class="{{ 'done' if step.done else 'pending' }}">
-
       <div class="setup-row">
-
         <span class="check">{{ '✓' if step.done else '○' }}</span>
-
         <div class="setup-body">
-
           <strong>{{ step.label }}</strong>
-
           {% if step.directions %}
-
             <p class="setup-direction">{{ step.directions[0] }}</p>
-
           {% endif %}
-
           {% if step.link %}
-
             <a class="setup-link" href="{{ step.link.href }}" {% if step.link.href.startswith('http') %}target="_blank" rel="noopener"{% endif %}>{{ step.link.label }} →</a>
-
           {% elif not step.done %}
-
             <a class="setup-link" href="/start#step-{{ loop.index }}">Full directions →</a>
-
           {% endif %}
-
         </div>
-
       </div>
-
     </li>
-
     {% endfor %}
-
   </ol>
-
 </section>
-
-
 
 <section class="panel">
-
   <h2>Course map</h2>
-
   <div class="phase-grid">
-
     {% for phase in phases %}
-
     <article class="phase-card status-{{ phase.status }}">
-
       <div class="phase-head">
-
         <span class="phase-num">Phase {{ phase.num }}</span>
-
         <span class="status-pill">{{ phase.status.replace('_', ' ') }}</span>
-
       </div>
-
       <h3>{{ phase.title }}</h3>
-
       <p class="muted">{{ phase.tagline }}</p>
-
       {% if phase.milestones_total %}
-
         <p class="meta">{{ phase.milestones_done }}/{{ phase.milestones_total }} milestones</p>
-
       {% endif %}
-
       {% if phase.quiz_best_pct is not none %}
-
         <p class="meta">Quiz best: {{ phase.quiz_best_pct | round | int }}%{% if phase.quiz_passed %} ✓{% endif %}</p>
-
       {% endif %}
-
       {% if phase.whats_next and phase.status != 'complete' %}
-
         <p class="whats-next"><strong>Next:</strong> {{ phase.whats_next }}</p>
-
       {% endif %}
-
       <ul class="phase-links">
-
         {% for link in phase.links %}
-
           {% if link.href %}
-
             <li><a href="{{ link.href }}">{{ link.label }}</a></li>
-
           {% elif link.note %}
-
             <li><span class="muted">{{ link.label }} — {{ link.note }}</span></li>
-
           {% endif %}
-
         {% endfor %}
-
       </ul>
-
     </article>
-
     {% endfor %}
-
   </div>
-
 </section>
-
-
 
 {% if not signed_in and not is_instructor and learners_registered %}
-
 <section class="panel muted-panel">
-
   <p>Already set up? <a href="{{ url_for('course_auth.login') }}">Sign in</a> with your name and the PIN your instructor gave you.</p>
-
 </section>
-
 {% endif %}
-
+</div>
 {% endblock %}
 
+{% block extra_head %}
+{% if show_welcome %}
+<script>
+(function () {
+  var KEY = "ppc-course-welcome-seen";
+  var modal = document.getElementById("welcome-modal");
+  var content = document.getElementById("course-content");
+  var btn = document.getElementById("welcome-start-btn");
+  if (!modal || !content || !btn) return;
+
+  function closeWelcome() {
+    try { localStorage.setItem(KEY, "1"); } catch (e) {}
+    modal.hidden = true;
+    content.classList.remove("course-content--waiting");
+    document.body.classList.remove("welcome-open");
+  }
+
+  if (localStorage.getItem(KEY)) {
+    closeWelcome();
+    return;
+  }
+
+  document.body.classList.add("welcome-open");
+  btn.focus();
+  btn.addEventListener("click", closeWelcome);
+  modal.addEventListener("click", function (e) {
+    if (e.target.classList.contains("welcome-backdrop")) closeWelcome();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !modal.hidden) closeWelcome();
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}

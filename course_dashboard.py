@@ -7,6 +7,7 @@ from typing import Optional
 
 from course_config import LEARNERS
 from start_guide import SETUP_STEPS, START_GUIDE
+from welcome_content import WELCOME
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 LEARNERS_DIR = os.path.join(ROOT, ".learners")
@@ -229,6 +230,12 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
         "learners_registered": LEARNERS,
         "is_live": bool(host and "railway.app" in host),
         "start_guide_url": "/start",
+        "show_welcome": not bool(
+            current_user
+            and getattr(current_user, "is_authenticated", False)
+            and getattr(current_user, "is_admin", False)
+        ),
+        "welcome": WELCOME,
     }
 
 
