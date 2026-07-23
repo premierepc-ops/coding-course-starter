@@ -1,10 +1,11 @@
 {% macro step_feedback(session_num, step_num, step_title, feedback_counts, recent_entries, return_to, can_submit, learners=None) %}
+{% if can_submit %}
 <div class="step-feedback panel-inset">
-  <h3 class="feedback-heading">Phase notes — improve this step</h3>
+  <h3 class="feedback-heading">Instructor notes</h3>
   <p class="muted feedback-intro">
-    What worked? What didn't? Saved notes help your instructor improve this section for the next learner.
+    What worked? What didn't? For curriculum tweaks — not required for learners.
     {% if feedback_counts.get(step_num) %}
-      <span class="feedback-count">{{ feedback_counts[step_num] }} note(s) on file for this step.</span>
+      <span class="feedback-count">{{ feedback_counts[step_num] }} note(s) on file.</span>
     {% endif %}
   </p>
 
@@ -28,7 +29,6 @@
   </div>
   {% endif %}
 
-  {% if can_submit %}
   <form method="post" action="{{ url_for('session_feedback.submit_feedback') }}" class="feedback-form">
     <input type="hidden" name="session_num" value="{{ session_num }}">
     <input type="hidden" name="step_num" value="{{ step_num }}">
@@ -52,10 +52,8 @@
       What didn't work
       <textarea name="didnt_work" rows="2" placeholder="Jargon, too fast, step 3 error confused her…"></textarea>
     </label>
-    <button type="submit" class="button button-secondary">Save notes for {{ step_title }}</button>
+    <button type="submit" class="button button-secondary">Save notes</button>
   </form>
-  {% else %}
-  <p class="muted"><a href="{{ url_for('course_auth.login') }}">Sign in</a> to save phase notes.</p>
-  {% endif %}
 </div>
+{% endif %}
 {% endmacro %}

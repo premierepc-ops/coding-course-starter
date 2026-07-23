@@ -127,6 +127,7 @@ def _render_session(session_num: int):
         "all_sessions": all_sessions,
         "next_session": next_session,
         "return_to": return_to,
+        "is_instructor": is_instructor,
         **_feedback_bundle(session_num, is_instructor, signed_in),
     }
     return render_template("session.html", **ctx)
@@ -144,16 +145,12 @@ def tools_glossary():
         and getattr(current_user, "is_authenticated", False)
         and not is_instructor
     )
-    tool_recent = {
-        idx: recent_for_step(0, idx, limit=1)
-        for idx in range(1, len(TOOLS_GUIDE["tools"]) + 1)
-    }
     return render_template(
         "tools.html",
         guide=TOOLS_GUIDE,
         icons=TOOL_ICONS,
         return_to="/tools",
-        tool_recent=tool_recent,
+        is_instructor=is_instructor,
         **_feedback_bundle(0, is_instructor, signed_in),
     )
 
