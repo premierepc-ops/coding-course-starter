@@ -1286,7 +1286,7 @@ QUESTIONS = [
         "c": "Merging two branches together.",
         "d": "Running code in the terminal.",
         "correct": "b",
-        "explanation": "Fork = your repo copy on GitHub. Branch = line of work inside one repo. Session 1 starts with a fork (or Use this template).",
+        "explanation": "Fork = your repo copy on GitHub. Branch = line of work inside one repo. Phase 1 starts with a fork (or Use this template).",
         "topic": "github",
         "difficulty": 1
     },

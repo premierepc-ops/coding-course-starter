@@ -114,7 +114,7 @@ def _render_session(session_num: int):
         unlocked = 6
 
     if not session_unlocked(session_num, unlocked, is_instructor, signed_in or session_num == 1):
-        flash(f"Session {session_num} unlocks when you reach Phase {session_num} on Course Home.")
+        flash(f"Phase {session_num} unlocks when you reach Phase {session_num} on Course Home.")
         return redirect(url_for("home"))
 
     all_sessions = sessions_for_nav(unlocked, is_instructor, signed_in or session_num == 1)

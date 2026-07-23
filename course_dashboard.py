@@ -29,7 +29,7 @@ PHASE_CATALOG = [
         "title": "Tools & first code",
         "tagline": "Cursor, Python, git, and your first live page.",
         "links": [
-            {"label": "Session 1 guide", "href": "/start", "min_phase": 0},
+            {"label": "Phase 1 guide", "href": "/start", "min_phase": 0},
             {"label": "About Me page", "href": "/aboutme/", "min_phase": 1},
             {"label": "Phase 1 quiz", "href": "/quiz/phase/1", "min_phase": 1},
         ],
@@ -39,7 +39,7 @@ PHASE_CATALOG = [
         "title": "Python & git fluency",
         "tagline": "Scripts, loops, functions — and git as muscle memory.",
         "links": [
-            {"label": "Session 2 guide", "href": "/session/2", "min_phase": 2},
+            {"label": "Phase 2 guide", "href": "/session/2", "min_phase": 2},
             {"label": "lessons/ folder", "href": None, "note": "Practice scripts in your fork"},
             {"label": "Phase 2 quiz", "href": "/quiz/phase/2", "min_phase": 2},
         ],
@@ -49,7 +49,7 @@ PHASE_CATALOG = [
         "title": "Extend the app",
         "tagline": "Routes, SQLite, and HTMX — copy the guestbook pattern.",
         "links": [
-            {"label": "Session 3 guide", "href": "/session/3", "min_phase": 3},
+            {"label": "Phase 3 guide", "href": "/session/3", "min_phase": 3},
             {"label": "Guestbook lab", "href": "/guestbook/", "min_phase": 3},
             {"label": "Phase 3 quiz", "href": "/quiz/phase/3", "min_phase": 3},
         ],
@@ -59,7 +59,7 @@ PHASE_CATALOG = [
         "title": "Railway & deploy",
         "tagline": "Git push → live site. Read logs when something breaks.",
         "links": [
-            {"label": "Session 4 guide", "href": "/session/4", "min_phase": 4},
+            {"label": "Phase 4 guide", "href": "/session/4", "min_phase": 4},
             {"label": "Health check", "href": "/healthz", "min_phase": 0},
         ],
     },
@@ -68,7 +68,7 @@ PHASE_CATALOG = [
         "title": "Security",
         "tagline": "Secrets, XSS, HTTPS, and a threat model you can defend.",
         "links": [
-            {"label": "Session 5 guide", "href": "/session/5", "min_phase": 5},
+            {"label": "Phase 5 guide", "href": "/session/5", "min_phase": 5},
             {"label": "Phase 5 quiz", "href": "/quiz/phase/5", "min_phase": 5},
         ],
     },
@@ -77,7 +77,7 @@ PHASE_CATALOG = [
         "title": "Capstone",
         "tagline": "Plan it, build it, deploy it, explain every line.",
         "links": [
-            {"label": "Session 6 guide", "href": "/session/6", "min_phase": 6},
+            {"label": "Phase 6 guide", "href": "/session/6", "min_phase": 6},
             {"label": "Phase 6 quiz", "href": "/quiz/phase/6", "min_phase": 6},
             {"label": "Final exam", "href": "/quiz/final", "min_phase": 6},
         ],
@@ -248,8 +248,13 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
         setup_done.add("learner")
 
     setup = []
+    current_step_marked = False
     for step in SETUP_STEPS:
-        setup.append({**step, "done": step["id"] in setup_done})
+        done = step["id"] in setup_done
+        is_current = not done and not current_step_marked
+        if is_current:
+            current_step_marked = True
+        setup.append({**step, "done": done, "is_current": is_current})
 
     next_action = _pick_next_action(phases, learner, current_user, setup, unlocked_phase, is_instructor)
 
@@ -282,69 +287,92 @@ def _current_phase_num(phases: list[PhaseState]) -> int:
     return 6
 
 
+def _phase_spec(num: int) -> dict:
+    for spec in PHASE_CATALOG:
+        if spec["num"] == num:
+            return spec
+    return {"num": num, "title": f"Phase {num}", "tagline": ""}
+
+
+def _setup_step_title(label: str) -> str:
+    if " — " in label:
+        return label.split(" — ", 1)[1]
+    return label
+
+
 def _pick_next_action(phases, learner, current_user, setup, unlocked_phase, is_instructor) -> dict:
+    phase0 = _phase_spec(0)
+
     if not learner:
         return {
-            "title": "Phase 0 — meet your tools",
-            "detail": "Read what GitHub, Python, Cursor, and Railway mean — in plain English — before Session 1 setup.",
+            "eyebrow": "Start here",
+            "title": phase0["title"],
+            "detail": phase0["tagline"],
             "href": "/tools",
-            "label": "Open Phase 0 — Meet your tools",
+            "label": "Read the glossary",
         }
 
     incomplete_setup = [s for s in setup if not s["done"]]
     if incomplete_setup:
         step = incomplete_setup[0]
         return {
-            "title": step["label"],
-            "detail": "See Start Here for full step-by-step directions.",
+            "eyebrow": "Phase 1 setup",
+            "title": _setup_step_title(step["label"]),
+            "detail": "Work through Start Here one step at a time.",
             "href": f"/start#step-{step['step_num']}",
-            "label": "Open this step in Start Here",
+            "label": "Show directions",
         }
 
     for phase in phases:
         if phase.status == "complete":
             continue
+        spec = _phase_spec(phase.num)
         if phase.num == 0:
             return {
-                "title": "Phase 0 — meet your tools",
-                "detail": "Read the tool glossary, then take the Phase 0 quiz to check vocabulary.",
+                "eyebrow": "Phase 0",
+                "title": spec["title"],
+                "detail": "Skim the glossary, then take the short vocab quiz.",
                 "href": "/tools",
-                "label": "Open Phase 0 — Meet your tools",
+                "label": "Continue",
             }
         if phase.num == 1:
             return {
-                "title": "Session 1 — setup & first code",
-                "detail": phase.whats_next or "Follow the Session 1 guide: hello.py, About Me PR, sign in.",
+                "eyebrow": "Phase 1",
+                "title": spec["title"],
+                "detail": phase.whats_next or spec["tagline"],
                 "href": "/start",
-                "label": "Open Session 1 guide",
+                "label": "Open guide",
             }
         if phase.num >= 2 and unlocked_phase >= phase.num:
-            guide_title = f"Session {phase.num}"
             return {
-                "title": f"{guide_title} — {phase.title}",
-                "detail": phase.whats_next or phase.tagline,
+                "eyebrow": f"Phase {phase.num}",
+                "title": spec["title"],
+                "detail": phase.whats_next or spec["tagline"],
                 "href": session_url(phase.num),
-                "label": f"Open Session {phase.num} guide",
+                "label": "Open guide",
             }
         if phase.num >= 1 and unlocked_phase >= phase.num:
             return {
-                "title": f"Phase {phase.num}: {phase.title}",
-                "detail": phase.whats_next or phase.tagline,
+                "eyebrow": f"Phase {phase.num}",
+                "title": "Pass the quiz",
+                "detail": phase.whats_next or spec["tagline"],
                 "href": f"/quiz/phase/{phase.num}",
-                "label": f"Phase {phase.num} quiz",
+                "label": "Take quiz",
             }
         return {
-            "title": f"Phase {phase.num}: {phase.title}",
-            "detail": phase.whats_next or phase.tagline,
+            "eyebrow": f"Phase {phase.num}",
+            "title": spec["title"],
+            "detail": phase.whats_next or spec["tagline"],
             "href": session_url(max(1, phase.num)),
-            "label": "Open session guide",
+            "label": "Open guide",
         }
 
     return {
-        "title": "Course complete — demo night",
-        "detail": "Walk through your capstone line by line. You shipped it.",
+        "eyebrow": "Course complete",
+        "title": "Demo night",
+        "detail": "Walk through your capstone line by line.",
         "href": "/quiz/",
-        "label": "View quiz dashboard",
+        "label": "Quiz dashboard",
     }
 
 

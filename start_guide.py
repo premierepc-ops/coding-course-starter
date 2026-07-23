@@ -1,9 +1,9 @@
-"""Plain-English Session 1 directions shown at /start and on the course home checklist."""
+"""Plain-English Phase 1 directions shown at /start and on the course home checklist."""
 
 from course_config import TEMPLATE_REPO
 
 START_GUIDE = {
-    "title": "Session 1 — Start here",
+    "title": "Phase 1 — Start here",
     "time_estimate": "About 60–90 minutes with your instructor",
     "intro": (
         "Brand new to coding? Start with Phase 0 — read Meet your tools so the words make sense. "
@@ -21,7 +21,7 @@ START_GUIDE = {
                 "Ask your instructor anything that still sounds like gibberish.",
                 "When the map makes sense, continue to Step 1 below.",
             ],
-            "link": {"label": "Open Phase 0 — Meet your tools", "href": "/tools"},
+            "link": {"label": "Read the glossary", "href": "/tools"},
         },
         {
             "num": 1,

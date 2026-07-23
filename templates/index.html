@@ -57,109 +57,204 @@
   {% else %}
     <p class="eyebrow">PremierePC · Coding course</p>
     <h1>Learn to code — step by step</h1>
-    <p class="lede">New here? Start with <strong><a href="/tools">Meet your tools</a></strong> (Phase 0), then <a href="/start">Session 1 setup</a>.</p>
+    <p class="lede">New here? Read <a href="/tools">Meet your tools</a>, then start <a href="/start">Phase 1 setup</a>.</p>
   {% endif %}
   {% if is_live %}
     <span class="badge badge-live">Live on Railway</span>
   {% endif %}
 </header>
 
-<section class="panel next-panel">
-  <h2>Do this next</h2>
-  <p class="next-title">{{ next_action.title }}</p>
-  <p class="muted">{{ next_action.detail }}</p>
-  {% if next_action.href and next_action.label %}
-    <a class="button" href="{{ next_action.href }}">{{ next_action.label }}</a>
-  {% endif %}
-</section>
-
-<section class="panel">
-  <h2>All sessions</h2>
-  <p class="muted section-note">Step-by-step guides for every phase. Locked sessions unlock as you progress.</p>
-  <ul class="sessions-list">
-    {% for s in all_sessions %}
-    <li class="session-item {{ 'locked' if not s.unlocked else 'unlocked' }}">
-      {% if s.unlocked %}
-        <a href="{{ s.href }}"><strong>Session {{ s.num }}</strong> — {{ s.title }}</a>
-      {% else %}
-        <span><strong>Session {{ s.num }}</strong> — {{ s.title }} <span class="setup-manual">Phase {{ s.phase_num }} required</span></span>
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-
-<section class="panel">
-  <h2>Session 1 checklist</h2>
-  <p class="muted section-note">
-    Quick view — full directions live on <a href="/start">Start Here</a>.
-    Steps marked “instructor confirms” are checked when you or your instructor finish them.
-  </p>
-  <ol class="setup-list setup-list-compact">
-    {% for step in setup_steps %}
-    <li class="{{ 'done' if step.done else 'pending' }}">
-      <div class="setup-row">
-        <span class="check">{{ '✓' if step.done else '○' }}</span>
-        <div class="setup-body">
-          <strong>{{ step.label }}</strong>
-          {% if not step.done and step.manual %}
-            <span class="setup-manual">Instructor confirms</span>
-          {% endif %}
-          <a class="setup-link" href="/start#step-{{ step.step_num }}">Directions →</a>
-        </div>
-      </div>
-    </li>
-    {% endfor %}
-  </ol>
-</section>
-
-<section class="panel">
-  <h2>Course map</h2>
-  <div class="phase-grid">
-    {% for phase in phases %}
-    <article class="phase-card status-{{ phase.status }}">
-      <div class="phase-head">
-        <span class="phase-num">Phase {{ phase.num }}</span>
-        <span class="status-pill">{{ phase.status.replace('_', ' ') }}</span>
-      </div>
-      <h3>{{ phase.title }}</h3>
-      <p class="muted">{{ phase.tagline }}</p>
-      {% if phase.milestones_total %}
-        <p class="meta">{{ phase.milestones_done }}/{{ phase.milestones_total }} milestones</p>
-      {% endif %}
-      {% if phase.quiz_best_pct is not none %}
-        <p class="meta">Quiz best: {{ phase.quiz_best_pct | round | int }}%{% if phase.quiz_passed %} ✓{% endif %}</p>
-      {% endif %}
-      {% if phase.whats_next and phase.status != 'complete' %}
-        <p class="whats-next"><strong>Next:</strong> {{ phase.whats_next }}</p>
-      {% endif %}
-      <ul class="phase-links">
-        {% for link in phase.links %}
-          {% if link.href %}
-            {% if link.locked %}
-              <li><span class="phase-link-locked">{{ link.label }} — unlocks in Phase {{ link.min_phase }}</span></li>
-            {% else %}
-              <li><a href="{{ link.href }}">{{ link.label }}</a></li>
-            {% endif %}
-          {% elif link.note %}
-            <li><span class="muted">{{ link.label }} — {{ link.note }}</span></li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </article>
-    {% endfor %}
+<div class="dashboard-tabs" data-default-tab="now">
+  <div class="dashboard-tablist" role="tablist" aria-label="Course home sections">
+    <button type="button" class="dashboard-tab is-active" role="tab" id="tab-btn-now" aria-selected="true" aria-controls="tab-panel-now" data-tab="now">Now</button>
+    <button type="button" class="dashboard-tab" role="tab" id="tab-btn-phases" aria-selected="false" aria-controls="tab-panel-phases" data-tab="phases" tabindex="-1">Phases</button>
+    <button type="button" class="dashboard-tab" role="tab" id="tab-btn-setup" aria-selected="false" aria-controls="tab-panel-setup" data-tab="setup" tabindex="-1">Setup</button>
+    <button type="button" class="dashboard-tab" role="tab" id="tab-btn-map" aria-selected="false" aria-controls="tab-panel-map" data-tab="map" tabindex="-1">Course map</button>
   </div>
-</section>
 
-{% if not signed_in and not is_instructor and learners_registered %}
-<section class="panel muted-panel">
-  <p>Already set up? <a href="{{ url_for('course_auth.login') }}">Sign in</a> with your name and the PIN your instructor gave you.</p>
-</section>
-{% endif %}
+  <section class="dashboard-tabpanel is-active" role="tabpanel" id="tab-panel-now" aria-labelledby="tab-btn-now" data-tab-panel="now">
+    <div class="panel next-panel dashboard-panel">
+      <div class="next-panel-layout">
+        <div class="next-panel-copy">
+          {% if next_action.eyebrow %}
+            <p class="next-eyebrow">{{ next_action.eyebrow }}</p>
+          {% endif %}
+          <h2 class="next-title">{{ next_action.title }}</h2>
+          {% if next_action.detail %}
+            <p class="next-detail">{{ next_action.detail }}</p>
+          {% endif %}
+        </div>
+        {% if next_action.href and next_action.label %}
+          <div class="next-panel-action">
+            <a class="button button-next" href="{{ next_action.href }}">{{ next_action.label }}</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% if not signed_in and not is_instructor and learners_registered %}
+    <div class="panel muted-panel dashboard-panel">
+      <p>Already set up? <a href="{{ url_for('course_auth.login') }}">Sign in</a> with your name and the PIN your instructor gave you.</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="dashboard-tabpanel" role="tabpanel" id="tab-panel-phases" aria-labelledby="tab-btn-phases" data-tab-panel="phases" hidden>
+    <div class="panel dashboard-panel">
+      <h2>Phase guides</h2>
+      <p class="muted section-note">Phases 0–6. Locked phases unlock as you progress.</p>
+      <ol class="course-timeline" aria-label="Course phases">
+        {% for s in all_sessions %}
+        {% set is_current = s.num == current_phase %}
+        {% set is_complete = s.unlocked and s.num < current_phase %}
+        <li class="course-timeline-item{% if not s.unlocked %} is-locked{% elif is_complete %} is-done{% elif is_current %} is-current{% else %} is-pending{% endif %}">
+          <span class="course-timeline-marker" aria-hidden="true"><span class="course-timeline-dot"></span></span>
+          <div class="course-timeline-body">
+            {% if s.unlocked %}
+              <a class="course-timeline-link" href="{{ s.href }}">Phase {{ s.num }} · {{ s.short_title }}</a>
+            {% else %}
+              <span class="course-timeline-label">Phase {{ s.num }} · {{ s.short_title }}</span>
+              <span class="course-timeline-note">Reach Phase {{ s.phase_num }} to unlock</span>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="dashboard-tabpanel" role="tabpanel" id="tab-panel-setup" aria-labelledby="tab-btn-setup" data-tab-panel="setup" hidden>
+    <div class="panel dashboard-panel">
+      <h2>Phase 1 setup</h2>
+      <p class="muted section-note">
+        Full directions live on <a href="/start">Start Here</a>.
+        Steps marked “instructor confirms” are checked when you or your instructor finish them.
+      </p>
+      <ol class="course-timeline" aria-label="Phase 1 setup checklist">
+        {% for step in setup_steps %}
+        <li class="course-timeline-item{% if step.done %} is-done{% elif step.is_current %} is-current{% else %} is-pending{% endif %}">
+          <span class="course-timeline-marker" aria-hidden="true">
+            <span class="course-timeline-dot">{% if step.done %}✓{% endif %}</span>
+          </span>
+          <div class="course-timeline-body">
+            <span class="course-timeline-label">{{ step.label }}</span>
+            {% if not step.done and step.manual %}
+              <span class="course-timeline-note">Instructor confirms</span>
+            {% endif %}
+            <a class="course-timeline-action" href="/start#step-{{ step.step_num }}">Directions</a>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="dashboard-tabpanel" role="tabpanel" id="tab-panel-map" aria-labelledby="tab-btn-map" data-tab-panel="map" hidden>
+    <div class="panel dashboard-panel">
+      <h2>Course map</h2>
+      <p class="muted section-note">Phases, quizzes, and what unlocks when.</p>
+      <div class="phase-grid">
+        {% for phase in phases %}
+        <article class="phase-card status-{{ phase.status }}">
+          <div class="phase-head">
+            <span class="phase-num">Phase {{ phase.num }}</span>
+            <span class="status-pill">{{ phase.status.replace('_', ' ') }}</span>
+          </div>
+          <h3>{{ phase.title }}</h3>
+          <p class="muted">{{ phase.tagline }}</p>
+          {% if phase.milestones_total %}
+            <p class="meta">{{ phase.milestones_done }}/{{ phase.milestones_total }} milestones</p>
+          {% endif %}
+          {% if phase.quiz_best_pct is not none %}
+            <p class="meta">Quiz best: {{ phase.quiz_best_pct | round | int }}%{% if phase.quiz_passed %} ✓{% endif %}</p>
+          {% endif %}
+          {% if phase.whats_next and phase.status != 'complete' %}
+            <p class="whats-next"><strong>Next:</strong> {{ phase.whats_next }}</p>
+          {% endif %}
+          <ul class="phase-links">
+            {% for link in phase.links %}
+              {% if link.href %}
+                {% if link.locked %}
+                  <li><span class="phase-link-locked">{{ link.label }} — unlocks in Phase {{ link.min_phase }}</span></li>
+                {% else %}
+                  <li><a href="{{ link.href }}">{{ link.label }}</a></li>
+                {% endif %}
+              {% elif link.note %}
+                <li><span class="muted">{{ link.label }} — {{ link.note }}</span></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
+<script>
+(function () {
+  var root = document.querySelector(".dashboard-tabs");
+  if (!root) return;
+
+  var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+  var panels = Array.prototype.slice.call(root.querySelectorAll('[role="tabpanel"]'));
+  var valid = tabs.map(function (tab) { return tab.getAttribute("data-tab"); });
+
+  function activate(tabName, updateHash) {
+    if (valid.indexOf(tabName) === -1) {
+      if (tabName === "sessions") tabName = "phases";
+      else tabName = root.getAttribute("data-default-tab") || "now";
+    }
+
+    tabs.forEach(function (tab) {
+      var active = tab.getAttribute("data-tab") === tabName;
+      tab.classList.toggle("is-active", active);
+      tab.setAttribute("aria-selected", active ? "true" : "false");
+      tab.tabIndex = active ? 0 : -1;
+    });
+
+    panels.forEach(function (panel) {
+      var active = panel.getAttribute("data-tab-panel") === tabName;
+      panel.classList.toggle("is-active", active);
+      panel.hidden = !active;
+    });
+
+    if (updateHash !== false) {
+      var nextHash = tabName === "now" ? "#now" : "#" + tabName;
+      if (window.location.hash !== nextHash) {
+        history.replaceState(null, "", nextHash);
+      }
+    }
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      activate(tab.getAttribute("data-tab"));
+    });
+    tab.addEventListener("keydown", function (event) {
+      var index = tabs.indexOf(tab);
+      var next = null;
+      if (event.key === "ArrowRight") next = tabs[(index + 1) % tabs.length];
+      if (event.key === "ArrowLeft") next = tabs[(index - 1 + tabs.length) % tabs.length];
+      if (event.key === "Home") next = tabs[0];
+      if (event.key === "End") next = tabs[tabs.length - 1];
+      if (next) {
+        event.preventDefault();
+        next.focus();
+        activate(next.getAttribute("data-tab"));
+      }
+    });
+  });
+
+  var hash = (window.location.hash || "").replace(/^#/, "");
+  activate(hash || root.getAttribute("data-default-tab") || "now", false);
+  window.addEventListener("hashchange", function () {
+    activate((window.location.hash || "").replace(/^#/, "") || "now", false);
+  });
+})();
+</script>
 {% if show_welcome %}
 <script>
 (function () {

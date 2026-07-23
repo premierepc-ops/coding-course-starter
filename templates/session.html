@@ -5,7 +5,7 @@
 
 {% block content %}
 <header class="hero">
-  <p class="eyebrow">PremierePC · Session {{ guide.session_num }} · Phase {{ guide.phase_num }}</p>
+  <p class="eyebrow">Phase {{ guide.phase_num }}</p>
   <h1>{{ guide.title }}</h1>
   <p class="lede">{{ guide.intro }}</p>
   {% if guide.time_estimate %}
@@ -27,7 +27,7 @@
 <section class="panel next-panel">
   <h2>Do this first</h2>
   <p class="next-title">Work through the steps below in order.</p>
-  <p class="muted">Stuck? Ask your instructor — that's what this session is for.</p>
+  <p class="muted">Stuck? Ask your instructor — that's what this phase is for.</p>
   {% if guide.session_num == 1 and learners %}
     <a class="button" href="{{ url_for('course_auth.login') }}">I'm ready to sign in</a>
   {% elif guide.session_num > 1 %}
@@ -65,12 +65,12 @@
 {% endfor %}
 
 <section class="panel" id="step-0">
-  <h2>Whole session debrief</h2>
-  <p class="muted">After the session, capture what to keep and what to change before the next learner.</p>
+  <h2>Whole phase debrief</h2>
+  <p class="muted">After the phase, capture what to keep and what to change before the next learner.</p>
   {{ step_feedback(
     session_num,
     0,
-    'Whole session',
+    'Whole phase',
     feedback_counts,
     step_recent.get(0, []),
     return_to,
@@ -81,21 +81,21 @@
 
 <section class="panel muted-panel">
   {% if guide.session_num == 1 %}
-    <p>Finished Session 1? <a href="{{ url_for('course_auth.login') }}">Sign in</a>, then head to <a href="/">Course Home</a>.</p>
+    <p>Finished Phase 1? <a href="{{ url_for('course_auth.login') }}">Sign in</a>, then head to <a href="/">Course Home</a>.</p>
   {% elif next_session and next_session.unlocked %}
-    <p>Finished this session? Continue to <a href="{{ next_session.href }}">{{ next_session.title }}</a>.</p>
+    <p>Finished this phase? Continue to <a href="{{ next_session.href }}">Phase {{ next_session.num }} · {{ next_session.short_title }}</a>.</p>
   {% elif next_session %}
-    <p>Finished this session? <a href="/">Course Home</a> — Session {{ next_session.num }} unlocks when you reach Phase {{ next_session.phase_num }}.</p>
+    <p>Finished this phase? <a href="/">Course Home</a> — Phase {{ next_session.num }} unlocks when you reach Phase {{ next_session.phase_num }}.</p>
   {% else %}
     <p>Finished the course? <a href="/quiz/">Quiz dashboard</a> · <a href="/">Course Home</a></p>
   {% endif %}
   {% if all_sessions|length > 1 %}
-    <p class="session-nav-links">All sessions:
+    <p class="session-nav-links">All phases:
       {% for s in all_sessions %}
         {% if s.unlocked %}
-          <a href="{{ s.href }}">Session {{ s.num }}</a>{% if not loop.last %} · {% endif %}
+          <a href="{{ s.href }}">Phase {{ s.num }}</a>{% if not loop.last %} · {% endif %}
         {% else %}
-          <span class="muted">Session {{ s.num }} (locked)</span>{% if not loop.last %} · {% endif %}
+          <span class="muted">Phase {{ s.num }} (locked)</span>{% if not loop.last %} · {% endif %}
         {% endif %}
       {% endfor %}
     </p>

@@ -24,7 +24,7 @@ def _session_label(session_num: int) -> str:
     if session_num == 0:
         return "Phase 0 — Meet your tools"
     guide = SESSION_GUIDES.get(session_num)
-    return guide["title"] if guide else f"Session {session_num}"
+    return guide["title"] if guide else f"Phase {session_num}"
 
 
 @session_feedback_bp.route("/feedback", methods=["POST"])
@@ -60,7 +60,7 @@ def submit_feedback():
         worked=worked,
         didnt_work=didnt_work,
     )
-    flash("Session notes saved — thank you. This helps us improve the course.")
+    flash("Phase notes saved — thank you. This helps us improve the course.")
     return redirect(request.form.get("return_to") or url_for("home"))
 
 

@@ -1,6 +1,6 @@
 {% macro step_feedback(session_num, step_num, step_title, feedback_counts, recent_entries, return_to, can_submit, learners=None) %}
 <div class="step-feedback panel-inset">
-  <h3 class="feedback-heading">Session notes — improve this step</h3>
+  <h3 class="feedback-heading">Phase notes — improve this step</h3>
   <p class="muted feedback-intro">
     What worked? What didn't? Saved notes help your instructor improve this section for the next learner.
     {% if feedback_counts.get(step_num) %}
@@ -55,7 +55,7 @@
     <button type="submit" class="button button-secondary">Save notes for {{ step_title }}</button>
   </form>
   {% else %}
-  <p class="muted"><a href="{{ url_for('course_auth.login') }}">Sign in</a> to save session notes.</p>
+  <p class="muted"><a href="{{ url_for('course_auth.login') }}">Sign in</a> to save phase notes.</p>
   {% endif %}
 </div>
 {% endmacro %}

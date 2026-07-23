@@ -65,7 +65,7 @@ TOOLS_GUIDE = {
         {
             "name": "Fork",
             "icon": "fork",
-            "what": "Your own copy of someone else's GitHub project. Session 1 starts by forking (or using Use this template) so you have a repo that's yours.",
+            "what": "Your own copy of someone else's GitHub project. Phase 1 starts by forking (or using Use this template) so you have a repo that's yours.",
         },
         {
             "name": "GitHub",

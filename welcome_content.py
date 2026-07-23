@@ -19,5 +19,5 @@ WELCOME = {
     ],
     "phase0_note": "Start with Phase 0 — Meet your tools. No installs until you've read it.",
     "cta": "Let's get started",
-    "cta_sub": "Phase 0 first, then Session 1 setup.",
+    "cta_sub": "Phase 0 first, then Phase 1 setup.",
 }

@@ -1,11 +1,11 @@
-"""Student-facing session guides — one page per phase after Session 1."""
+"""Student-facing phase guides — Phase 1 at /start, Phases 2–6 at /session/<n>."""
 
 from start_guide import START_GUIDE
 
 SESSION_2_GUIDE = {
     "session_num": 2,
     "phase_num": 2,
-    "title": "Session 2 — Python & git fluency",
+    "title": "Phase 2 — Python & git fluency",
     "time_estimate": "About 90–120 minutes with your instructor",
     "intro": (
         "Phase 1 got your tools working and your first page live. Now you write real Python — "
@@ -23,7 +23,7 @@ SESSION_2_GUIDE = {
             "title": "Warm up — predict before you run",
             "summary": "The habit that separates guessing from learning.",
             "directions": [
-                "Open lessons/yourname/hello.py from Session 1.",
+                "Open lessons/yourname/hello.py from Phase 1.",
                 "Before running it, say out loud what you think each line will print.",
                 "Run it. Were you right? If not, that's the lesson — read the error or output and fix your mental model.",
                 "Your instructor will ask you to predict before every run this session. No 'I don't know' — make your best guess.",
@@ -95,7 +95,7 @@ SESSION_2_GUIDE = {
 SESSION_3_GUIDE = {
     "session_num": 3,
     "phase_num": 3,
-    "title": "Session 3 — Extend the real app",
+    "title": "Phase 3 — Extend the real app",
     "time_estimate": "About 2–3 hours (may split across two meetings)",
     "intro": (
         "You stop editing only practice files and start changing this Flask app. "
@@ -105,7 +105,7 @@ SESSION_3_GUIDE = {
         "App running locally on your laptop",
         "New route added on a branch",
         "HTMX interactivity copied from /guestbook",
-        "Small feature working locally (deploy comes in Session 4)",
+        "Small feature working locally (deploy comes in Phase 4)",
     ],
     "steps": [
         {
@@ -168,7 +168,7 @@ SESSION_3_GUIDE = {
         {
             "num": 6,
             "title": "Phase 3 quiz",
-            "summary": "Pass before Session 4 deploy day.",
+            "summary": "Pass before Phase 4 deploy day.",
             "directions": [
                 "Take Phase 3 quiz when your feature works locally.",
                 "70%+ to advance. Review wrong answers with your instructor if not.",
@@ -181,7 +181,7 @@ SESSION_3_GUIDE = {
 SESSION_4_GUIDE = {
     "session_num": 4,
     "phase_num": 4,
-    "title": "Session 4 — Railway & deploy",
+    "title": "Phase 4 — Railway & deploy",
     "time_estimate": "About 60–90 minutes",
     "intro": (
         "Git push becomes a live site. You learn to read Railway logs when something breaks — "
@@ -251,7 +251,7 @@ SESSION_4_GUIDE = {
 SESSION_5_GUIDE = {
     "session_num": 5,
     "phase_num": 5,
-    "title": "Session 5 — Security",
+    "title": "Phase 5 — Security",
     "time_estimate": "About 90 minutes",
     "intro": (
         "Your app is on the public internet. Learn what attackers try, what HTTPS actually does, "
@@ -319,7 +319,7 @@ SESSION_5_GUIDE = {
 SESSION_6_GUIDE = {
     "session_num": 6,
     "phase_num": 6,
-    "title": "Session 6 — Capstone & demo night",
+    "title": "Phase 6 — Capstone & demo night",
     "time_estimate": "Multiple sessions — plan 1–2 weeks",
     "intro": (
         "You pick a feature, write a spec, build it, deploy it, and explain every line to your instructor. "
@@ -412,14 +412,32 @@ def session_unlocked(session_num: int, unlocked_phase: int, is_instructor: bool,
     return unlocked_phase >= session_num
 
 
+def _session_short_title(num: int, title: str) -> str:
+    for prefix in (f"Phase {num} — ", f"Session {num} — "):
+        if title.startswith(prefix):
+            return title[len(prefix) :]
+    return title
+
+
 def sessions_for_nav(unlocked_phase: int, is_instructor: bool, signed_in: bool) -> list[dict]:
-    out = []
+    out = [
+        {
+            "num": 0,
+            "title": "Phase 0 — Meet your tools",
+            "short_title": "Meet your tools",
+            "href": "/tools",
+            "phase_num": 0,
+            "unlocked": True,
+        }
+    ]
     for num in sorted(SESSION_GUIDES):
         guide = SESSION_GUIDES[num]
+        title = guide["title"]
         out.append(
             {
                 "num": num,
-                "title": guide["title"],
+                "title": title,
+                "short_title": _session_short_title(num, title),
                 "href": session_url(num),
                 "phase_num": guide.get("phase_num", num),
                 "unlocked": session_unlocked(num, unlocked_phase, is_instructor, signed_in),
