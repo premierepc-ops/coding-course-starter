@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from course_config import LEARNERS
+from session_guides import session_url, sessions_for_nav
 from start_guide import SETUP_STEPS, START_GUIDE
 from welcome_content import WELCOME
 
@@ -18,7 +19,7 @@ PHASE_CATALOG = [
         "title": "Meet your tools",
         "tagline": "Learn what GitHub, Python, Cursor, and the rest mean — before you install anything.",
         "links": [
-            {"label": "Phase 0 — tool glossary", "href": "/tools"},
+            {"label": "Phase 0 — tool glossary", "href": "/tools", "min_phase": 0},
             {"label": "Read recon.md", "href": None, "note": "In .learners/<slug>/ after your fork"},
         ],
     },
@@ -27,8 +28,9 @@ PHASE_CATALOG = [
         "title": "Tools & first code",
         "tagline": "Cursor, Python, git, and your first live page.",
         "links": [
-            {"label": "About Me page", "href": "/aboutme/"},
-            {"label": "Phase 1 quiz", "href": "/quiz/phase/1"},
+            {"label": "Session 1 guide", "href": "/start", "min_phase": 0},
+            {"label": "About Me page", "href": "/aboutme/", "min_phase": 1},
+            {"label": "Phase 1 quiz", "href": "/quiz/phase/1", "min_phase": 1},
         ],
     },
     {
@@ -36,8 +38,9 @@ PHASE_CATALOG = [
         "title": "Python & git fluency",
         "tagline": "Scripts, loops, functions — and git as muscle memory.",
         "links": [
+            {"label": "Session 2 guide", "href": "/session/2", "min_phase": 2},
             {"label": "lessons/ folder", "href": None, "note": "Practice scripts in your fork"},
-            {"label": "Phase 2 quiz", "href": "/quiz/phase/2"},
+            {"label": "Phase 2 quiz", "href": "/quiz/phase/2", "min_phase": 2},
         ],
     },
     {
@@ -45,31 +48,40 @@ PHASE_CATALOG = [
         "title": "Extend the app",
         "tagline": "Routes, SQLite, and HTMX — copy the guestbook pattern.",
         "links": [
-            {"label": "Guestbook lab", "href": "/guestbook/"},
-            {"label": "Phase 3 quiz", "href": "/quiz/phase/3"},
+            {"label": "Session 3 guide", "href": "/session/3", "min_phase": 3},
+            {"label": "Guestbook lab", "href": "/guestbook/", "min_phase": 3},
+            {"label": "Phase 3 quiz", "href": "/quiz/phase/3", "min_phase": 3},
         ],
     },
     {
         "num": 4,
         "title": "Railway & deploy",
         "tagline": "Git push → live site. Read logs when something breaks.",
-        "links": [{"label": "Health check", "href": "/healthz"}],
+        "links": [
+            {"label": "Session 4 guide", "href": "/session/4", "min_phase": 4},
+            {"label": "Health check", "href": "/healthz", "min_phase": 0},
+        ],
     },
     {
         "num": 5,
         "title": "Security",
         "tagline": "Secrets, XSS, HTTPS, and a threat model you can defend.",
-        "links": [{"label": "Phase 5 quiz", "href": "/quiz/phase/5"}],
+        "links": [
+            {"label": "Session 5 guide", "href": "/session/5", "min_phase": 5},
+            {"label": "Phase 5 quiz", "href": "/quiz/phase/5", "min_phase": 5},
+        ],
     },
     {
         "num": 6,
         "title": "Capstone",
         "tagline": "Plan it, build it, deploy it, explain every line.",
-        "links": [{"label": "Phase 6 quiz", "href": "/quiz/phase/6"}, {"label": "Final exam", "href": "/quiz/final"}],
+        "links": [
+            {"label": "Session 6 guide", "href": "/session/6", "min_phase": 6},
+            {"label": "Phase 6 quiz", "href": "/quiz/phase/6", "min_phase": 6},
+            {"label": "Final exam", "href": "/quiz/final", "min_phase": 6},
+        ],
     },
 ]
-
-# Setup checklist — imported from start_guide.py (plain-English directions per step)
 
 
 @dataclass
@@ -101,7 +113,6 @@ def _parse_phases_from_markdown(text: str) -> dict[int, dict]:
         return result
 
     chunks = re.split(r"\n## Phase (\d+)", text)
-    # chunks[0] is preamble; then pairs of (num, body)
     i = 1
     while i + 1 < len(chunks):
         num = int(chunks[i])
@@ -154,19 +165,53 @@ def _quiz_summary(user_id: int) -> dict[int, dict]:
     return out
 
 
+def _unlocked_phase(current_user) -> int:
+    if not current_user or not getattr(current_user, "is_authenticated", False):
+        return 0
+    if getattr(current_user, "is_admin", False):
+        return 6
+    return current_phase_for_user(current_user)
+
+
+def _link_locked(link: dict, unlocked_phase: int, is_instructor: bool) -> bool:
+    if is_instructor or not link.get("href"):
+        return False
+    min_phase = link.get("min_phase", 0)
+    return unlocked_phase < min_phase
+
+
+def _enrich_phase_links(links: list, unlocked_phase: int, is_instructor: bool) -> list:
+    enriched = []
+    for link in links:
+        item = dict(link)
+        if link.get("href"):
+            item["locked"] = _link_locked(link, unlocked_phase, is_instructor)
+        enriched.append(item)
+    return enriched
+
+
 def build_dashboard(current_user=None, host: str = "") -> dict:
     learner = None
     slug = None
-    if current_user and getattr(current_user, "is_authenticated", False):
-        if getattr(current_user, "is_admin", False):
-            learner = None
-        else:
-            slug = getattr(current_user, "slug", None)
-            for entry in LEARNERS:
-                if entry["slug"] == slug:
-                    learner = entry
-                    break
+    is_instructor = bool(
+        current_user
+        and getattr(current_user, "is_authenticated", False)
+        and getattr(current_user, "is_admin", False)
+    )
+    signed_in = bool(
+        current_user
+        and getattr(current_user, "is_authenticated", False)
+        and not is_instructor
+    )
 
+    if signed_in:
+        slug = getattr(current_user, "slug", None)
+        for entry in LEARNERS:
+            if entry["slug"] == slug:
+                learner = entry
+                break
+
+    unlocked_phase = _unlocked_phase(current_user)
     progress_text = _read_progress_file(slug) if slug else ""
     parsed = _parse_phases_from_markdown(progress_text)
     quiz_by_phase = _quiz_summary(current_user.id) if learner and current_user else {}
@@ -185,7 +230,7 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
                 num=num,
                 title=spec["title"],
                 tagline=spec["tagline"],
-                links=spec["links"],
+                links=_enrich_phase_links(spec["links"], unlocked_phase, is_instructor),
                 status=status,
                 whats_next=info.get("whats_next", ""),
                 milestones_done=info.get("milestones_done", 0),
@@ -195,11 +240,8 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
             )
         )
 
-    # Setup checklist — only auto-check what we can verify reliably
     setup_done = set()
-    if current_user and getattr(current_user, "is_authenticated", False) and not getattr(
-        current_user, "is_admin", False
-    ):
+    if signed_in:
         setup_done.add("signin")
     if slug and os.path.isfile(os.path.join(LEARNERS_DIR, slug, "LEARNER.md")):
         setup_done.add("learner")
@@ -208,36 +250,26 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
     for step in SETUP_STEPS:
         setup.append({**step, "done": step["id"] in setup_done})
 
-    # Next action
-    next_action = _pick_next_action(phases, learner, current_user, setup)
+    next_action = _pick_next_action(phases, learner, current_user, setup, unlocked_phase, is_instructor)
 
     current_phase = _current_phase_num(phases)
+    all_sessions = sessions_for_nav(unlocked_phase, is_instructor, signed_in)
 
     return {
         "learner": learner,
         "learner_name": learner["name"] if learner else None,
-        "is_instructor": bool(
-            current_user
-            and getattr(current_user, "is_authenticated", False)
-            and getattr(current_user, "is_admin", False)
-        ),
-        "signed_in": bool(
-            current_user
-            and getattr(current_user, "is_authenticated", False)
-            and not getattr(current_user, "is_admin", False)
-        ),
+        "is_instructor": is_instructor,
+        "signed_in": signed_in,
         "phases": phases,
         "setup_steps": setup,
         "next_action": next_action,
         "current_phase": current_phase,
+        "unlocked_phase": unlocked_phase,
+        "all_sessions": all_sessions,
         "learners_registered": LEARNERS,
         "is_live": bool(host and "railway.app" in host),
         "start_guide_url": "/start",
-        "show_welcome": not bool(
-            current_user
-            and getattr(current_user, "is_authenticated", False)
-            and getattr(current_user, "is_admin", False)
-        ),
+        "show_welcome": not is_instructor,
         "welcome": WELCOME,
     }
 
@@ -249,7 +281,7 @@ def _current_phase_num(phases: list[PhaseState]) -> int:
     return 6
 
 
-def _pick_next_action(phases, learner, current_user, setup) -> dict:
+def _pick_next_action(phases, learner, current_user, setup, unlocked_phase, is_instructor) -> dict:
     if not learner:
         return {
             "title": "Phase 0 — meet your tools",
@@ -263,9 +295,9 @@ def _pick_next_action(phases, learner, current_user, setup) -> dict:
         step = incomplete_setup[0]
         return {
             "title": step["label"],
-            "detail": (step.get("directions") or ["See Start Here for full directions."])[0],
-            "href": step.get("link", {}).get("href") or "/start",
-            "label": step.get("link", {}).get("label") or "See how to do this",
+            "detail": "See Start Here for full step-by-step directions.",
+            "href": f"/start#step-{step['step_num']}",
+            "label": "Open this step in Start Here",
         }
 
     for phase in phases:
@@ -280,24 +312,31 @@ def _pick_next_action(phases, learner, current_user, setup) -> dict:
             }
         if phase.num == 1:
             return {
-                "title": "Start Phase 1 — type hello.py by hand",
-                "detail": phase.whats_next or "Install tools, run a script you typed yourself, then customize /aboutme/.",
-                "href": "/aboutme/",
-                "label": "Open About Me",
+                "title": "Session 1 — setup & first code",
+                "detail": phase.whats_next or "Follow the Session 1 guide: hello.py, About Me PR, sign in.",
+                "href": "/start",
+                "label": "Open Session 1 guide",
             }
-        if phase.num == 3:
+        if phase.num >= 2 and unlocked_phase >= phase.num:
+            guide_title = f"Session {phase.num}"
             return {
-                "title": "Phase 3 — study the guestbook",
-                "detail": "Trace how hx-post swaps in new HTML, then build your own feature.",
-                "href": "/guestbook/",
-                "label": "Open guestbook lab",
+                "title": f"{guide_title} — {phase.title}",
+                "detail": phase.whats_next or phase.tagline,
+                "href": session_url(phase.num),
+                "label": f"Open Session {phase.num} guide",
             }
-        quiz_href = f"/quiz/phase/{phase.num}" if 1 <= phase.num <= 6 else "/quiz/"
+        if phase.num >= 1 and unlocked_phase >= phase.num:
+            return {
+                "title": f"Phase {phase.num}: {phase.title}",
+                "detail": phase.whats_next or phase.tagline,
+                "href": f"/quiz/phase/{phase.num}",
+                "label": f"Phase {phase.num} quiz",
+            }
         return {
             "title": f"Phase {phase.num}: {phase.title}",
             "detail": phase.whats_next or phase.tagline,
-            "href": quiz_href if phase.num >= 1 else None,
-            "label": f"Phase {phase.num} quiz" if phase.num >= 1 else None,
+            "href": session_url(max(1, phase.num)),
+            "label": "Open session guide",
         }
 
     return {
@@ -344,7 +383,7 @@ def build_nav(current_user=None) -> dict:
         phase = current_phase_for_user(current_user)
         return {
             "start": True,
-            "tools": phase < 1,
+            "tools": True,
             "home": True,
             "aboutme": phase >= 1,
             "guestbook": phase >= 3,
@@ -352,7 +391,6 @@ def build_nav(current_user=None) -> dict:
             "admin": False,
         }
 
-    # Signed out — Phase 0 + Start Here only until they're in the course.
     return {
         "start": True,
         "tools": True,

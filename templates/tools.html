@@ -12,12 +12,17 @@
 
 <section class="panel">
   <h2>The toolbox</h2>
-  <dl class="tools-glossary">
+  <ul class="tools-list">
     {% for tool in guide.tools %}
-      <dt>{{ tool.name }}</dt>
-      <dd>{{ tool.what }}</dd>
+    <li class="tool-card">
+      <div class="tool-icon">{{ icons[tool.icon] | safe }}</div>
+      <div class="tool-body">
+        <h3 class="tool-name">{{ tool.name }}</h3>
+        <p class="tool-desc">{{ tool.what }}</p>
+      </div>
+    </li>
     {% endfor %}
-  </dl>
+  </ul>
 </section>
 
 <section class="panel next-panel">

@@ -12,9 +12,20 @@ Work top to bottom. Steps marked **[Instructor]** need the person running the co
 - **[Instructor]** Railway project connected to the student's fork (see step 5)
 - Read **`ARCHITECTURE.md`** if anything about forks, login, or privacy is unclear
 
+### Privacy: public vs private fork
+
+The template repo is public. When a student forks (or uses **Use this template**), their repo can be **Public** or **Private**:
+
+- **Public fork** — anyone on GitHub can see `.learners/<slug>/` files (name, progress notes) if committed.
+- **Private fork** — only people you invite can see the repo. Recommended for real student data.
+
+On Railway, you can register the learner with **env vars only** (`LEARNER_SLUG`, `LEARNER_NAME`, `LEARNER_AGE`, `LEARNER_PIN`) before the student adds anything to git. Still use a private fork once they clone and work locally.
+
+Never commit `LEARNER_PIN` or `INSTRUCTOR_PASSWORD` to git.
+
 ## 1. Fork and clone
 
-1. Fork this template on GitHub
+1. Student forks this template on GitHub (or **Use this template** → create repo). Prefer **Private**.
 2. Clone the fork locally and open in Cursor
 
 ## 2. Create the learner folder
@@ -35,7 +46,9 @@ LEARNERS = [
 ]
 ```
 
-The student signs in at `/login` by picking their name. No Google SSO.
+**Or** on Railway before the fork exists, set Variables: `LEARNER_SLUG`, `LEARNER_NAME`, optional `LEARNER_AGE`. The live site can show the student's name in the sign-in list without this file change.
+
+The student signs in at `/login` by picking their name. No Google SSO. Sign-in does **not** work until step 3 (or Railway env vars) is done.
 
 ## 4. Set instructor password
 
@@ -57,6 +70,8 @@ One project per student under your workspace:
 1. Create project, connect **their fork**, deploy on push to `main`
 2. Volume at `/data`, set `SECRET_KEY`, `DATA_DIR=/data`, `PORT=8080`, `INSTRUCTOR_PASSWORD`, `LEARNER_PIN`
 3. Invite student as **Editor** (Project Settings → Members)
+
+While waiting for the student's fork, you can deploy the template repo with env vars for a preview URL — then repoint Railway to their fork before Session 1 sign-in.
 
 ## 6. Phase 0 recon → run the course
 

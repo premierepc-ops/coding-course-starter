@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{{ guide.title }}{% endblock %}
+
+{% block content %}
+<header class="hero">
+  <p class="eyebrow">PremierePC · Session {{ guide.session_num }} · Phase {{ guide.phase_num }}</p>
+  <h1>{{ guide.title }}</h1>
+  <p class="lede">{{ guide.intro }}</p>
+  {% if guide.time_estimate %}
+    <p class="meta">{{ guide.time_estimate }}</p>
+  {% endif %}
+</header>
+
+{% if guide.milestones %}
+<section class="panel">
+  <h2>You'll know you're done when</h2>
+  <ul class="welcome-list">
+    {% for item in guide.milestones %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="panel next-panel">
+  <h2>Do this first</h2>
+  <p class="next-title">Work through the steps below in order.</p>
+  <p class="muted">Stuck? Ask your instructor — that's what this session is for.</p>
+  {% if guide.session_num == 1 and learners %}
+    <a class="button" href="{{ url_for('course_auth.login') }}">I'm ready to sign in</a>
+  {% elif guide.session_num > 1 %}
+    <a class="button button-secondary" href="/">Back to Course Home</a>
+  {% endif %}
+</section>
+
+{% for step in guide.steps %}
+<section class="panel step-panel" id="step-{{ step.num }}">
+  <div class="step-head">
+    <span class="step-num">Step {{ step.num }}</span>
+    <h2 class="step-title">{{ step.title }}</h2>
+  </div>
+  <p class="muted step-summary">{{ step.summary }}</p>
+  <ol class="direction-list">
+    {% for line in step.directions %}
+      <li>{{ line }}</li>
+    {% endfor %}
+  </ol>
+  {% if step.link %}
+    <a class="button button-secondary" href="{{ step.link.href }}" {% if step.link.href.startswith('http') %}target="_blank" rel="noopener"{% endif %}>{{ step.link.label }}</a>
+  {% endif %}
+</section>
+{% endfor %}
+
+<section class="panel muted-panel">
+  {% if guide.session_num == 1 %}
+    <p>Finished Session 1? <a href="{{ url_for('course_auth.login') }}">Sign in</a>, then head to <a href="/">Course Home</a>.</p>
+  {% elif next_session and next_session.unlocked %}
+    <p>Finished this session? Continue to <a href="{{ next_session.href }}">{{ next_session.title }}</a>.</p>
+  {% elif next_session %}
+    <p>Finished this session? <a href="/">Course Home</a> — Session {{ next_session.num }} unlocks when you reach Phase {{ next_session.phase_num }}.</p>
+  {% else %}
+    <p>Finished the course? <a href="/quiz/">Quiz dashboard</a> · <a href="/">Course Home</a></p>
+  {% endif %}
+  {% if all_sessions|length > 1 %}
+    <p class="session-nav-links">All sessions:
+      {% for s in all_sessions %}
+        {% if s.unlocked %}
+          <a href="{{ s.href }}">Session {{ s.num }}</a>{% if not loop.last %} · {% endif %}
+        {% else %}
+          <span class="muted">Session {{ s.num }} (locked)</span>{% if not loop.last %} · {% endif %}
+        {% endif %}
+      {% endfor %}
+    </p>
+  {% endif %}
+</section>
+{% endblock %}

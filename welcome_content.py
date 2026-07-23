@@ -18,6 +18,6 @@ WELCOME = {
         "Publish updates from your keyboard to a link in a browser",
     ],
     "phase0_note": "Start with Phase 0 — Meet your tools. No installs until you've read it.",
-    "cta": "Ready to get started?",
+    "cta": "Let's get started",
     "cta_sub": "Phase 0 first, then Session 1 setup.",
 }

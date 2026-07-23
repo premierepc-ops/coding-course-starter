@@ -50,3 +50,22 @@ If you saw her name on the template deploy, that was demo data baked into master
 ## One student per fork
 
 Each fork has one entry in `LEARNERS` and one Railway project. Adding another student later = new fork + new Railway project (see `ONBOARDING.md`).
+
+## Updating content as you go (Session 1, then Session 2, …)
+
+You do **not** need one giant update. Ship in slices:
+
+| What you're changing | Where it lives | Who gets it |
+|----------------------|----------------|-------------|
+| Platform fixes (auth, nav, styling) | Template repo → merge into student fork | Everyone on next pull |
+| Session 1 steps | `start_guide.py` | Student fork (or template, then sync) |
+| Session 2+ steps | Add `session_2_guide.py` later, link from Course Home | Same |
+| Jaqira-only progress | `.learners/jaqira/progress.md` in **her fork only** | Never in template |
+
+**Workflow after Session 1:**
+
+1. Edit in template (`premierepc-ops/coding-course-starter`) or directly in Jaqira's fork.
+2. Push to `main` on whichever repo **Railway is connected to** — that redeploys the live URL in ~1 min.
+3. If you fixed the template and she already forked: merge template `main` into her fork (GitHub "Sync fork" or `git pull upstream main`), then push.
+
+**Rule of thumb:** Railway deploys **one GitHub repo**. Unpushed local edits and unpulled template updates are **not** on the live site until they're on that repo's `main`.

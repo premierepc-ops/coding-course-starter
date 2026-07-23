@@ -73,32 +73,39 @@
   {% endif %}
 </section>
 
-{% if not signed_in and not is_instructor %}
-<section class="panel highlight-panel">
-  <h2>Never coded before?</h2>
-  <p>Phase 0 explains every tool in plain English — no installs until you've read it.</p>
-  <a class="button" href="/tools">Phase 0 — Meet your tools</a>
+<section class="panel">
+  <h2>All sessions</h2>
+  <p class="muted section-note">Step-by-step guides for every phase. Locked sessions unlock as you progress.</p>
+  <ul class="sessions-list">
+    {% for s in all_sessions %}
+    <li class="session-item {{ 'locked' if not s.unlocked else 'unlocked' }}">
+      {% if s.unlocked %}
+        <a href="{{ s.href }}"><strong>Session {{ s.num }}</strong> — {{ s.title }}</a>
+      {% else %}
+        <span><strong>Session {{ s.num }}</strong> — {{ s.title }} <span class="setup-manual">Phase {{ s.phase_num }} required</span></span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
 </section>
-{% endif %}
 
 <section class="panel">
   <h2>Session 1 checklist</h2>
-  <p class="muted section-note">Each item expands with directions. Full guide: <a href="/start">Start Here</a>.</p>
-  <ol class="setup-list setup-list-detailed">
+  <p class="muted section-note">
+    Quick view — full directions live on <a href="/start">Start Here</a>.
+    Steps marked “instructor confirms” are checked when you or your instructor finish them.
+  </p>
+  <ol class="setup-list setup-list-compact">
     {% for step in setup_steps %}
     <li class="{{ 'done' if step.done else 'pending' }}">
       <div class="setup-row">
         <span class="check">{{ '✓' if step.done else '○' }}</span>
         <div class="setup-body">
           <strong>{{ step.label }}</strong>
-          {% if step.directions %}
-            <p class="setup-direction">{{ step.directions[0] }}</p>
+          {% if not step.done and step.manual %}
+            <span class="setup-manual">Instructor confirms</span>
           {% endif %}
-          {% if step.link %}
-            <a class="setup-link" href="{{ step.link.href }}" {% if step.link.href.startswith('http') %}target="_blank" rel="noopener"{% endif %}>{{ step.link.label }} →</a>
-          {% elif not step.done %}
-            <a class="setup-link" href="/start#step-{{ loop.index }}">Full directions →</a>
-          {% endif %}
+          <a class="setup-link" href="/start#step-{{ step.step_num }}">Directions →</a>
         </div>
       </div>
     </li>
@@ -129,7 +136,11 @@
       <ul class="phase-links">
         {% for link in phase.links %}
           {% if link.href %}
-            <li><a href="{{ link.href }}">{{ link.label }}</a></li>
+            {% if link.locked %}
+              <li><span class="phase-link-locked">{{ link.label }} — unlocks in Phase {{ link.min_phase }}</span></li>
+            {% else %}
+              <li><a href="{{ link.href }}">{{ link.label }}</a></li>
+            {% endif %}
           {% elif link.note %}
             <li><span class="muted">{{ link.label }} — {{ link.note }}</span></li>
           {% endif %}
@@ -156,13 +167,42 @@
   var modal = document.getElementById("welcome-modal");
   var content = document.getElementById("course-content");
   var btn = document.getElementById("welcome-start-btn");
+  var header = document.querySelector(".site-header");
+  var footer = document.querySelector(".site-footer");
   if (!modal || !content || !btn) return;
+
+  function setBackgroundInert(on) {
+    if (header) header.inert = on;
+    if (footer) footer.inert = on;
+    content.inert = on;
+  }
+
+  function trapFocus(event) {
+    if (modal.hidden) return;
+    var focusable = modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (event.key === "Tab") {
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
 
   function closeWelcome() {
     try { localStorage.setItem(KEY, "1"); } catch (e) {}
     modal.hidden = true;
     content.classList.remove("course-content--waiting");
     document.body.classList.remove("welcome-open");
+    setBackgroundInert(false);
+    document.removeEventListener("keydown", trapFocus);
   }
 
   if (localStorage.getItem(KEY)) {
@@ -171,6 +211,7 @@
   }
 
   document.body.classList.add("welcome-open");
+  setBackgroundInert(true);
   btn.focus();
   btn.addEventListener("click", closeWelcome);
   modal.addEventListener("click", function (e) {
@@ -179,6 +220,7 @@
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !modal.hidden) closeWelcome();
   });
+  document.addEventListener("keydown", trapFocus);
 })();
 </script>
 {% endif %}

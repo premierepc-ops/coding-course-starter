@@ -24,22 +24,22 @@
         </a>
         <nav class="site-nav" aria-label="Main">
             {% if nav.tools %}
-                <a href="/tools">Meet your tools</a>
+                <a href="/tools"{% if nav_active == 'tools_glossary' %} aria-current="page"{% endif %}>Meet your tools</a>
             {% endif %}
             {% if nav.start %}
-                <a href="/start" class="nav-start">Start Here</a>
+                <a href="/start" class="nav-start"{% if nav_active == 'start_here' %} aria-current="page"{% endif %}>Start Here</a>
             {% endif %}
             {% if nav.home %}
-                <a href="/">Home</a>
+                <a href="/"{% if nav_active == 'home' %} aria-current="page"{% endif %}>Home</a>
             {% endif %}
             {% if nav.aboutme %}
-                <a href="/aboutme/">About Me</a>
+                <a href="/aboutme/"{% if nav_active and nav_active.startswith('aboutme.') %} aria-current="page"{% endif %}>About Me</a>
             {% endif %}
             {% if nav.guestbook %}
-                <a href="/guestbook/">Guestbook</a>
+                <a href="/guestbook/"{% if nav_active and nav_active.startswith('guestbook.') %} aria-current="page"{% endif %}>Guestbook</a>
             {% endif %}
             {% if nav.quiz %}
-                <a href="/quiz/">Quiz</a>
+                <a href="/quiz/"{% if nav_active and nav_active.startswith('quiz.') %} aria-current="page"{% endif %}>Quiz</a>
             {% endif %}
             {% if nav.admin %}
                 <a href="/quiz/admin">Instructor</a>
@@ -47,7 +47,7 @@
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('course_auth.logout') }}" class="nav-auth">Sign out</a>
             {% else %}
-                <a href="{{ url_for('course_auth.login') }}" class="nav-auth">Sign in</a>
+                <a href="{{ url_for('course_auth.login') }}" class="nav-auth"{% if nav_active == 'course_auth.login' %} aria-current="page"{% endif %}>Sign in</a>
             {% endif %}
         </nav>
     </header>

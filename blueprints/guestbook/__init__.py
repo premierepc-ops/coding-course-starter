@@ -39,8 +39,8 @@ def index():
 
 @guestbook_bp.route("/messages", methods=["POST"])
 def post_message():
-    author = request.form.get("author", "").strip()
-    message = request.form.get("message", "").strip()
+    author = request.form.get("author", "").strip()[:80]
+    message = request.form.get("message", "").strip()[:500]
     if author and message:
         db = get_db()
         db.execute("INSERT INTO messages (author, message) VALUES (?, ?)", (author, message))

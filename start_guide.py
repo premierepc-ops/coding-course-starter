@@ -4,6 +4,7 @@ from course_config import TEMPLATE_REPO
 
 START_GUIDE = {
     "title": "Session 1 — Start here",
+    "time_estimate": "About 60–90 minutes with your instructor",
     "intro": (
         "Brand new to coding? Start with Phase 0 — read Meet your tools so the words make sense. "
         "Then follow these steps in order with your instructor. "
@@ -28,11 +29,12 @@ START_GUIDE = {
             "summary": "You need your own repo — not the shared template.",
             "directions": [
                 f"Open the template: {TEMPLATE_REPO}",
-                'Click the green "Use this template" button (top right).',
+                'Click "Use this template" (green button, top right) — that creates your own repo from the starter.',
+                'If you see "Fork" instead, that works too — same idea: your own copy on your GitHub account.',
                 'Click "Create a new repository".',
                 "Name it something like jaqira-coding-course (all lowercase, use hyphens).",
-                "Leave it Public or Private — your choice. Click Create repository.",
-                "That new repo is yours. The rest of the course happens there.",
+                "Prefer Private if you don't want your name or progress files visible on GitHub. Public works too.",
+                "Click Create repository. That new repo is yours — the rest of the course happens there.",
             ],
             "link": {"label": "Open the template on GitHub", "href": TEMPLATE_REPO},
         },
@@ -43,7 +45,7 @@ START_GUIDE = {
             "directions": [
                 "Cursor — the code editor where you type and run programs (Phase 0 explains what this is).",
                 "Python 3 — the language you'll write. Download at https://python.org/downloads/ "
-                "(check Add Python to PATH on Windows during install).",
+                "(on Windows, check Add Python to PATH during install).",
                 "Git — saves versions of your code so you never lose work. Usually comes with Cursor; if not: https://git-scm.com/downloads",
                 "After installing, open Cursor's terminal and run: python --version and git --version — both should print a version number.",
             ],
@@ -56,9 +58,9 @@ START_GUIDE = {
             "directions": [
                 "Open Cursor.",
                 "Press Ctrl+Shift+P (Windows) or Cmd+Shift+P (Mac), type Git: Clone, press Enter.",
-                "Paste the URL of your fork (from GitHub — green Code button → HTTPS).",
-                "Pick a folder (e.g. `Documents/code`) and open the cloned project.",
-                "You should see folders like `blueprints`, `templates`, and `app.py` in the sidebar.",
+                "Paste the URL of your repo (from GitHub — green Code button → HTTPS).",
+                "Pick a folder (e.g. Documents/code) and open the cloned project.",
+                "You should see folders like blueprints, templates, and app.py in the sidebar.",
             ],
         },
         {
@@ -66,6 +68,8 @@ START_GUIDE = {
             "title": "Sign in on this website",
             "summary": "So quizzes and your dashboard know it's you.",
             "directions": [
+                "Before sign-in works, your instructor registers you — either in course_config.py in your fork "
+                "or via Railway Variables (LEARNER_SLUG, LEARNER_NAME) on the live site.",
                 "Ask your instructor for your sign-in PIN (they set it — you don't pick it yourself).",
                 "Click Sign in in the top menu of this site.",
                 "Choose your name from the list, type your PIN, click Continue.",
@@ -78,14 +82,16 @@ START_GUIDE = {
             "title": "Type and run your first Python file",
             "summary": "No AI for this one — your fingers on the keyboard.",
             "directions": [
-                "In Cursor, create a folder lessons/yourname/ (use your first name, lowercase).",
-                "Create a file hello.py in that folder.",
-                "Type these two lines yourself (don't copy from AI):",
+                "In Cursor's file explorer (left sidebar), right-click the project root → New Folder → name it lessons.",
+                "Right-click lessons → New Folder → name it your first name in lowercase (e.g. jaqira).",
+                "Right-click that folder → New File → name it hello.py.",
+                "Click hello.py to open it. Type these two lines yourself (don't copy from AI):",
                 '  print("Hello, world!")',
                 '  print("I typed this myself.")',
-                "Open the terminal in Cursor (Terminal → New Terminal) and run:",
+                "Save the file (Ctrl+S / Cmd+S).",
+                "Open the terminal: menu Terminal → New Terminal. Run:",
                 "  python lessons/yourname/hello.py",
-                "You should see both lines printed. If you get an error, read it out loud — that's debugging.",
+                "(Replace yourname with your folder name.) You should see both lines printed. If you get an error, read it out loud — that's debugging.",
             ],
         },
         {
@@ -106,42 +112,49 @@ START_GUIDE = {
 SETUP_STEPS = [
     {
         "id": "tools_read",
-        "label": "Phase 0 — read Meet your tools (know the vocabulary first)",
-        "directions": START_GUIDE["steps"][0]["directions"],
+        "step_num": 0,
+        "label": "Phase 0 — read Meet your tools",
+        "manual": True,
         "link": START_GUIDE["steps"][0]["link"],
     },
     {
         "id": "fork",
-        "label": "Fork the template on GitHub",
-        "directions": START_GUIDE["steps"][1]["directions"],
+        "step_num": 1,
+        "label": "Make your own copy on GitHub",
+        "manual": True,
         "link": START_GUIDE["steps"][1]["link"],
     },
     {
         "id": "tools",
+        "step_num": 2,
         "label": "Install Cursor, Python 3, and Git",
-        "directions": START_GUIDE["steps"][2]["directions"],
+        "manual": True,
         "link": START_GUIDE["steps"][2]["link"],
     },
     {
         "id": "clone",
+        "step_num": 3,
         "label": "Clone your repo and open it in Cursor",
-        "directions": START_GUIDE["steps"][3]["directions"],
+        "manual": True,
     },
     {
         "id": "signin",
-        "label": "Sign in on this site (name + PIN from your instructor)",
-        "directions": START_GUIDE["steps"][4]["directions"],
+        "step_num": 4,
+        "label": "Sign in on this site (name + PIN)",
+        "manual": False,
         "link": START_GUIDE["steps"][4]["link"],
     },
     {
         "id": "hello",
+        "step_num": 5,
         "label": "Type and run hello.py yourself",
-        "directions": START_GUIDE["steps"][5]["directions"],
+        "manual": True,
     },
     {
         "id": "aboutme",
-        "label": "Customize your About Me page and merge a PR",
-        "directions": START_GUIDE["steps"][6]["directions"],
+        "step_num": 6,
+        "label": "Customize About Me and merge a PR",
+        "manual": True,
         "link": START_GUIDE["steps"][6]["link"],
     },
 ]
