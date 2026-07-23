@@ -258,13 +258,13 @@
 {% if show_welcome %}
 <script>
 (function () {
-  var KEY = modal.getAttribute("data-storage-key") || "ppc-course-welcome-v2";
   var modal = document.getElementById("welcome-modal");
   var content = document.getElementById("course-content");
   var btn = document.getElementById("welcome-start-btn");
   var header = document.querySelector(".site-header");
   var footer = document.querySelector(".site-footer");
   if (!modal || !content || !btn) return;
+  var KEY = modal.getAttribute("data-storage-key") || "ppc-course-welcome-v2";
 
   function setBackgroundInert(on) {
     if (header) header.inert = on;
