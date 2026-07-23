@@ -47,6 +47,8 @@ Only when **all** of these are true:
 
 If you saw her name on the template deploy, that was demo data baked into master for a preview — that was wrong and has been removed from the template.
 
+**Also check Railway:** if `jaqira-course` still deploys the **template** repo, delete `LEARNER_SLUG`, `LEARNER_NAME`, and `LEARNER_AGE` from Railway Variables. Those env vars register a student on the live site without anything in git — fine on a student fork deploy, wrong on the generic template preview.
+
 ## One student per fork
 
 Each fork has one entry in `LEARNERS` and one Railway project. Adding another student later = new fork + new Railway project (see `ONBOARDING.md`).
