@@ -3,29 +3,244 @@
 }
 
 body {
-    font-family: system-ui, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
     padding: 1.5rem;
     line-height: 1.5;
-    background: #f7f7fb;
+    background: #f0f2f8;
     color: #1a1a2e;
 }
 
 nav {
     margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #dde1ec;
 }
 
 nav a {
     margin-right: 1rem;
     color: #4a4ae8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav a:hover {
+    text-decoration: underline;
 }
 
 main {
-    max-width: 40rem;
+    max-width: 56rem;
+    margin: 0 auto;
 }
 
 h1 {
-    margin-top: 0;
+    margin: 0.25rem 0 0.5rem;
+    font-size: 2rem;
+}
+
+h2 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #5a5a72;
+}
+
+h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.15rem;
+}
+
+.hero {
+    margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #4a4ae8;
+}
+
+.lede {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #3d3d52;
+    max-width: 42rem;
+}
+
+.muted {
+    color: #5a5a72;
+}
+
+.panel {
+    background: #fff;
+    border: 1px solid #dde1ec;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.next-panel {
+    border-color: #c8cff9;
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+}
+
+.next-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.35rem;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.55rem 1rem;
+    background: #4a4ae8;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.button:hover {
+    background: #3838c0;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-live {
+    background: #e6f7ed;
+    color: #1a7f42;
+}
+
+.setup-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.setup-list li {
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid #eef0f6;
+}
+
+.setup-list li:last-child {
+    border-bottom: none;
+}
+
+.setup-list .check {
+    flex-shrink: 0;
+    width: 1.25rem;
+    font-weight: 700;
+}
+
+.setup-list .done {
+    color: #1a7f42;
+}
+
+.setup-list .pending {
+    color: #5a5a72;
+}
+
+.phase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+}
+
+.phase-card {
+    border: 1px solid #e4e7f0;
+    border-radius: 10px;
+    padding: 1rem;
+    background: #fafbff;
+}
+
+.phase-card.status-complete {
+    border-color: #b8e6c8;
+    background: #f4fbf6;
+}
+
+.phase-card.status-in_progress {
+    border-color: #c8cff9;
+    background: #f8f9ff;
+}
+
+.phase-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.phase-num {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4a4ae8;
+}
+
+.status-pill {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: #eef0f6;
+    color: #5a5a72;
+}
+
+.status-complete .status-pill {
+    background: #d4f0dc;
+    color: #1a7f42;
+}
+
+.status-in_progress .status-pill {
+    background: #dfe4ff;
+    color: #3838c0;
+}
+
+.meta {
+    font-size: 0.85rem;
+    margin: 0.35rem 0 0;
+}
+
+.whats-next {
+    font-size: 0.85rem;
+    margin: 0.5rem 0 0;
+}
+
+.phase-links {
+    list-style: none;
+    padding: 0;
+    margin: 0.65rem 0 0;
+    font-size: 0.9rem;
+}
+
+.phase-links li {
+    margin: 0.25rem 0;
+}
+
+.phase-links a {
+    color: #4a4ae8;
+}
+
+.muted-panel {
+    background: #eef0f6;
+    border-color: transparent;
 }
 
 .flash {

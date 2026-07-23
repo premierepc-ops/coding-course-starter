@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from flask_login import current_user
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
@@ -24,6 +25,7 @@ from blueprints.course_auth import course_auth_bp, init_auth
 from blueprints.aboutme import aboutme_bp
 from blueprints.guestbook import guestbook_bp
 from blueprints.quiz import quiz_bp
+from course_dashboard import build_dashboard
 
 init_auth(app)
 
@@ -40,7 +42,16 @@ def healthz():
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    ctx = build_dashboard(current_user, request.host)
+    return render_template("index.html", **ctx)
+
+
+@app.template_global()
+def display_of(username):
+    from blueprints.quiz import get_learner
+
+    learner = get_learner(username)
+    return learner["name"] if learner else username
 
 
 if __name__ == "__main__":

@@ -54,7 +54,7 @@ def login():
     if current_user.is_authenticated:
         if current_user.is_admin:
             return redirect(url_for("quiz.admin_view"))
-        return redirect(url_for("quiz.dashboard"))
+        return redirect(url_for("home"))
 
     if request.method == "POST":
         if request.form.get("instructor") == "1":
@@ -72,7 +72,7 @@ def login():
             flash("Pick your name from the list.")
             return redirect(url_for("course_auth.login"))
         login_user(user_from_learner(learner))
-        return redirect(url_for("quiz.dashboard"))
+        return redirect(url_for("home"))
 
     show_instructor = request.args.get("instructor") == "1"
     return render_template(

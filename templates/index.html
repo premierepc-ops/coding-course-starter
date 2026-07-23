@@ -1,14 +1,89 @@
 {% extends "base.html" %}
 
-{% block title %}Home — Coding Course{% endblock %}
+{% block title %}Course Home{% endblock %}
 
 {% block content %}
-<h1>Your coding course app</h1>
-<p>Everything for this course lives in <strong>this repo</strong> — your app, lessons, quizzes, and progress tracking.</p>
-<ul>
-  <li><a href="/aboutme/">About Me</a> — Phase 1 milestone page</li>
-  <li><a href="/guestbook/">Guestbook</a> — HTMX example for Phase 3</li>
-  <li><a href="/quiz/">Quiz</a> — phase quizzes and final exam (sign in first)</li>
-</ul>
-<p>Instructor: set <code>INSTRUCTOR_PASSWORD</code> in <code>.env</code>, then use <a href="{{ url_for('course_auth.login', instructor=1) }}">instructor login</a> for <code>/quiz/admin</code>.</p>
+<header class="hero">
+  {% if learner_name %}
+    <p class="eyebrow">Coding course</p>
+    <h1>Welcome, {{ learner_name }}</h1>
+    <p class="lede">Phase {{ current_phase }} is up next. Everything you need lives in this app — code, quizzes, and labs.</p>
+  {% elif is_instructor %}
+    <p class="eyebrow">Instructor view</p>
+    <h1>Course dashboard</h1>
+    <p class="lede">Students sign in at <a href="/login">/login</a>. Review attempts at <a href="/quiz/admin">/quiz/admin</a>.</p>
+  {% else %}
+    <p class="eyebrow">Coding course</p>
+    <h1>Learn to code with AI — on your own app</h1>
+    <p class="lede">Fork this repo, deploy to Railway, and work through six phases. Sign in to track progress.</p>
+  {% endif %}
+  {% if is_live %}
+    <span class="badge badge-live">Live on Railway</span>
+  {% endif %}
+</header>
+
+<section class="panel next-panel">
+  <h2>Do this next</h2>
+  <p class="next-title">{{ next_action.title }}</p>
+  <p class="muted">{{ next_action.detail }}</p>
+  {% if next_action.href and next_action.label %}
+    <a class="button" href="{{ next_action.href }}">{{ next_action.label }}</a>
+  {% elif not signed_in and not is_instructor %}
+    <a class="button" href="{{ url_for('course_auth.login') }}">Sign in to start</a>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h2>Getting started</h2>
+  <ol class="setup-list">
+    {% for step in setup_steps %}
+    <li class="{{ 'done' if step.done else 'pending' }}">
+      <span class="check">{{ '✓' if step.done else '○' }}</span>
+      {{ step.label }}
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="panel">
+  <h2>Course map</h2>
+  <div class="phase-grid">
+    {% for phase in phases %}
+    <article class="phase-card status-{{ phase.status }}">
+      <div class="phase-head">
+        <span class="phase-num">Phase {{ phase.num }}</span>
+        <span class="status-pill">{{ phase.status.replace('_', ' ') }}</span>
+      </div>
+      <h3>{{ phase.title }}</h3>
+      <p class="muted">{{ phase.tagline }}</p>
+      {% if phase.milestones_total %}
+        <p class="meta">{{ phase.milestones_done }}/{{ phase.milestones_total }} milestones</p>
+      {% endif %}
+      {% if phase.quiz_best_pct is not none %}
+        <p class="meta">Quiz best: {{ phase.quiz_best_pct | round | int }}%{% if phase.quiz_passed %} ✓{% endif %}</p>
+      {% endif %}
+      {% if phase.whats_next and phase.status != 'complete' %}
+        <p class="whats-next"><strong>Next:</strong> {{ phase.whats_next }}</p>
+      {% endif %}
+      <ul class="phase-links">
+        {% for link in phase.links %}
+          {% if link.href %}
+            <li><a href="{{ link.href }}">{{ link.label }}</a></li>
+          {% elif link.note %}
+            <li><span class="muted">{{ link.label }} — {{ link.note }}</span></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% if not signed_in and not is_instructor and learners_registered %}
+<section class="panel muted-panel">
+  <p>Enrolled on this instance:
+    {% for entry in learners_registered %}{{ entry.name }}{% if not loop.last %}, {% endif %}{% endfor %}.
+    <a href="{{ url_for('course_auth.login') }}">Sign in</a> with your name.</p>
+</section>
+{% endif %}
 {% endblock %}
