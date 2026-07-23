@@ -176,6 +176,9 @@ def login():
 
         login_user(user_from_learner(learner))
         _login_attempts.pop(rate_key, None)
+        next_page = request.args.get("next") or request.form.get("next")
+        if next_page and next_page.startswith("/"):
+            return redirect(next_page)
         return redirect(url_for("home"))
 
     show_instructor = request.args.get("instructor") == "1"

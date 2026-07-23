@@ -42,9 +42,15 @@
 
 <section class="panel next-panel">
   <h2>Done with Phase 0?</h2>
-  <p class="muted">Check the vocabulary — then take the Phase 0 quiz (sign in required).</p>
-  <a class="button" href="/quiz/phase/0">Take Phase 0 quiz →</a>
-  <a class="button button-secondary" href="/start" style="margin-left:0.5rem;">Continue to Phase 1 setup →</a>
+  {% if learners_registered %}
+    <p class="muted">Check the vocabulary — then take the Phase 0 quiz (sign in with your PIN).</p>
+    <a class="button" href="/quiz/phase/0">Take Phase 0 quiz →</a>
+    <a class="button button-secondary" href="/start" style="margin-left:0.5rem;">Continue to Phase 1 setup →</a>
+  {% else %}
+    <p class="muted">The vocab quiz needs sign-in — your instructor sets that up in Session 1. For now, keep going with Phase 1 setup.</p>
+    <a class="button" href="/start">Continue to Phase 1 setup →</a>
+    <a class="button button-secondary" href="/tools" style="margin-left:0.5rem;">Re-read the toolbox</a>
+  {% endif %}
 </section>
 {% endblock %}
 

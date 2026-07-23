@@ -41,21 +41,21 @@
     {% if not learners %}
 
       <div class="callout">
-
-        <p><strong>Your course isn't wired up yet.</strong></p>
-
-        <p>That's OK for minute one — follow the Phase 1 guide first. Your instructor finishes the behind-the-scenes setup on Railway.</p>
-
-        <a class="button" href="/start">Open Start Here — Phase 1 guide</a>
-
+        <p><strong>Sign-in isn't set up yet.</strong></p>
+        <p>Your instructor registers you on Railway or in your fork's <code>course_config.py</code> before quizzes and your dashboard work.</p>
+        <p class="muted">You can still read Phase 0 and follow the Phase 1 setup guide without signing in.</p>
+        <a class="button" href="/tools">Back to Phase 0 — Meet your tools</a>
+        <a class="button button-secondary" href="/start" style="margin-left:0.5rem;">Phase 1 setup</a>
       </div>
 
     {% else %}
 
       <p class="muted">Choose your name and enter the PIN your instructor gave you.</p>
-      <p class="muted auth-hint">Your name appears here after your instructor adds you in <code>course_config.py</code> (your fork) or Railway Variables on the live site.</p>
 
       <form method="post" class="auth-form">
+        {% if request.args.get('next') %}
+        <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+        {% endif %}
 
         <label>
 

@@ -167,6 +167,7 @@ def inject_nav():
         "nav": build_nav(current_user),
         "nav_active": request.endpoint,
         "unlocked_phase": unlocked,
+        "learners_registered": LEARNERS,
     }
 
 
