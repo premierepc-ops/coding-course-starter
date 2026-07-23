@@ -5,11 +5,23 @@ from course_config import TEMPLATE_REPO
 START_GUIDE = {
     "title": "Session 1 — Start here",
     "intro": (
-        "Brand new to coding? Follow these steps in order. "
-        "Do them with your instructor the first time — that's normal. "
+        "Brand new to coding? Start with Phase 0 — read Meet your tools so the words make sense. "
+        "Then follow these steps in order with your instructor. "
         "When a step is done, come back to Course Home and sign in."
     ),
     "steps": [
+        {
+            "num": 0,
+            "title": "Phase 0 — read Meet your tools",
+            "summary": "Learn what GitHub, Python, Cursor, Railway, and the rest actually mean.",
+            "directions": [
+                "Open Meet your tools in the menu (or go to /tools).",
+                "Read each definition once — you are not being quizzed on vocabulary.",
+                "Ask your instructor anything that still sounds like gibberish.",
+                "When the map makes sense, continue to Step 1 below.",
+            ],
+            "link": {"label": "Open Phase 0 — Meet your tools", "href": "/tools"},
+        },
         {
             "num": 1,
             "title": "Make your own copy of this project on GitHub",
@@ -29,10 +41,10 @@ START_GUIDE = {
             "title": "Install the tools",
             "summary": "Three free apps — install once, use all course.",
             "directions": [
-                "Cursor — your code editor with AI built in. Download at https://cursor.com (free Hobby plan).",
+                "Cursor — the code editor where you type and run programs (Phase 0 explains what this is).",
                 "Python 3 — the language you'll write. Download at https://python.org/downloads/ "
                 "(check Add Python to PATH on Windows during install).",
-                "Git — saves versions of your code. Usually comes with Cursor; if not: https://git-scm.com/downloads",
+                "Git — saves versions of your code so you never lose work. Usually comes with Cursor; if not: https://git-scm.com/downloads",
                 "After installing, open Cursor's terminal and run: python --version and git --version — both should print a version number.",
             ],
             "link": {"label": "Download Cursor", "href": "https://cursor.com"},
@@ -56,7 +68,7 @@ START_GUIDE = {
             "directions": [
                 "Ask your instructor for your sign-in PIN (they set it — you don't pick it yourself).",
                 "Click Sign in in the top menu of this site.",
-                "Choose your name from the list, type your PIN, click **Continue**.",
+                "Choose your name from the list, type your PIN, click Continue.",
                 "You'll land on Course Home with your name at the top.",
             ],
             "link": {"label": "Go to Sign in", "href": "/login"},
@@ -93,37 +105,43 @@ START_GUIDE = {
 
 SETUP_STEPS = [
     {
-        "id": "fork",
-        "label": "Fork the template on GitHub",
+        "id": "tools_read",
+        "label": "Phase 0 — read Meet your tools (know the vocabulary first)",
         "directions": START_GUIDE["steps"][0]["directions"],
         "link": START_GUIDE["steps"][0]["link"],
     },
     {
-        "id": "tools",
-        "label": "Install Cursor, Python 3, and Git",
+        "id": "fork",
+        "label": "Fork the template on GitHub",
         "directions": START_GUIDE["steps"][1]["directions"],
         "link": START_GUIDE["steps"][1]["link"],
     },
     {
+        "id": "tools",
+        "label": "Install Cursor, Python 3, and Git",
+        "directions": START_GUIDE["steps"][2]["directions"],
+        "link": START_GUIDE["steps"][2]["link"],
+    },
+    {
         "id": "clone",
         "label": "Clone your repo and open it in Cursor",
-        "directions": START_GUIDE["steps"][2]["directions"],
+        "directions": START_GUIDE["steps"][3]["directions"],
     },
     {
         "id": "signin",
         "label": "Sign in on this site (name + PIN from your instructor)",
-        "directions": START_GUIDE["steps"][3]["directions"],
-        "link": START_GUIDE["steps"][3]["link"],
+        "directions": START_GUIDE["steps"][4]["directions"],
+        "link": START_GUIDE["steps"][4]["link"],
     },
     {
         "id": "hello",
         "label": "Type and run hello.py yourself",
-        "directions": START_GUIDE["steps"][4]["directions"],
+        "directions": START_GUIDE["steps"][5]["directions"],
     },
     {
         "id": "aboutme",
         "label": "Customize your About Me page and merge a PR",
-        "directions": START_GUIDE["steps"][5]["directions"],
-        "link": START_GUIDE["steps"][5]["link"],
+        "directions": START_GUIDE["steps"][6]["directions"],
+        "link": START_GUIDE["steps"][6]["link"],
     },
 ]

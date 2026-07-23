@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Phase 0 — Meet your tools{% endblock %}
+
+{% block content %}
+<header class="hero">
+  <p class="eyebrow">Phase 0 · Before Session 1</p>
+  <h1>{{ guide.title }}</h1>
+  <p class="lede">{{ guide.intro }}</p>
+</header>
+
+<section class="panel next-panel">
+  <p class="muted">Read top to bottom once with your instructor. You are not being tested on definitions — you're building a map.</p>
+  <a class="button" href="/start">Done reading? Continue to Session 1 setup →</a>
+</section>
+
+<section class="panel">
+  <h2>The toolbox</h2>
+  <dl class="tools-glossary">
+    {% for tool in guide.tools %}
+      <dt>{{ tool.name }}</dt>
+      <dd>{{ tool.what }}</dd>
+    {% endfor %}
+  </dl>
+</section>
+
+<section class="panel muted-panel">
+  <p><strong>What happens next?</strong> Session 1 installs Cursor, Python, and Git — but now those names mean something. <a href="/start">Start Here</a> has the click-by-click steps.</p>
+</section>
+{% endblock %}

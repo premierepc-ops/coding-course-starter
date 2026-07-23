@@ -27,6 +27,7 @@ from blueprints.guestbook import guestbook_bp
 from blueprints.quiz import quiz_bp
 from course_dashboard import build_dashboard, build_nav
 from start_guide import START_GUIDE
+from tools_guide import TOOLS_GUIDE
 from course_config import LEARNERS
 
 init_auth(app)
@@ -51,6 +52,11 @@ def home():
 @app.route("/start")
 def start_here():
     return render_template("start.html", guide=START_GUIDE, learners=LEARNERS)
+
+
+@app.route("/tools")
+def tools_glossary():
+    return render_template("tools.html", guide=TOOLS_GUIDE)
 
 
 @app.context_processor

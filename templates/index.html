@@ -15,6 +15,8 @@
     <h2 id="welcome-title" class="welcome-title">{{ welcome.headline }}{% if learner_name %}, {{ learner_name }}{% endif %}</h2>
     <p class="lede">{{ welcome.intro }}</p>
 
+    <p class="welcome-phase0-note">{{ welcome.phase0_note }} <a href="/tools">Meet your tools →</a></p>
+
     <div class="welcome-columns">
       <div>
         <h3>This course helps you</h3>
@@ -55,7 +57,7 @@
   {% else %}
     <p class="eyebrow">PremierePC · Coding course</p>
     <h1>Learn to code — step by step</h1>
-    <p class="lede">New here? Open <strong><a href="/start">Start Here</a></strong> first. It walks you through Session 1 in plain English.</p>
+    <p class="lede">New here? Start with <strong><a href="/tools">Meet your tools</a></strong> (Phase 0), then <a href="/start">Session 1 setup</a>.</p>
   {% endif %}
   {% if is_live %}
     <span class="badge badge-live">Live on Railway</span>
@@ -74,8 +76,8 @@
 {% if not signed_in and not is_instructor %}
 <section class="panel highlight-panel">
   <h2>Never coded before?</h2>
-  <p>Don't start with the checklist below — open the full walkthrough first.</p>
-  <a class="button" href="/start">Open Start Here (Session 1 guide)</a>
+  <p>Phase 0 explains every tool in plain English — no installs until you've read it.</p>
+  <a class="button" href="/tools">Phase 0 — Meet your tools</a>
 </section>
 {% endif %}
 

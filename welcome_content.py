@@ -4,21 +4,23 @@ WELCOME = {
     "mascot_name": "Byte",
     "headline": "Welcome to your coding course",
     "intro": (
-        "You'll learn by building — this website, your own pages, quizzes, and a final project "
-        "you can show off. Cursor and AI are tools in your toolbox, not a substitute for understanding."
+        "You've never coded before? Perfect — that's who this is for. "
+        "You'll learn by building real things on a real website, one small step at a time. "
+        "First we explain the tools. Then you install them. Then you write code."
     ),
     "helps_you": [
-        "Set up Cursor, Python, and git on your computer",
-        "Write and run real Python — starting with code you type yourself",
-        "Change this live app and push updates through GitHub and Railway",
-        "Use AI wisely: batch prompts, then explain every line before you commit",
+        "Phase 0: learn what each tool is — in plain English, no jargon quiz",
+        "Set up the apps on your computer (with your instructor beside you)",
+        "Type and run a program you wrote yourself — before any AI helps",
+        "Change pages on this site and see your work go live on the internet",
     ],
     "by_the_end": [
-        "Ship a feature you planned, built, and can explain line by line",
-        "Read a small Python file and say what it does without guessing",
-        "Use git branches and pull requests like a normal developer",
-        "Know how a web page gets from your keyboard to a live URL",
+        "Build something on a live website and explain how it works",
+        "Read a short program and say what it does — out loud, not guessing",
+        "Save your work, get it reviewed, and publish updates safely",
+        "Understand the path from your keyboard to someone opening a link in a browser",
     ],
+    "phase0_note": "Phase 0 comes first: read Meet your tools before Session 1.",
     "cta": "Ready to get started?",
-    "cta_sub": "We'll walk you through Session 1 step by step.",
+    "cta_sub": "Phase 0 explains the tools — then Session 1 walks you through setup.",
 }

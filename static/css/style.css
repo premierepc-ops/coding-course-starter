@@ -1242,6 +1242,64 @@ body.welcome-open {
 
 
 
+.welcome-phase0-note {
+
+    margin: 0 0 1rem;
+
+    padding: 0.65rem 0.85rem;
+
+    border-radius: 8px;
+
+    background: var(--ppc-orange-light);
+
+    border: 1px solid var(--ppc-orange-border);
+
+    font-size: 0.92rem;
+
+}
+
+
+
+.tools-glossary {
+
+    margin: 0;
+
+}
+
+
+
+.tools-glossary dt {
+
+    font-weight: 600;
+
+    color: var(--ppc-orange-dark);
+
+    margin-top: 1rem;
+
+}
+
+
+
+.tools-glossary dt:first-child {
+
+    margin-top: 0;
+
+}
+
+
+
+.tools-glossary dd {
+
+    margin: 0.25rem 0 0;
+
+    color: var(--ppc-gray-700);
+
+    line-height: 1.55;
+
+}
+
+
+
 @media (max-width: 640px) {
 
     .welcome-columns {

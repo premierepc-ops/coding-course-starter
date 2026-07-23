@@ -15,9 +15,12 @@ LEARNERS_DIR = os.path.join(ROOT, ".learners")
 PHASE_CATALOG = [
     {
         "num": 0,
-        "title": "Recon",
-        "tagline": "Map the codebase before you touch anything.",
-        "links": [{"label": "Read recon.md", "href": None, "note": "In .learners/<slug>/recon.md"}],
+        "title": "Meet your tools",
+        "tagline": "Learn what GitHub, Python, Cursor, and the rest mean — before you install anything.",
+        "links": [
+            {"label": "Phase 0 — tool glossary", "href": "/tools"},
+            {"label": "Read recon.md", "href": None, "note": "In .learners/<slug>/ after your fork"},
+        ],
     },
     {
         "num": 1,
@@ -249,10 +252,10 @@ def _current_phase_num(phases: list[PhaseState]) -> int:
 def _pick_next_action(phases, learner, current_user, setup) -> dict:
     if not learner:
         return {
-            "title": "Start Session 1 — read the step-by-step guide",
-            "detail": "Never coded before? The Start Here page walks you through fork, install, sign-in, and your first file — in plain English.",
-            "href": "/start",
-            "label": "Open Start Here",
+            "title": "Phase 0 — meet your tools",
+            "detail": "Read what GitHub, Python, Cursor, and Railway mean — in plain English — before Session 1 setup.",
+            "href": "/tools",
+            "label": "Open Phase 0 — Meet your tools",
         }
 
     incomplete_setup = [s for s in setup if not s["done"]]
@@ -270,10 +273,10 @@ def _pick_next_action(phases, learner, current_user, setup) -> dict:
             continue
         if phase.num == 0:
             return {
-                "title": "Finish Phase 0 recon",
-                "detail": phase.whats_next or "Read the repo and fill in .learners/<slug>/recon.md with your agent.",
-                "href": None,
-                "label": None,
+                "title": "Phase 0 — meet your tools",
+                "detail": "Read the tool glossary first. No installs until you know what GitHub, Python, Cursor, and Railway actually are.",
+                "href": "/tools",
+                "label": "Open Phase 0 — Meet your tools",
             }
         if phase.num == 1:
             return {
@@ -330,6 +333,7 @@ def build_nav(current_user=None) -> dict:
         if getattr(current_user, "is_admin", False):
             return {
                 "start": True,
+                "tools": True,
                 "home": True,
                 "aboutme": True,
                 "guestbook": True,
@@ -340,6 +344,7 @@ def build_nav(current_user=None) -> dict:
         phase = current_phase_for_user(current_user)
         return {
             "start": True,
+            "tools": phase < 1,
             "home": True,
             "aboutme": phase >= 1,
             "guestbook": phase >= 3,
@@ -347,9 +352,10 @@ def build_nav(current_user=None) -> dict:
             "admin": False,
         }
 
-    # Signed out — Session 1 only; no app sections until they're in the course.
+    # Signed out — Phase 0 + Start Here only until they're in the course.
     return {
         "start": True,
+        "tools": True,
         "home": True,
         "aboutme": False,
         "guestbook": False,

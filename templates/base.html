@@ -23,6 +23,9 @@
             <span class="brand-tag">Coding Course</span>
         </a>
         <nav class="site-nav" aria-label="Main">
+            {% if nav.tools %}
+                <a href="/tools">Meet your tools</a>
+            {% endif %}
             {% if nav.start %}
                 <a href="/start" class="nav-start">Start Here</a>
             {% endif %}
