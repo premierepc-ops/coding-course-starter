@@ -12,20 +12,20 @@ Work top to bottom. Steps marked **[Instructor]** need the person running the co
 - **[Instructor]** Railway project connected to the student's fork (see step 5)
 - Read **`ARCHITECTURE.md`** if anything about forks, login, or privacy is unclear
 
-### Privacy: public vs private fork
+### Privacy: private repo required
 
-The template repo is public. When a student forks (or uses **Use this template**), their repo can be **Public** or **Private**:
+The template repo on GitHub is public — that's the shared starter only. When a student uses **Use this template**, their new repo must be **Private**:
 
-- **Public fork** — anyone on GitHub can see `.learners/<slug>/` files (name, progress notes) if committed.
-- **Private fork** — only people you invite can see the repo. Recommended for real student data.
+- **Private** — only people they invite can see the repo. **This is required** — `.learners/<slug>/` holds their name and progress.
+- Do **not** create a public copy. Quiz scores and course notes do not belong on public GitHub.
 
-On Railway, you can register the learner with **env vars only** (`LEARNER_SLUG`, `LEARNER_NAME`, `LEARNER_AGE`, `LEARNER_PIN`) before the student adds anything to git. Still use a private fork once they clone and work locally.
+On Railway, you can register the learner with **env vars only** (`LEARNER_SLUG`, `LEARNER_NAME`, `LEARNER_AGE`, `LEARNER_PIN`) before the student adds anything to git. Their GitHub repo must still be **Private** once they clone and work locally.
 
 Never commit `LEARNER_PIN` or `INSTRUCTOR_PASSWORD` to git.
 
 ## 1. Fork and clone
 
-1. Student forks this template on GitHub (or **Use this template** → create repo). Prefer **Private**.
+1. Student uses **Use this template** → create repo. Set visibility to **Private** (required).
 2. Clone the fork locally and open in Cursor
 
 ## 2. Create the learner folder

@@ -34,7 +34,7 @@ START_GUIDE = {
                 'Click **Create a new repository**.',
                 "Owner: your GitHub account (not premierepc-ops).",
                 "Repository name: jaqira-coding-course (all lowercase, hyphens OK).",
-                "Visibility: **Private** (recommended — your progress files stay off public GitHub).",
+                "Visibility: **Private** — required. Your name and progress files must not be public on GitHub.",
                 "Leave everything else default. Click **Create repository**.",
                 "You now have your own repo. Copy its HTTPS URL from the green Code button — you need it in Step 3.",
             ],
