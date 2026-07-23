@@ -1,60 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#111827">
-    <title>{% block title %}Coding Course{% endblock %} · PremierePC</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% block extra_head %}{% endblock %}
-</head>
-<body class="{% block body_class %}{% endblock %}">
-    <div class="accent-stripe" aria-hidden="true"></div>
-    <header class="site-header">
-        <a class="brand" href="/">
-            <img src="{{ url_for('static', filename='images/premierepc-logo.webp') }}"
-                 alt="PremierePC"
-                 class="brand-logo"
-                 width="134"
-                 height="48">
-            <span class="brand-tag">Coding Course</span>
-        </a>
-        <nav class="site-nav" aria-label="Main">
-            <a href="/">Home</a>
-            <a href="/aboutme/">About Me</a>
-            <a href="/guestbook/">Guestbook</a>
-            <a href="/quiz/">Quiz</a>
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('course_auth.logout') }}" class="nav-auth">Sign out</a>
-            {% else %}
-                <a href="{{ url_for('course_auth.login') }}" class="nav-auth">Sign in</a>
-            {% endif %}
-        </nav>
-    </header>
-
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flash">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
-    <main class="site-main">
-        {% block content %}{% endblock %}
-    </main>
-
-    <footer class="site-footer">
-        <p>
-            <a href="https://premierepc.com/" target="_blank" rel="noopener">PremierePC</a>
-            · Coding Course · Greenville, SC
-        </p>
-    </footer>
-</body>
-</html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111827">
+    <title>{% block title %}Coding Course{% endblock %} · PremierePC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <div class="accent-stripe" aria-hidden="true"></div>
+    <header class="site-header">
+        <a class="brand" href="/">
+            <img src="{{ url_for('static', filename='images/premierepc-logo.webp') }}"
+                 alt="PremierePC"
+                 class="brand-logo"
+                 width="134"
+                 height="48">
+            <span class="brand-tag">Coding Course</span>
+        </a>
+        <nav class="site-nav" aria-label="Main">
+            <a href="/start" class="nav-start">Start Here</a>
+            <a href="/">Home</a>
+            <a href="/aboutme/">About Me</a>
+            <a href="/guestbook/">Guestbook</a>
+            <a href="/quiz/">Quiz</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('course_auth.logout') }}" class="nav-auth">Sign out</a>
+            {% else %}
+                <a href="{{ url_for('course_auth.login') }}" class="nav-auth">Sign in</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>
+            <a href="https://premierepc.com/" target="_blank" rel="noopener">PremierePC</a>
+            · Coding Course · Greenville, SC
+        </p>
+    </footer>
+</body>
+</html>

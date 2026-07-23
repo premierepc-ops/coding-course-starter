@@ -26,6 +26,8 @@ from blueprints.aboutme import aboutme_bp
 from blueprints.guestbook import guestbook_bp
 from blueprints.quiz import quiz_bp
 from course_dashboard import build_dashboard
+from start_guide import START_GUIDE
+from course_config import LEARNERS
 
 init_auth(app)
 
@@ -44,6 +46,11 @@ def healthz():
 def home():
     ctx = build_dashboard(current_user, request.host)
     return render_template("index.html", **ctx)
+
+
+@app.route("/start")
+def start_here():
+    return render_template("start.html", guide=START_GUIDE, learners=LEARNERS)
 
 
 @app.template_global()

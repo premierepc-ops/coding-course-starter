@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Start Here{% endblock %}
+
+{% block content %}
+<header class="hero">
+  <p class="eyebrow">PremierePC · Session 1</p>
+  <h1>{{ guide.title }}</h1>
+  <p class="lede">{{ guide.intro }}</p>
+</header>
+
+<section class="panel next-panel">
+  <h2>Do this first</h2>
+  <p class="next-title">Work through the steps below in order.</p>
+  <p class="muted">Stuck? Ask Dad — that's what Session 1 is for.</p>
+  {% if learners %}
+    <a class="button" href="{{ url_for('course_auth.login') }}">I'm ready to sign in</a>
+  {% endif %}
+</section>
+
+{% for step in guide.steps %}
+<section class="panel step-panel" id="step-{{ step.num }}">
+  <div class="step-head">
+    <span class="step-num">Step {{ step.num }}</span>
+    <h2 class="step-title">{{ step.title }}</h2>
+  </div>
+  <p class="muted step-summary">{{ step.summary }}</p>
+  <ol class="direction-list">
+    {% for line in step.directions %}
+      <li>{{ line }}</li>
+    {% endfor %}
+  </ol>
+  {% if step.link %}
+    <a class="button button-secondary" href="{{ step.link.href }}" {% if step.link.href.startswith('http') %}target="_blank" rel="noopener"{% endif %}>{{ step.link.label }}</a>
+  {% endif %}
+</section>
+{% endfor %}
+
+<section class="panel muted-panel">
+  <p>Finished Session 1 setup? <a href="{{ url_for('course_auth.login') }}">Sign in</a> with the PIN Dad gave you, then head to <a href="/">Course Home</a>.</p>
+</section>
+{% endblock %}

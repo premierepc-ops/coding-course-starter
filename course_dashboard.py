@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from course_config import LEARNERS
+from start_guide import SETUP_STEPS, START_GUIDE
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 LEARNERS_DIR = os.path.join(ROOT, ".learners")
@@ -64,14 +65,7 @@ PHASE_CATALOG = [
     },
 ]
 
-SETUP_STEPS = [
-    {"id": "fork", "label": "Fork this template on GitHub and clone locally"},
-    {"id": "tools", "label": "Install Cursor, Python 3, and Git"},
-    {"id": "learner", "label": "Create .learners/<slug>/ and add yourself to course_config.py"},
-    {"id": "env", "label": "Copy .env.example → .env and set SECRET_KEY"},
-    {"id": "signin", "label": "Sign in at /login so quizzes track your progress"},
-    {"id": "deploy", "label": "Push to main — Railway deploys this app live"},
-]
+# Setup checklist — imported from start_guide.py (plain-English directions per step)
 
 
 @dataclass
@@ -199,14 +193,12 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
 
     # Setup checklist — only auto-check what we can verify reliably
     setup_done = set()
-    if slug and os.path.isfile(os.path.join(LEARNERS_DIR, slug, "LEARNER.md")):
-        setup_done.add("learner")
     if current_user and getattr(current_user, "is_authenticated", False) and not getattr(
         current_user, "is_admin", False
     ):
         setup_done.add("signin")
-    if host and "railway.app" in host:
-        setup_done.add("deploy")
+    if slug and os.path.isfile(os.path.join(LEARNERS_DIR, slug, "LEARNER.md")):
+        setup_done.add("learner")
 
     setup = []
     for step in SETUP_STEPS:
@@ -236,6 +228,7 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
         "current_phase": current_phase,
         "learners_registered": LEARNERS,
         "is_live": bool(host and "railway.app" in host),
+        "start_guide_url": "/start",
     }
 
 
@@ -249,20 +242,20 @@ def _current_phase_num(phases: list[PhaseState]) -> int:
 def _pick_next_action(phases, learner, current_user, setup) -> dict:
     if not learner:
         return {
-            "title": "Sign in to start",
-            "detail": "Pick your name at /login so the dashboard tracks your progress and quizzes.",
-            "href": "/login",
-            "label": "Sign in",
+            "title": "Start Session 1 — read the step-by-step guide",
+            "detail": "Never coded before? The Start Here page walks you through fork, install, sign-in, and your first file — in plain English.",
+            "href": "/start",
+            "label": "Open Start Here",
         }
 
     incomplete_setup = [s for s in setup if not s["done"]]
-    if incomplete_setup and incomplete_setup[0]["id"] in ("signin", "learner", "fork"):
+    if incomplete_setup:
         step = incomplete_setup[0]
         return {
             "title": step["label"],
-            "detail": "Complete setup so Session 1 can focus on code, not config.",
-            "href": "/login" if step["id"] == "signin" else None,
-            "label": "Sign in" if step["id"] == "signin" else None,
+            "detail": (step.get("directions") or ["See Start Here for full directions."])[0],
+            "href": step.get("link", {}).get("href") or "/start",
+            "label": step.get("link", {}).get("label") or "See how to do this",
         }
 
     for phase in phases:
