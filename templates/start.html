@@ -12,7 +12,7 @@
 <section class="panel next-panel">
   <h2>Do this first</h2>
   <p class="next-title">Work through the steps below in order.</p>
-  <p class="muted">Stuck? Ask Dad — that's what Session 1 is for.</p>
+  <p class="muted">Stuck? Ask your instructor — that's what Session 1 is for.</p>
   {% if learners %}
     <a class="button" href="{{ url_for('course_auth.login') }}">I'm ready to sign in</a>
   {% endif %}
@@ -37,6 +37,6 @@
 {% endfor %}
 
 <section class="panel muted-panel">
-  <p>Finished Session 1 setup? <a href="{{ url_for('course_auth.login') }}">Sign in</a> with the PIN Dad gave you, then head to <a href="/">Course Home</a>.</p>
+  <p>Finished Session 1 setup? <a href="{{ url_for('course_auth.login') }}">Sign in</a> with the PIN your instructor gave you, then head to <a href="/">Course Home</a>.</p>
 </section>
 {% endblock %}

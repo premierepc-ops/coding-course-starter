@@ -21,11 +21,11 @@
     {% if not learners %}
       <div class="callout">
         <p><strong>Your course isn't wired up yet.</strong></p>
-        <p>That's OK for minute one — follow the Session 1 guide first. Dad finishes the behind-the-scenes setup on Railway.</p>
+        <p>That's OK for minute one — follow the Session 1 guide first. Your instructor finishes the behind-the-scenes setup on Railway.</p>
         <a class="button" href="/start">Open Start Here — Session 1 guide</a>
       </div>
     {% else %}
-      <p class="muted">Choose your name and enter the PIN Dad gave you.</p>
+      <p class="muted">Choose your name and enter the PIN your instructor gave you.</p>
       <form method="post" class="auth-form">
         <label>
           I am
@@ -38,11 +38,11 @@
         </label>
         <label>
           PIN
-          <input type="password" name="pin" {% if pin_required %}required{% endif %} autocomplete="current-password" placeholder="Ask Dad if you don't have it">
+          <input type="password" name="pin" {% if pin_required %}required{% endif %} autocomplete="current-password" placeholder="Ask your instructor if you don't have it">
         </label>
         <button type="submit" class="button">Continue</button>
       </form>
-      <p class="muted auth-hint">Forgot your PIN? Ask Dad — it's not stored in the code you write.</p>
+      <p class="muted auth-hint">Forgot your PIN? Ask your instructor — it's not stored in the code you write.</p>
     {% endif %}
 
     <p class="auth-footer-link">

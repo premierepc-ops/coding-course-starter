@@ -6,7 +6,7 @@ START_GUIDE = {
     "title": "Session 1 — Start here",
     "intro": (
         "Brand new to coding? Follow these steps in order. "
-        "Do them with Dad in the room the first time — that's normal. "
+        "Do them with your instructor the first time — that's normal. "
         "When a step is done, come back to Course Home and sign in."
     ),
     "steps": [
@@ -54,7 +54,7 @@ START_GUIDE = {
             "title": "Sign in on this website",
             "summary": "So quizzes and your dashboard know it's you.",
             "directions": [
-                "Ask Dad for your sign-in PIN (he sets it — you don't pick it yourself).",
+                "Ask your instructor for your sign-in PIN (they set it — you don't pick it yourself).",
                 "Click Sign in in the top menu of this site.",
                 "Choose your name from the list, type your PIN, click **Continue**.",
                 "You'll land on Course Home with your name at the top.",
@@ -83,7 +83,7 @@ START_GUIDE = {
             "directions": [
                 "In your repo, open blueprints/aboutme/templates/aboutme/index.html.",
                 "Change the placeholder text to something about you (hobbies, fun fact, photo link).",
-                "Save the file. Dad will help you commit, push, and open a pull request.",
+                "Save the file. Your instructor will help you commit, push, and open a pull request.",
                 "After the PR merges, visit About Me in the menu above — your changes should be live.",
             ],
             "link": {"label": "Preview About Me page", "href": "/aboutme/"},
@@ -111,7 +111,7 @@ SETUP_STEPS = [
     },
     {
         "id": "signin",
-        "label": "Sign in on this site (name + PIN from Dad)",
+        "label": "Sign in on this site (name + PIN from your instructor)",
         "directions": START_GUIDE["steps"][3]["directions"],
         "link": START_GUIDE["steps"][3]["link"],
     },

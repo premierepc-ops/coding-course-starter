@@ -35,7 +35,7 @@ _Written by the Cursor agent during Phase 0. Shared with the learner in Phase 3.
 
 ## What I found that's worth knowing
 
-<anything surprising — flag in notes-for-dad.md>
+<anything surprising — flag in notes-for-instructor.md>
 
 ## Part B — HTMX reference (Phase 3 addendum)
 

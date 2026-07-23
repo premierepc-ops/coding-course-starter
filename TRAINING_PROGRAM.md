@@ -4,7 +4,7 @@
 > top-to-bottom. The agent reads it, recons the actual codebase, and runs the course adaptively.
 >
 > This is the **reusable program**. Anything specific to one learner — their profile, progress,
-> recon, and the notes you flag for Dad — lives in their own instance folder under `.learners/<slug>/`.
+> recon, and the notes you flag for your instructor — lives in their own instance folder under `.learners/<slug>/`.
 > To start a new learner, follow `ONBOARDING.md`.
 
 ---
@@ -64,7 +64,7 @@ not the calendar, define progress.
 
 2. **The branch rule.** Practice files (anything in `lessons/<learner>/`) can go straight to `main` —
    they don't affect the deployed app structure much. **Anything that touches app code goes on a branch,
-   opens a PR, gets Dad's review and merge.** No exceptions, no "just this once."
+   opens a PR, gets The instructor's review and merge.** No exceptions, no "just this once."
 
 3. **The git-only deploy rule.** No editing files in the Railway dashboard or on any server directly.
    Changes go through git → push → deploy. Direct edits drift and get overwritten.
@@ -72,7 +72,7 @@ not the calendar, define progress.
 4. **The logs rule.** When something breaks, they read the error message or logs first. You don't start
    debugging until they've told you what the error says. Recognize the pattern — don't skip it.
 
-5. **The escalation rule.** Stop and have them ping Dad before doing anything that touches: DNS, secrets
+5. **The escalation rule.** Stop and have them ping your instructor before doing anything that touches: DNS, secrets
    rotation, production data deletion, Railway project deletion, billing, or destructive commands.
    Never run a destructive command on their behalf.
 
@@ -86,7 +86,7 @@ not the calendar, define progress.
    - **Composer / Agent** for multi-file work — high usage; **one scoped prompt per milestone**, not ten micro-prompts.
    - **Chat (Ask mode)** to understand errors before asking Agent to fix — medium usage.
    - Open the **Cursor usage dashboard** at session start.
-   - If throttled mid-session: finish by hand; Dad upgrades to Pro only if it blocks graduation work.
+   - If throttled mid-session: finish by hand; Your instructor upgrades to Pro only if it blocks graduation work.
 
 ---
 
@@ -179,8 +179,8 @@ Cumulative GPA = average of best GPA points across all completed phases.
 
 ### Feedback
 - After every submission the system generates a written assessment (weak topics, score, honest summary),
-  stored with the attempt and visible to both the learner and Dad.
-- Dad (or the agent) adds written session notes via `/quiz/admin` after instructor login.
+  stored with the attempt and visible to both the learner and instructor.
+- The instructor (or the agent) adds written session notes via `/quiz/admin` after instructor login.
 - The admin dashboard shows every enrolled learner's attempts and GPA side by side.
 
 ### When to administer
@@ -251,7 +251,7 @@ Add to `recon.md` when starting Phase 3:
 - [ ] Same repo's `get_db()` / SQLite pattern in `blueprints/guestbook/`
 
 If anything surprises you (insecure pattern, broken thing, missing piece), flag it in
-`.learners/<slug>/notes-for-dad.md`. Don't fix it silently.
+`.learners/<slug>/notes-for-instructor.md`. Don't fix it silently.
 
 ---
 
@@ -273,7 +273,7 @@ to their live Railway app.
 - Git: commit practice file to `main`.
 - First Composer session — one scoped prompt like *"Make a script that asks my favorite color and tells
   it back, with a comment on each line."* They read every line, explain it.
-- About Me page: branch, customize `blueprints/aboutme/`, push, open PR. Dad reviews and merges.
+- About Me page: branch, customize `blueprints/aboutme/`, push, open PR. Your instructor reviews and merges.
 - Push to `main` → confirm Railway deploy → visit live URL.
 
 **Doing-based checks:** *Build:* add a second route (e.g. `/aboutme/fun-fact`) from scratch and predict
@@ -349,8 +349,8 @@ matching the `get_db()` pattern — from scratch. *Debug:* give them a POST rout
 
 **Suggested activities:**
 - Walk the deploy path: commit → push → Railway build logs → Gunicorn start → `/healthz`.
-- Set `DATA_DIR=/data` and confirm volume mount (Dad helps first time).
-- Open PR for Phase 3 feature. Dad reviews and merges. Watch Railway redeploy.
+- Set `DATA_DIR=/data` and confirm volume mount (Your instructor helps first time).
+- Open PR for Phase 3 feature. Your instructor reviews and merges. Watch Railway redeploy.
 - Read runtime logs when something breaks; find the traceback.
 - **Debug drill:** "The change isn't showing" — hard refresh? wrong branch merged? deploy failed?
 
@@ -395,15 +395,15 @@ input and have them explain the XSS risk.
 
 **Milestones:**
 - Spec written (`.learners/<slug>/CAPSTONE.md`): one paragraph — what it does, who uses it, what success
-  looks like. Dad signs off on scope before building starts.
+  looks like. Your instructor signs off on scope before building starts.
 - Built and deployed to their Railway app.
-- Walks Dad through every file. Demo night.
+- Walks your instructor through every file. Demo night.
 
 **Suggested activities:**
-- Day 1: pick the feature, write the spec. Dad signs off on scope.
+- Day 1: pick the feature, write the spec. Your instructor signs off on scope.
 - Build it. Daily commits. Every commit message in their words. Batch Composer prompts.
 - Edge cases (empty input, weird characters, too long). Write a `README.md` for the feature. Deploy via PR.
-- Demo night: they walk Dad through every file. **Graduation criterion: they can explain every line.** A
+- Demo night: they walk your instructor through every file. **Graduation criterion: they can explain every line.** A
   line they can't explain is removed or rewritten before they "graduate."
 
 **Done when:** demo night happens and they pass (all four graduation criteria — see Assessment).
@@ -413,23 +413,23 @@ input and have them explain the XSS risk.
 ## Adaptation guidance
 
 - **Flying through a phase:** add depth, not extra phases. Have them refactor something, write a `pytest`
-  test, or review one of Dad's old commits and explain it.
+  test, or review one of The instructor's old commits and explain it.
 - **Stuck on a phase:** drop a sub-step; take a tangent that makes it concrete. Slowing a phase is fine;
   skipping a milestone is not.
 - **Losing interest:** ask what they actually want to build; pivot the next feature toward it. Milestones
   don't change — the example projects can.
 - **They find a real bug during recon or building:** great — that becomes a real PR. Don't let them fix it
-  without Dad reviewing.
+  without your instructor reviewing.
 
 ---
 
-## Escalation triggers — stop and bring in Dad
+## Escalation triggers — stop and bring in your instructor
 
 - Anything involving DNS, certificates, secrets rotation, Railway billing, or destructive commands.
-- Merging their own PRs to `main`. Always Dad's job.
+- Merging their own PRs to `main`. Always The instructor's job.
 - App is broken and they can't fix it from logs.
 - Stuck >30 min after asking you twice.
-- They want to do something outside the curriculum scope (cool, but Dad decides).
+- They want to do something outside the curriculum scope (cool, but the instructor decides).
 - Frustrated or burned out for more than one session.
 
 ---
@@ -454,7 +454,7 @@ Everything lives under **`.learners/<slug>/`** (copy `.learners/_TEMPLATE/` to s
 - `recon.md` — output of Phase 0 recon. Shared with the learner in Phase 3.
 - `progress.md` — running log. Each session: what we did, what landed, what's next, what's blocking.
   Update at the end of every session, and read it at the start of the next one.
-- `notes-for-dad.md` — anything Dad needs to know that isn't urgent enough to interrupt with. He checks
+- `notes-for-instructor.md` — anything the instructor needs to know that isn't urgent enough to interrupt with. The instructor checks
   it weekly.
 - `CAPSTONE.md` — the learner's capstone spec (written in Phase 6).
 

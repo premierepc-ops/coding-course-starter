@@ -8,7 +8,7 @@ _Updated by the agent at the end of every session. Read this at the start of the
 
 **Status:** Not started.
 **What's next:** Complete codebase recon (see Phase 0 in `TRAINING_PROGRAM.md`); write findings to
-`recon.md`; flag anything surprising in `notes-for-dad.md`.
+`recon.md`; flag anything surprising in `notes-for-instructor.md`.
 
 ---
 

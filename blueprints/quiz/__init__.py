@@ -256,7 +256,7 @@ def get_cumulative_gpa(user_id):
 @login_required
 def dashboard():
     # Student always gets the student view, even if they're also admin.
-    # Non-student admins (Dad) get redirected to the review dashboard.
+    # Non-student admins get redirected to the review dashboard.
     if not learner_for_user(current_user):
         if current_user.is_admin:
             return redirect(url_for("quiz.admin_view"))

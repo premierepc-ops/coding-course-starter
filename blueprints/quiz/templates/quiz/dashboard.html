@@ -195,14 +195,14 @@
 
   {% if submitted %}
   <div class="submitted-banner">
-    Quiz submitted. Dad will review your results. Write what you remember getting wrong below.
+    Quiz submitted. Your instructor will review your results. Write what you remember getting wrong below.
   </div>
   {% endif %}
 
   <div class="notes-section">
     <div class="notes-header">
       <div class="notes-title">My Session Notes</div>
-      <div class="notes-sub">Your private space. Write what clicked, what didn't, questions you have. Dad can see these.</div>
+      <div class="notes-sub">Your private space. Write what clicked, what didn't, questions you have. Your instructor can see these.</div>
     </div>
     <form method="POST" action="{{ url_for('quiz.save_student_notes') }}">
       <textarea name="note" class="notes-textarea" placeholder="Write anything — what made sense today, what confused you, what you want to remember, what you'd do differently...">{{ student_note }}</textarea>
