@@ -5,7 +5,7 @@
 {% block content %}
 <header class="hero">
   {% if learner_name %}
-    <p class="eyebrow">Coding course</p>
+    <p class="eyebrow">PremierePC · Coding course</p>
     <h1>Welcome, {{ learner_name }}</h1>
     <p class="lede">Phase {{ current_phase }} is up next. Everything you need lives in this app — code, quizzes, and labs.</p>
   {% elif is_instructor %}
@@ -13,7 +13,7 @@
     <h1>Course dashboard</h1>
     <p class="lede">Students sign in at <a href="/login">/login</a>. Review attempts at <a href="/quiz/admin">/quiz/admin</a>.</p>
   {% else %}
-    <p class="eyebrow">Coding course</p>
+    <p class="eyebrow">PremierePC · Coding course</p>
     <h1>Learn to code with AI — on your own app</h1>
     <p class="lede">Fork this repo, deploy to Railway, and work through six phases. Sign in to track progress.</p>
   {% endif %}
