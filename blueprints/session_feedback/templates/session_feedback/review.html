@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Session feedback{% endblock %}
+{% block body_class %}surface-dark{% endblock %}
+
+{% block content %}
+<div class="admin-wrap feedback-review">
+  <header class="admin-header">
+    <h2>Session feedback — curriculum improvement</h2>
+    <p class="sub">What worked and what didn't, collected after each step. Use this to revise session guides.</p>
+    <p class="sub"><a href="{{ url_for('quiz.admin_view') }}">← Back to quiz admin</a></p>
+  </header>
+
+  <section class="panel" style="background: rgba(255,255,255,0.06); border-color: rgba(255,119,0,0.2);">
+    <h3>Summary by section</h3>
+    <ul class="feedback-summary-list">
+      {% for session_num, steps in summary.items()|sort %}
+      <li>
+        <strong>{{ session_label(session_num) }}</strong>
+        <ul>
+          {% for row in steps %}
+          <li>
+            <a href="{{ url_for('session_feedback.instructor_review', session=session_num, step=row.step_num) }}">
+              {{ step_label(session_num, row.step_num) }}
+            </a>
+            — {{ row.entry_count }} note(s), latest {{ row.latest_at[:16] }}
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      <li class="muted">No feedback saved yet. Notes appear after instructors or students submit on session pages.</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="panel" style="background: rgba(255,255,255,0.06); border-color: rgba(255,119,0,0.2); margin-top: 1rem;">
+    <h3>
+      {% if session_num is not none and step_num is not none %}
+        Notes: {{ session_label(session_num) }} · {{ step_label(session_num, step_num) }}
+      {% else %}
+        All notes (newest first)
+      {% endif %}
+    </h3>
+    {% for entry in entries %}
+    <article class="feedback-review-card">
+      <p class="feedback-meta">
+        {{ session_label(entry.session_num) }} · {{ step_label(entry.session_num, entry.step_num) }}
+        · {{ entry.author_name or entry.author_role }}
+        {% if entry.learner_slug %} · {{ entry.learner_slug }}{% endif %}
+        · {{ entry.created_at }}
+      </p>
+      {% if entry.worked %}
+        <p><strong>Worked:</strong> {{ entry.worked }}</p>
+      {% endif %}
+      {% if entry.didnt_work %}
+        <p><strong>Didn't:</strong> {{ entry.didnt_work }}</p>
+      {% endif %}
+    </article>
+    {% else %}
+    <p class="muted">No entries{% if session_num is not none %} for this filter{% endif %}.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

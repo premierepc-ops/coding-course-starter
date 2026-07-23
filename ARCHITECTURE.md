@@ -69,3 +69,7 @@ You do **not** need one giant update. Ship in slices:
 3. If you fixed the template and she already forked: merge template `main` into her fork (GitHub "Sync fork" or `git pull upstream main`), then push.
 
 **Rule of thumb:** Railway deploys **one GitHub repo**. Unpushed local edits and unpulled template updates are **not** on the live site until they're on that repo's `main`.
+
+## Session feedback (curriculum improvement)
+
+Each step on `/tools`, `/start`, and `/session/2`…`/session/6` has **What worked / What didn't** forms. Entries append to `session_feedback.db` (same `DATA_DIR` volume as quiz data). Instructors review aggregated notes at **`/instructor/session-feedback`** (linked from `/quiz/admin`). Use this to revise `session_guides.py` between learners — nothing is auto-edited; you read the log and update the guides.

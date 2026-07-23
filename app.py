@@ -37,7 +37,9 @@ from blueprints.course_auth import course_auth_bp, init_auth
 from blueprints.aboutme import aboutme_bp
 from blueprints.guestbook import guestbook_bp
 from blueprints.quiz import quiz_bp
+from blueprints.session_feedback import session_feedback_bp
 from course_dashboard import build_dashboard, build_nav, current_phase_for_user
+from session_feedback_store import feedback_counts, recent_for_step
 from session_guides import SESSION_GUIDES, session_unlocked, session_url, sessions_for_nav
 from start_guide import START_GUIDE
 from tool_icons import TOOL_ICONS
@@ -50,6 +52,23 @@ app.register_blueprint(course_auth_bp, url_prefix="/")
 app.register_blueprint(aboutme_bp, url_prefix="/aboutme")
 app.register_blueprint(guestbook_bp, url_prefix="/guestbook")
 app.register_blueprint(quiz_bp, url_prefix="/quiz")
+app.register_blueprint(session_feedback_bp)
+
+
+def _feedback_bundle(session_num: int, is_instructor: bool, signed_in: bool) -> dict:
+    counts = feedback_counts(session_num)
+    can_submit = is_instructor or signed_in
+    step_recent: dict[int, list] = {0: recent_for_step(session_num, 0, limit=2)}
+    guide = SESSION_GUIDES.get(session_num) or {}
+    for step in guide.get("steps", []):
+        step_recent[step["num"]] = recent_for_step(session_num, step["num"], limit=2)
+    return {
+        "session_num": session_num,
+        "feedback_counts": counts,
+        "step_recent": step_recent,
+        "can_submit_feedback": can_submit,
+        "feedback_learners": LEARNERS if is_instructor else None,
+    }
 
 
 @app.route("/healthz")
@@ -101,18 +120,42 @@ def _render_session(session_num: int):
     all_sessions = sessions_for_nav(unlocked, is_instructor, signed_in or session_num == 1)
     next_session = next((s for s in all_sessions if s["num"] == session_num + 1), None)
     guide = SESSION_GUIDES[session_num]
-    return render_template(
-        "session.html",
-        guide=guide,
-        learners=LEARNERS if session_num == 1 else None,
-        all_sessions=all_sessions,
-        next_session=next_session,
-    )
+    return_to = session_url(session_num)
+    ctx = {
+        "guide": guide,
+        "learners": LEARNERS if session_num == 1 else None,
+        "all_sessions": all_sessions,
+        "next_session": next_session,
+        "return_to": return_to,
+        **_feedback_bundle(session_num, is_instructor, signed_in),
+    }
+    return render_template("session.html", **ctx)
 
 
 @app.route("/tools")
 def tools_glossary():
-    return render_template("tools.html", guide=TOOLS_GUIDE, icons=TOOL_ICONS)
+    is_instructor = bool(
+        current_user
+        and getattr(current_user, "is_authenticated", False)
+        and getattr(current_user, "is_admin", False)
+    )
+    signed_in = bool(
+        current_user
+        and getattr(current_user, "is_authenticated", False)
+        and not is_instructor
+    )
+    tool_recent = {
+        idx: recent_for_step(0, idx, limit=1)
+        for idx in range(1, len(TOOLS_GUIDE["tools"]) + 1)
+    }
+    return render_template(
+        "tools.html",
+        guide=TOOLS_GUIDE,
+        icons=TOOL_ICONS,
+        return_to="/tools",
+        tool_recent=tool_recent,
+        **_feedback_bundle(0, is_instructor, signed_in),
+    )
 
 
 @app.context_processor

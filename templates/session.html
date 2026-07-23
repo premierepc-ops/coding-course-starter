@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros/session_feedback.html" import step_feedback %}
 
 {% block title %}{{ guide.title }}{% endblock %}
 
@@ -49,8 +50,34 @@
   {% if step.link %}
     <a class="button button-secondary" href="{{ step.link.href }}" {% if step.link.href.startswith('http') %}target="_blank" rel="noopener"{% endif %}>{{ step.link.label }}</a>
   {% endif %}
+
+  {{ step_feedback(
+    session_num,
+    step.num,
+    step.title,
+    feedback_counts,
+    step_recent.get(step.num, []),
+    return_to,
+    can_submit_feedback,
+    feedback_learners
+  ) }}
 </section>
 {% endfor %}
+
+<section class="panel" id="step-0">
+  <h2>Whole session debrief</h2>
+  <p class="muted">After the session, capture what to keep and what to change before the next learner.</p>
+  {{ step_feedback(
+    session_num,
+    0,
+    'Whole session',
+    feedback_counts,
+    step_recent.get(0, []),
+    return_to,
+    can_submit_feedback,
+    feedback_learners
+  ) }}
+</section>
 
 <section class="panel muted-panel">
   {% if guide.session_num == 1 %}

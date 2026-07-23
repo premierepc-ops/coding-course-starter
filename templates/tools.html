@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros/session_feedback.html" import step_feedback %}
 
 {% block title %}Phase 0 — Meet your tools{% endblock %}
 
@@ -14,15 +15,40 @@
   <h2>The toolbox</h2>
   <ul class="tools-list">
     {% for tool in guide.tools %}
-    <li class="tool-card">
+    <li class="tool-card" id="tool-{{ loop.index }}">
       <div class="tool-icon">{{ icons[tool.icon] | safe }}</div>
       <div class="tool-body">
         <h3 class="tool-name">{{ tool.name }}</h3>
         <p class="tool-desc">{{ tool.what }}</p>
+        {{ step_feedback(
+          0,
+          loop.index,
+          tool.name,
+          feedback_counts,
+          tool_recent.get(loop.index, []),
+          return_to,
+          can_submit_feedback,
+          feedback_learners
+        ) }}
       </div>
     </li>
     {% endfor %}
   </ul>
+</section>
+
+<section class="panel" id="step-0">
+  <h2>Phase 0 debrief</h2>
+  <p class="muted">Overall — what worked or confused for this glossary?</p>
+  {{ step_feedback(
+    0,
+    0,
+    'Phase 0 overall',
+    feedback_counts,
+    step_recent.get(0, []),
+    return_to,
+    can_submit_feedback,
+    feedback_learners
+  ) }}
 </section>
 
 <section class="panel next-panel">
