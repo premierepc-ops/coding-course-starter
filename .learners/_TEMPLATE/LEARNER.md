@@ -24,5 +24,5 @@
 - [ ] Forked and cloned; opened in Cursor
 - [ ] Entry added to `course_config.py`
 - [ ] `.learners/<slug>/` filled in
-- [ ] Railway project connected to their fork
+- [ ] Railway project connected to their repo
 - [ ] Phase 0 recon written

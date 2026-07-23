@@ -21,7 +21,6 @@ PHASE_CATALOG = [
         "links": [
             {"label": "Phase 0 — tool glossary", "href": "/tools", "min_phase": 0},
             {"label": "Phase 0 quiz", "href": "/quiz/phase/0", "min_phase": 0},
-            {"label": "Read recon.md", "href": None, "note": "In .learners/<slug>/ after your fork"},
         ],
     },
     {
@@ -40,7 +39,7 @@ PHASE_CATALOG = [
         "tagline": "Scripts, loops, functions — and git as muscle memory.",
         "links": [
             {"label": "Phase 2 guide", "href": "/session/2", "min_phase": 2},
-            {"label": "lessons/ folder", "href": None, "note": "Practice scripts in your fork"},
+            {"label": "lessons/ folder", "href": None, "note": "Practice scripts in your repo"},
             {"label": "Phase 2 quiz", "href": "/quiz/phase/2", "min_phase": 2},
         ],
     },
@@ -50,6 +49,7 @@ PHASE_CATALOG = [
         "tagline": "Routes, SQLite, and HTMX — copy the guestbook pattern.",
         "links": [
             {"label": "Phase 3 guide", "href": "/session/3", "min_phase": 3},
+            {"label": "Read recon.md", "href": None, "note": "In .learners/<slug>/ — your instructor shares this here"},
             {"label": "Guestbook lab", "href": "/guestbook/", "min_phase": 3},
             {"label": "Phase 3 quiz", "href": "/quiz/phase/3", "min_phase": 3},
         ],
@@ -396,7 +396,7 @@ def current_phase_for_user(current_user=None) -> int:
 
 
 def build_nav(current_user=None) -> dict:
-    """Which nav links to show — unlock as the student reaches each phase."""
+    """Which nav links to show — follows progress.md current phase."""
     if current_user and getattr(current_user, "is_authenticated", False):
         if getattr(current_user, "is_admin", False):
             return {

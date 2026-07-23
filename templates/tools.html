@@ -1,56 +1,111 @@
-{% extends "base.html" %}
-{% from "macros/session_feedback.html" import phase_debrief %}
-
-{% block title %}Phase 0 — Meet your tools{% endblock %}
-
-{% block content %}
-<header class="hero">
-  <p class="eyebrow">Phase 0 · Before Phase 1</p>
-  <h1>{{ guide.title }}</h1>
-  <p class="lede">{{ guide.intro }}</p>
-  <p class="muted">Read top to bottom once with your instructor. You are not being tested on definitions — you're building a map.</p>
-</header>
-
-<section class="panel">
-  <h2>The toolbox</h2>
-  <ul class="tools-list">
-    {% for tool in guide.tools %}
-    <li class="tool-card" id="tool-{{ loop.index }}">
-      <div class="tool-icon">{{ icons[tool.icon] | safe }}</div>
-      <div class="tool-body">
-        <h3 class="tool-name">{{ tool.name }}</h3>
-        <p class="tool-desc">{{ tool.what }}</p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-
-<section class="panel" id="phase-debrief">
-  <h2>Phase debrief</h2>
-  <p class="muted">Before the quiz — what clicked? What was still foggy? Your instructor reads these to improve the course.</p>
-  {{ phase_debrief(
-    0,
-    feedback_counts,
-    step_recent.get(0, []),
-    return_to,
-    can_submit_feedback,
-    is_instructor,
-    feedback_learners
-  ) }}
-</section>
-
-<section class="panel next-panel">
-  <h2>Done with Phase 0?</h2>
-  {% if learners_registered %}
-    <p class="muted">Check the vocabulary — then take the Phase 0 quiz (sign in with your PIN).</p>
-    <a class="button" href="/quiz/phase/0">Take Phase 0 quiz →</a>
-    <a class="button button-secondary" href="/start" style="margin-left:0.5rem;">Continue to Phase 1 setup →</a>
-  {% else %}
-    <p class="muted">The vocab quiz needs sign-in — your instructor sets that up in Session 1. For now, keep going with Phase 1 setup.</p>
-    <a class="button" href="/start">Continue to Phase 1 setup →</a>
-    <a class="button button-secondary" href="/tools" style="margin-left:0.5rem;">Re-read the toolbox</a>
-  {% endif %}
-</section>
-{% endblock %}
-
+{% extends "base.html" %}
+
+{% from "macros/session_feedback.html" import phase_debrief %}
+
+
+
+{% block title %}Phase 0 — Meet your tools{% endblock %}
+
+
+
+{% block content %}
+
+<header class="hero">
+
+  <p class="eyebrow">Phase 0 · Before Phase 1</p>
+
+  <h1>{{ guide.title }}</h1>
+
+  <p class="lede">{{ guide.intro }}</p>
+
+  <p class="muted">Read top to bottom once with your instructor. You are not being tested on definitions — you're building a map.</p>
+
+</header>
+
+
+
+<section class="panel">
+
+  <h2>The toolbox</h2>
+
+  <ul class="tools-list">
+
+    {% for tool in guide.tools %}
+
+    <li class="tool-card" id="tool-{{ loop.index }}">
+
+      <div class="tool-icon">{{ icons[tool.icon] | safe }}</div>
+
+      <div class="tool-body">
+
+        <h3 class="tool-name">{{ tool.name }}</h3>
+
+        <p class="tool-desc">{{ tool.what }}</p>
+
+      </div>
+
+    </li>
+
+    {% endfor %}
+
+  </ul>
+
+</section>
+
+
+
+<section class="panel" id="phase-debrief">
+
+  <h2>Phase debrief</h2>
+
+  <p class="muted">Before the quiz — what clicked? What was still foggy? Your instructor reads these to improve the course.</p>
+
+  {{ phase_debrief(
+
+    0,
+
+    feedback_counts,
+
+    step_recent.get(0, []),
+
+    return_to,
+
+    can_submit_feedback,
+
+    is_instructor,
+
+    feedback_learners
+
+  ) }}
+
+</section>
+
+
+
+<section class="panel next-panel">
+
+  <h2>Done with Phase 0?</h2>
+
+  {% if learners_registered %}
+
+    <p class="muted">Check the vocabulary — then take the Phase 0 quiz (sign in with your PIN).</p>
+
+    <a class="button" href="/quiz/phase/0">Take Phase 0 quiz →</a>
+
+    <a class="button button-secondary" href="/start" style="margin-left:0.5rem;">Continue to Phase 1 setup →</a>
+
+  {% else %}
+
+    <p class="muted">The vocab quiz needs sign-in — your instructor sets that up in Phase 1. For now, keep going with Phase 1 setup.</p>
+
+    <a class="button" href="/start">Continue to Phase 1 setup →</a>
+
+    <a class="button button-secondary" href="/tools" style="margin-left:0.5rem;">Re-read the toolbox</a>
+
+  {% endif %}
+
+</section>
+
+{% endblock %}
+
+

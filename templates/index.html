@@ -101,7 +101,7 @@
   <section class="dashboard-tabpanel" role="tabpanel" id="tab-panel-phases" aria-labelledby="tab-btn-phases" data-tab-panel="phases" hidden>
     <div class="panel dashboard-panel">
       <h2>Phase guides</h2>
-      <p class="muted section-note">Phases 0–6. Locked phases unlock as you progress.</p>
+      <p class="muted section-note">Phases 0–6. Locked phases open when your instructor updates progress.md.</p>
       <ol class="course-timeline" aria-label="Course phases">
         {% for s in all_sessions %}
         {% set is_current = s.num == current_phase %}
@@ -113,7 +113,7 @@
               <a class="course-timeline-link" href="{{ s.href }}">Phase {{ s.num }} · {{ s.short_title }}</a>
             {% else %}
               <span class="course-timeline-label">Phase {{ s.num }} · {{ s.short_title }}</span>
-              <span class="course-timeline-note">Reach Phase {{ s.phase_num }} to unlock</span>
+              <span class="course-timeline-note">Opens when Phase {{ s.phase_num }} is marked in progress</span>
             {% endif %}
           </div>
         </li>
@@ -151,7 +151,7 @@
   <section class="dashboard-tabpanel" role="tabpanel" id="tab-panel-map" aria-labelledby="tab-btn-map" data-tab-panel="map" hidden>
     <div class="panel dashboard-panel">
       <h2>Course map</h2>
-      <p class="muted section-note">Phases, quizzes, and what unlocks when.</p>
+      <p class="muted section-note">Phases, quizzes, and links. Nav and guides follow progress.md — not quiz scores alone.</p>
       <div class="phase-grid">
         {% for phase in phases %}
         <article class="phase-card status-{{ phase.status }}">
@@ -174,7 +174,7 @@
             {% for link in phase.links %}
               {% if link.href %}
                 {% if link.locked %}
-                  <li><span class="phase-link-locked">{{ link.label }} — unlocks in Phase {{ link.min_phase }}</span></li>
+                  <li><span class="phase-link-locked">{{ link.label }} — opens in Phase {{ link.min_phase }}</span></li>
                 {% else %}
                   <li><a href="{{ link.href }}">{{ link.label }}</a></li>
                 {% endif %}

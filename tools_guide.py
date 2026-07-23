@@ -33,6 +33,16 @@ TOOLS_GUIDE = {
             "what": "A text window inside Cursor where you type commands like `python hello.py` and the computer runs them.",
         },
         {
+            "name": "GitHub",
+            "icon": "github",
+            "what": "Where your project lives online. Phase 1 creates your own private repo from the course template — not the shared starter everyone else sees.",
+        },
+        {
+            "name": "Use this template",
+            "icon": "fork",
+            "what": "How you get your own private copy of the course starter on GitHub. In Phase 1, click the green **Use this template** button on the starter repo.",
+        },
+        {
             "name": "Git",
             "icon": "git",
             "what": "A save-history system for code. Every change can be saved with a message so you can undo mistakes and see what changed.",
@@ -63,19 +73,9 @@ TOOLS_GUIDE = {
             "what": "Download a copy of a GitHub repo onto your computer so you can open and edit it in Cursor.",
         },
         {
-            "name": "Use this template",
-            "icon": "fork",
-            "what": "How you get your own private copy of the course starter on GitHub. In Phase 1, click the green **Use this template** button on the starter repo.",
-        },
-        {
-            "name": "GitHub",
-            "icon": "github",
-            "what": "Where your project lives online. Phase 1 creates your own private repo from the course template — not the shared starter everyone else sees.",
-        },
-        {
             "name": "Railway",
             "icon": "railway",
-            "what": "Where this app lives on the internet. When you push code to GitHub, Railway rebuilds the site so anyone with the link can see your work.",
+            "what": "Where this app runs on the internet. Your instructor connects it to your repo in Phase 4 — then each push to GitHub can rebuild the live site.",
         },
         {
             "name": "AI assistant",

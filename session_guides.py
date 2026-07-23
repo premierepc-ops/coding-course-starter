@@ -80,12 +80,12 @@ SESSION_2_GUIDE = {
         {
             "num": 6,
             "title": "Phase 2 quiz",
-            "summary": "Unlock Phase 3 when you pass (70%+).",
+            "summary": "Check your understanding — passing does not open Phase 3 by itself.",
             "directions": [
                 "Sign in on this site if you're not already.",
                 "Take the Phase 2 quiz — scenario questions, not memorized definitions.",
                 "Below 70%? Your instructor helps you review wrong answers, then you retake.",
-                "Passed? Phase 3 unlocks on Course Home.",
+                "Passed? Great — your instructor updates progress.md when you're ready for Phase 3.",
             ],
             "link": {"label": "Open Phase 2 quiz", "href": "/quiz/phase/2"},
         },
@@ -168,10 +168,11 @@ SESSION_3_GUIDE = {
         {
             "num": 6,
             "title": "Phase 3 quiz",
-            "summary": "Pass before Phase 4 deploy day.",
+            "summary": "Quiz check before deploy day — your instructor opens Phase 4 in progress.",
             "directions": [
                 "Take Phase 3 quiz when your feature works locally.",
-                "70%+ to advance. Review wrong answers with your instructor if not.",
+                "70%+ is the goal. Review wrong answers with your instructor if not.",
+                "Your instructor marks Phase 3 complete in progress.md when you're ready for Phase 4.",
             ],
             "link": {"label": "Open Phase 3 quiz", "href": "/quiz/phase/3"},
         },

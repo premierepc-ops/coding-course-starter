@@ -1,6 +1,6 @@
 # Coding Course Starter
 
-A **self-contained** learn-to-code platform: Flask app + quizzes + HTMX examples + Cursor-native curriculum. Fork per student, deploy to Railway. No tie-in to any other site.
+A **self-contained** learn-to-code platform: Flask app + quizzes + HTMX examples + Cursor-native curriculum. One private repo per student via **Use this template**, deploy to Railway. No tie-in to any other site.
 
 **Template:** https://github.com/premierepc-ops/coding-course-starter
 
@@ -27,7 +27,7 @@ Visit http://localhost:5000
 
 ## Onboarding a student
 
-See `ONBOARDING.md`. Summary: fork → `.learners/<slug>/` → add to `course_config.py` → Railway project.
+See `ONBOARDING.md`. Summary: **Use this template** → `.learners/<slug>/` → add to `course_config.py` → Railway project.
 
 ## Course docs
 

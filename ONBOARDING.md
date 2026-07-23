@@ -1,6 +1,6 @@
 # Onboarding a New Learner
 
-Everything for the course lives in **this fork** — app, quiz, HTMX examples, and learner progress files. No family site login required.
+Everything for the course lives in **the student's repo** — app, quiz, HTMX examples, and learner progress files. No family site login required.
 
 Work top to bottom. Steps marked **[Instructor]** need the person running the course (you).
 
@@ -9,8 +9,8 @@ Work top to bottom. Steps marked **[Instructor]** need the person running the co
 ## 0. Prerequisites
 
 - Student has a **GitHub account**, **Cursor** (free Hobby), **Python 3**, and **Git**
-- **[Instructor]** Railway project connected to the student's fork (see step 5)
-- Read **`ARCHITECTURE.md`** if anything about forks, login, or privacy is unclear
+- **[Instructor]** Railway project connected to the student's repo (see step 5)
+- Read **`ARCHITECTURE.md`** if anything about repos, login, or privacy is unclear
 
 ### Privacy: private repo required
 
@@ -23,10 +23,10 @@ On Railway, you can register the learner with **env vars only** (`LEARNER_SLUG`,
 
 Never commit `LEARNER_PIN` or `INSTRUCTOR_PASSWORD` to git.
 
-## 1. Fork and clone
+## 1. Use this template and clone
 
 1. Student uses **Use this template** → create repo. Set visibility to **Private** (required).
-2. Clone the fork locally and open in Cursor
+2. Clone their repo locally and open in Cursor
 
 ## 2. Create the learner folder
 
@@ -42,11 +42,11 @@ Edit **`course_config.py`** — add an entry to `LEARNERS`:
 
 ```python
 LEARNERS = [
-    {"slug": "jaqira", "name": "Jaqira", "age": 19},
+    {"slug": "student", "name": "Student", "age": 19},
 ]
 ```
 
-**Or** on Railway before the fork exists, set Variables: `LEARNER_SLUG`, `LEARNER_NAME`, optional `LEARNER_AGE`. The live site can show the student's name in the sign-in list without this file change.
+**Or** on Railway before their repo exists, set Variables: `LEARNER_SLUG`, `LEARNER_NAME`, optional `LEARNER_AGE`. The live site can show the student's name in the sign-in list without this file change.
 
 The student signs in at `/login` by picking their name. No Google SSO. Sign-in does **not** work until step 3 (or Railway env vars) is done.
 
@@ -67,11 +67,11 @@ Instructor opens `/login?instructor=1` → `/quiz/admin` for GPA, wrong answers,
 
 One project per student under your workspace:
 
-1. Create project, connect **their fork**, deploy on push to `main`
+1. Create project, connect **their repo**, deploy on push to `main`
 2. Volume at `/data`, set `SECRET_KEY`, `DATA_DIR=/data`, `PORT=8080`, `INSTRUCTOR_PASSWORD`, `LEARNER_PIN`
 3. Invite student as **Editor** (Project Settings → Members)
 
-While waiting for the student's fork, you can deploy the template repo with env vars for a preview URL — then repoint Railway to their fork before Session 1 sign-in.
+While waiting for the student's repo, you can deploy the template repo with env vars for a preview URL — then repoint Railway to their repo before Phase 1 sign-in.
 
 ## 6. Phase 0 recon → run the course
 
@@ -85,4 +85,4 @@ All four (see `TRAINING_PROGRAM.md`): final quiz pass, capstone deployed, doing-
 
 ## Adding another student later
 
-New fork → new `LEARNERS` entry in `course_config.py` → new Railway project. Each student is isolated.
+New repo → new `LEARNERS` entry in `course_config.py` → new Railway project. Each student is isolated.

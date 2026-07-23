@@ -1,8 +1,8 @@
 """Single source of truth for enrolled learners in this course instance.
 
-Students in their own fork: edit LEARNERS below (see ONBOARDING.md).
+Students in their own repo: edit LEARNERS below (see ONBOARDING.md).
 
-Instructor-hosted Railway (before the student forks): set Railway Variables instead —
+Instructor-hosted Railway (before the student creates their repo): set Railway Variables instead —
   LEARNER_SLUG, LEARNER_NAME, and optionally LEARNER_AGE.
 """
 
@@ -10,9 +10,9 @@ import os
 
 TEMPLATE_REPO = "https://github.com/premierepc-ops/coding-course-starter"
 
-# Add entries here in the student's fork after they copy _TEMPLATE.
+# Add entries here in the student's repo after they copy _TEMPLATE.
 _LEARNERS_IN_REPO: list[dict] = [
-    # {"slug": "jaqira", "name": "Jaqira", "age": 19},
+    # {"slug": "student", "name": "Student", "age": 19},
 ]
 
 LEARNER_TOKEN = "{{LEARNER}}"

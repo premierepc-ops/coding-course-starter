@@ -73,7 +73,7 @@
   {% elif next_session and next_session.unlocked %}
     <p>Finished this phase? Continue to <a href="{{ next_session.href }}">Phase {{ next_session.num }} · {{ next_session.short_title }}</a>.</p>
   {% elif next_session %}
-    <p>Finished this phase? <a href="/">Course Home</a> — Phase {{ next_session.num }} unlocks when you reach Phase {{ next_session.phase_num }}.</p>
+    <p>Finished this phase? <a href="/">Course Home</a> — Phase {{ next_session.num }} opens when your instructor marks Phase {{ next_session.phase_num }} in progress.</p>
   {% else %}
     <p>Finished the course? <a href="/quiz/">Quiz dashboard</a> · <a href="/">Course Home</a></p>
   {% endif %}

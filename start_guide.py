@@ -70,8 +70,9 @@ START_GUIDE = {
             "directions": [
                 "Before sign-in works, your instructor registers you — either in course_config.py in your repo "
                 "or via Railway Variables (LEARNER_SLUG, LEARNER_NAME) on the live site.",
-                "Ask your instructor for your sign-in PIN (they set it — you don't pick it yourself).",
-                "Click Sign in in the top menu of this site.",
+                "Ask your instructor for your sign-in PIN and the live site URL (usually ends in .up.railway.app).",
+                "Open that URL in your browser — not localhost unless you're running the app yourself.",
+                "Click Sign in in the top menu.",
                 "Choose your name from the list, type your PIN, click Continue.",
                 "You'll land on Course Home with your name at the top.",
             ],
@@ -83,7 +84,7 @@ START_GUIDE = {
             "summary": "No AI for this one — your fingers on the keyboard.",
             "directions": [
                 "In Cursor's file explorer (left sidebar), right-click the project root → New Folder → name it lessons.",
-                "Right-click lessons → New Folder → name it your first name in lowercase (e.g. jaqira).",
+                "Right-click lessons → New Folder → name it your first name in lowercase (e.g. alex).",
                 "Right-click that folder → New File → name it hello.py.",
                 "Click hello.py to open it. Type these two lines yourself (don't copy from AI):",
                 '  print("Hello, world!")',
@@ -102,7 +103,8 @@ START_GUIDE = {
                 "In your repo, open blueprints/aboutme/templates/aboutme/index.html.",
                 "Change the placeholder text to something about you (hobbies, fun fact, photo link).",
                 "Save the file. Your instructor will help you commit, push, and open a pull request.",
-                "After the PR merges, visit About Me in the menu above — your changes should be live.",
+                "After the PR merges, open /aboutme/ on the live site (your Railway URL).",
+                "About Me also appears in the top menu once your instructor marks Phase 1 in your progress.",
             ],
             "link": {"label": "Preview About Me page", "href": "/aboutme/"},
         },
