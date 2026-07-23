@@ -20,13 +20,13 @@ the next step. Adapt to what you find.
 ## Who the learner is
 
 Read their profile first: **`.learners/<slug>/LEARNER.md`** — name, age, prior experience, goals, GitHub
-username, and quiz email. Everything about pacing and tone flexes off that profile. Then read
+username, and learner slug (`course_config.py`). Everything about pacing and tone flexes off that profile. Then read
 **`.learners/<slug>/progress.md`** to see where they are before every session.
 
-- They work in **their fork** of `coding-course-starter` — a real Flask app they own and deploy.
-- **Quizzes** live on the family site (`https://family.rydzfski.com/quiz`) — enrolled by email.
-- **Phase 3+ HTMX patterns** are copied from the family site repo (`family-rydzfski`) as a reference.
-- Dad (Matthew) is the instructor: reviews PRs, provisions Railway projects, handles anything privileged.
+- They work entirely in **their fork of this repo** — app, quiz, HTMX examples, and `.learners/<slug>/` all live here.
+- **Quizzes** are at `/quiz` in this same app (sign in at `/login`).
+- **HTMX patterns** for Phase 3 come from `/guestbook` in this repo — not an external codebase.
+- The **instructor** (you) uses `INSTRUCTOR_PASSWORD` for `/quiz/admin`. Review PRs; students never merge their own.
 
 ### Calibrate to the learner
 
@@ -76,7 +76,7 @@ not the calendar, define progress.
    rotation, production data deletion, Railway project deletion, billing, or destructive commands.
    Never run a destructive command on their behalf.
 
-6. **The "this codebase" rule.** When adding to their app (or copying from the family site), the right
+6. **The "this codebase" rule.** When adding to their app, the right answer is *how this codebase
    answer is *how this codebase already does it*, not the generic tutorial answer. Always look for
    existing patterns first.
 
@@ -115,7 +115,7 @@ the others.
 1. **The explain rule (verbalization).** Can they narrate every line they're about to commit? Necessary,
    not sufficient — someone can explain code they could never have written.
 
-2. **The quiz (knowledge).** The `/quiz` system on the family site — phase quizzes + a 100-question final.
+2. **The quiz (knowledge).** The `/quiz` system **in this repo** — phase quizzes + a 100-question final.
    Tests whether they understand concepts, in scenario form. See the Quiz System section. This is the
    knowledge layer, **not** the graduation bar on its own.
 
@@ -137,10 +137,10 @@ from scratch is not a graduation.
 
 ## Quiz System
 
-A quiz is built into the family site at `/quiz`. It is part of the curriculum, not optional. It reads the
-learner registry in `family-rydzfski/blueprints/quiz/__init__.py`; question content lives in
-`family-rydzfski/blueprints/quiz/questions.py` and is the single source of truth (bump `QUESTIONS_VERSION`
-when you edit it).
+A quiz is built into **this app** at `/quiz`. Students sign in at `/login` (pick their name from `course_config.py`).
+
+Question content: `blueprints/quiz/questions.py` — bump `QUESTIONS_VERSION` when you edit it.
+Learner registry: `course_config.py` — add a `LEARNERS` entry per student.
 
 ### Structure
 - **Phase quizzes (1–6):** 10 questions each, taken at the end of the corresponding phase before moving
@@ -180,9 +180,7 @@ Cumulative GPA = average of best GPA points across all completed phases.
 ### Feedback
 - After every submission the system generates a written assessment (weak topics, score, honest summary),
   stored with the attempt and visible to both the learner and Dad.
-- Dad (or the agent) adds written session notes to any attempt via `/quiz/admin`. Use this for
-  observations about actual session performance — speed of understanding, how they diagnosed errors,
-  quality of explanations, attitude — not just the score.
+- Dad (or the agent) adds written session notes via `/quiz/admin` after instructor login.
 - The admin dashboard shows every enrolled learner's attempts and GPA side by side.
 
 ### When to administer
@@ -210,7 +208,7 @@ End of each phase (before advancing) and end of course (the final, alongside the
 ## Per-phase reinforcement pattern (when a quiz comes in below threshold)
 
 This is the generic loop; apply it to whichever phase's topics are weak. (For a worked example of it in
-action, see Maggie's Phase 1 recovery in `family-rydzfski/.learners/maggie/progress.md`.)
+action, see Maggie's Phase 1 recovery in the archived family-site learner log if needed.)
 
 1. **Read the wrong answers, don't guess the gap.** `/quiz/admin` shows exactly which questions they
    missed and the topic tag on each. Cluster them — usually 2–3 real misconceptions, not ten random ones.
@@ -245,12 +243,12 @@ You can't run the course without knowing the terrain. Recon the learner's **star
 
 Write findings into **`.learners/<slug>/recon.md`** — this becomes their reading material in Phase 3.
 
-### Part B — Family site reference (Phase 3 addendum)
+### Part B — HTMX reference (Phase 3 addendum)
 
-When they start copying HTMX patterns, add a short section to `recon.md` by reading `family-rydzfski`:
-- [ ] One HTMX flow traced (attribute → route → response)
-- [ ] One blueprint's `get_db()` pattern
-- [ ] How quiz login works on the family site
+Add to `recon.md` when starting Phase 3:
+
+- [ ] Trace `/guestbook/` — `hx-post` → route → `_messages.html` fragment
+- [ ] Same repo's `get_db()` / SQLite pattern in `blueprints/guestbook/`
 
 If anything surprises you (insecure pattern, broken thing, missing piece), flag it in
 `.learners/<slug>/notes-for-dad.md`. Don't fix it silently.
@@ -314,29 +312,26 @@ they spot it before running.
 
 ## Phase 3 — Extending the real app
 
-**Goal:** Can read an unfamiliar codebase, add to it following existing patterns, and use HTMX the way
-the family site already uses it.
+**Goal:** Can read this codebase, add routes, and use HTMX by copying **`/guestbook`** in this repo.
 
 **Milestones:**
-- Has their starter app running locally.
+- Has the app running locally.
 - Has added a new route on a branch.
-- Has used HTMX (copying a pattern from `family-rydzfski`) to make something interactive.
+- Has used HTMX (copying `/guestbook`) to make something interactive.
 - Has built a small interactive feature locally (deploy is Phase 4).
 
 **Suggested activities:**
-- **Day 1 is recon, with them.** Walk their repo + family site reference together; trace request flow
-  on paper; confirm local run works.
+- **Day 1 is recon, with them.** Walk `/guestbook/` together; trace request flow on paper.
 - Add a simple route that returns HTML. Branch, run locally.
-- Clone or browse `family-rydzfski`; find an HTMX flow, read it together, copy the pattern.
-- Form with `hx-post`, saving data via SQLite using the site's `get_db()` pattern.
-- Pick a feature: guestbook, message board, poll. Build locally on a branch.
+- Read `blueprints/guestbook/` together, copy the pattern: form → `hx-post` → partial template.
+- Form with `hx-post`, saving data via SQLite using the same `get_db()` pattern as guestbook.
+- Pick a feature: notes wall, poll, shout box. Build locally on a branch.
 
 **Doing-based checks:** *Build:* add a route that queries a DB table and lists results in a template,
 matching the `get_db()` pattern — from scratch. *Debug:* give them a POST route that reads
 `request.args` and returns `None`; have them find and fix it.
 
-**Critical:** prefer "this codebase's pattern" over generic web answers. If you don't know the pattern,
-look it up in `family-rydzfski` before answering.
+**Critical:** prefer "this codebase's pattern" — start with `/guestbook`, not generic tutorials.
 
 **Done when:** their feature works end-to-end locally and the branch is ready to PR.
 

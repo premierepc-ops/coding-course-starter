@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Quiz Results | Rydzfski Family{% endblock %}
+
+{% block content %}
+<style>
+  .results-wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  .results-header { text-align: center; margin-bottom: 2rem; }
+  .results-header .back { font-size: 0.85rem; color: var(--accent); text-decoration: none; display: inline-block; margin-bottom: 1rem; }
+  .results-header .back:hover { text-decoration: underline; }
+  .results-header h2 { font-size: 1.5rem; font-weight: 700; color: rgba(var(--text-rgb),1); margin: 0; }
+
+  .score-hero {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.4);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .score-hero .big-score { font-size: 3rem; font-weight: 800; line-height: 1; color: rgba(var(--text-rgb),1); }
+  .score-hero .grade-row { font-size: 1.2rem; font-weight: 600; margin-top: 0.4rem; color: rgba(var(--text-rgb),0.75); }
+  .score-hero .gpa-row { font-size: 0.9rem; color: rgba(var(--text-rgb),0.45); margin-top: 0.2rem; }
+
+  .feedback-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(var(--text-rgb),0.85);
+  }
+  .feedback-card .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(var(--text-rgb),0.4); margin-bottom: 0.5rem; font-weight: 700; }
+  .feedback-card.session { border-color: rgba(var(--accent-rgb),0.5); background: rgba(var(--accent-rgb),0.07); }
+
+  .breakdown-title { font-weight: 700; font-size: 1rem; color: rgba(var(--text-rgb),0.85); margin-bottom: 1rem; }
+
+  .answer-block {
+    border: 1px solid rgba(var(--accent-rgb),0.15);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    background: rgba(255,255,255,0.04);
+  }
+  .answer-block.correct-block { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); }
+  .answer-block.wrong-block { border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.05); }
+
+  .answer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .answer-status { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 6px; }
+  .answer-status.correct { background: rgba(34,197,94,0.2); color: rgba(134,239,172,1); }
+  .answer-status.wrong { background: rgba(239,68,68,0.2); color: rgba(252,165,165,1); }
+  .answer-topic { font-size: 0.75rem; color: rgba(var(--text-rgb),0.35); }
+
+  .q-text-sm { font-weight: 600; font-size: 0.9rem; line-height: 1.45; margin-bottom: 0.75rem; white-space: pre-wrap; color: rgba(var(--text-rgb),0.9); }
+
+  .answer-detail { font-size: 0.85rem; line-height: 1.5; }
+  .answer-detail .your-answer { margin-bottom: 0.3rem; color: rgba(var(--text-rgb),0.7); }
+  .answer-detail .right-answer { color: rgba(134,239,172,0.9); font-weight: 600; margin-bottom: 0.5rem; }
+  .answer-detail .explanation { color: rgba(var(--text-rgb),0.6); font-style: italic; border-left: 2px solid rgba(var(--accent-rgb),0.3); padding-left: 0.75rem; margin-top: 0.5rem; }
+
+  .actions { display: flex; gap: 0.75rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.6rem 1.5rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost { background: rgba(255,255,255,0.08); border: 1px solid rgba(var(--accent-rgb),0.3); color: rgba(var(--text-rgb),0.85); }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* White theme */
+  html.theme-white .score-hero,
+  html.theme-white .feedback-card,
+  html.theme-white .answer-block { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); }
+  html.theme-white .feedback-card.session { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.2); }
+  html.theme-white .answer-block.correct-block { background: rgba(34,197,94,0.07); border-color: rgba(34,197,94,0.3); }
+  html.theme-white .answer-block.wrong-block { background: rgba(239,68,68,0.05); border-color: rgba(239,68,68,0.25); }
+  html.theme-white .answer-status.correct { color: #166534; background: rgba(34,197,94,0.15); }
+  html.theme-white .answer-status.wrong { color: #991b1b; background: rgba(239,68,68,0.12); }
+  html.theme-white .answer-detail .right-answer { color: #166534; }
+  html.theme-white .btn-ghost { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.18); }
+</style>
+
+<div class="results-wrap">
+  <div class="results-header">
+    <a href="{{ url_for('quiz.dashboard') }}" class="back">← Back to Dashboard</a>
+    <h2>
+      {% if attempt.phase == 0 %}Final Test Results
+      {% else %}Phase {{ attempt.phase }} Results
+      {% endif %}
+    </h2>
+  </div>
+
+  <div class="score-hero">
+    <div class="big-score">{{ attempt.score }} / {{ attempt.total }}</div>
+    <div class="grade-row">{{ attempt.letter_grade }} &nbsp;·&nbsp; {{ "%.0f"|format(attempt.percentage) }}%</div>
+    <div class="gpa-row">{{ "%.1f"|format(attempt.gpa) }} GPA points &nbsp;·&nbsp; {{ attempt.completed_at[:10] }}</div>
+  </div>
+
+  <div class="feedback-card">
+    <div class="label">Automatic Performance Assessment</div>
+    {{ attempt.auto_feedback }}
+  </div>
+
+  {% if attempt.session_feedback %}
+  <div class="feedback-card session">
+    <div class="label">Dad's Notes</div>
+    {{ attempt.session_feedback }}
+  </div>
+  {% endif %}
+
+  <div class="breakdown-title">Question Breakdown</div>
+
+  {% for a in answers %}
+  <div class="answer-block {% if a.correct %}correct-block{% else %}wrong-block{% endif %}">
+    <div class="answer-header">
+      <span class="answer-status {% if a.correct %}correct{% else %}wrong{% endif %}">
+        {% if a.correct %}✓ Correct{% else %}✗ Wrong{% endif %}
+      </span>
+      <span class="answer-topic">{{ a.topic }}</span>
+    </div>
+    <div class="q-text-sm">{{ a.text }}</div>
+    <div class="answer-detail">
+      {% if not a.correct %}
+      <div class="your-answer">Your answer: <strong>{{ a.answer_given | upper }}. {% if a.answer_given == 'a' %}{{ a.option_a }}{% elif a.answer_given == 'b' %}{{ a.option_b }}{% elif a.answer_given == 'c' %}{{ a.option_c }}{% elif a.answer_given == 'd' %}{{ a.option_d }}{% else %}(no answer){% endif %}</strong></div>
+      <div class="right-answer">Correct: {{ a.right_answer | upper }}. {% if a.right_answer == 'a' %}{{ a.option_a }}{% elif a.right_answer == 'b' %}{{ a.option_b }}{% elif a.right_answer == 'c' %}{{ a.option_c }}{% elif a.right_answer == 'd' %}{{ a.option_d }}{% endif %}</div>
+      {% endif %}
+      <div class="explanation">{{ a.explanation }}</div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="actions">
+    {% if attempt.phase > 0 %}
+    <a href="{{ url_for('quiz.take_quiz', phase=attempt.phase) }}" class="btn btn-ghost">Retake Phase {{ attempt.phase }}</a>
+    {% else %}
+    <a href="{{ url_for('quiz.final_test') }}" class="btn btn-ghost">Retake Final Test</a>
+    {% endif %}
+    <a href="{{ url_for('quiz.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

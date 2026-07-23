@@ -1,48 +1,69 @@
 # Onboarding a New Learner
 
-See the full checklist in the instructor copy at `family-rydzfski/ONBOARDING.md`. This file mirrors the
-student-facing steps for learners working in **their fork** of this repo.
+Everything for the course lives in **this fork** — app, quiz, HTMX examples, and learner progress files. No family site login required.
 
-Work top to bottom with your instructor (Dad). Steps marked **[Dad]** need instructor setup.
+Work top to bottom. Steps marked **[Instructor]** need the person running the course (you).
 
 ---
 
 ## 0. Prerequisites
 
-- A computer you control (Windows/Mac/Linux).
-- A **GitHub account** (create one at github.com if needed).
-- Installs for Session 1: **Cursor** (free Hobby tier), **Python 3**, **Git**.
+- Student has a **GitHub account**, **Cursor** (free Hobby), **Python 3**, and **Git**
+- **[Instructor]** Railway project connected to the student's fork (see step 5)
 
-## 1. Fork and clone this repo
+## 1. Fork and clone
 
-1. Fork `coding-course-starter` on GitHub to your account.
-2. Clone your fork and open it in Cursor:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/coding-course-starter.git
-   cd coding-course-starter
-   ```
+1. Fork this template on GitHub
+2. Clone the fork locally and open in Cursor
 
-## 2. Create your learner folder
+## 2. Create the learner folder
 
-```
-cp -r .learners/_TEMPLATE .learners/your-slug
+```bash
+cp -r .learners/_TEMPLATE .learners/<slug>
 ```
 
-Fill in `.learners/your-slug/LEARNER.md` with your profile.
+Fill `.learners/<slug>/LEARNER.md`.
 
-## 3. Quiz enrollment
+## 3. Register the learner for quiz
 
-Your instructor registers your email in the family site quiz. Take quizzes at:
-**https://family.rydzfski.com/quiz**
+Edit **`course_config.py`** — add an entry to `LEARNERS`:
 
-## 4. **[Dad]** Railway + SSO
+```python
+LEARNERS = [
+    {"slug": "jaqira", "name": "Jaqira", "age": 19},
+]
+```
 
-Your instructor will:
-- Authorize your Google email on the family site
-- Create a Railway project connected to your fork
-- Invite you as Editor on your project
+The student signs in at `/login` by picking their name. No Google SSO.
 
-## 5. Phase 0 recon → Session 1
+## 4. Set instructor password
 
-Your Cursor agent writes `recon.md` before your first lesson. Then Phase 1 begins — see
-`TRAINING_PROGRAM.md`.
+In `.env` (local) and Railway Variables (production):
+
+```
+INSTRUCTOR_PASSWORD=your-private-password
+```
+
+Instructor opens `/login?instructor=1` → `/quiz/admin` for GPA, wrong answers, and session notes.
+
+## 5. **[Instructor]** Railway project
+
+One project per student under your workspace:
+
+1. Create project, connect **their fork**, deploy on push to `main`
+2. Volume at `/data`, set `SECRET_KEY`, `DATA_DIR=/data`, `PORT=8080`, `INSTRUCTOR_PASSWORD`
+3. Invite student as **Editor** (Project Settings → Members)
+
+## 6. Phase 0 recon → run the course
+
+Agent writes `.learners/<slug>/recon.md`, then follow `TRAINING_PROGRAM.md`.
+
+---
+
+## Graduation
+
+All four (see `TRAINING_PROGRAM.md`): final quiz pass, capstone deployed, doing-based checks, explain every line on demo night.
+
+## Adding another student later
+
+New fork → new `LEARNERS` entry in `course_config.py` → new Railway project. Each student is isolated.

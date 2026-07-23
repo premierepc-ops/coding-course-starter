@@ -22,7 +22,7 @@ _Updated by the agent at the end of every session. Read this at the start of the
 - [ ] Ran a Python script they typed themselves (no AI)
 - [ ] Can describe add / commit / push in their own words
 - [ ] About-Me page customized — merged to main and live on Railway
-- [ ] Phase 1 quiz passed (≥70%) on family site
+- [ ] Phase 1 quiz passed (≥70%) at `/quiz`
 - [ ] Doing-based checks cleared (build a second route; explain a 404 from missing registration)
 
 ---

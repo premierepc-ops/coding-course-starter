@@ -20,9 +20,17 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
+from blueprints.course_auth import course_auth_bp, init_auth
 from blueprints.aboutme import aboutme_bp
+from blueprints.guestbook import guestbook_bp
+from blueprints.quiz import quiz_bp
 
+init_auth(app)
+
+app.register_blueprint(course_auth_bp, url_prefix="/")
 app.register_blueprint(aboutme_bp, url_prefix="/aboutme")
+app.register_blueprint(guestbook_bp, url_prefix="/guestbook")
+app.register_blueprint(quiz_bp, url_prefix="/quiz")
 
 
 @app.route("/healthz")

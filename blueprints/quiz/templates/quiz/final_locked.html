@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Final Test Locked | Rydzfski Family{% endblock %}
+
+{% block content %}
+<style>
+  .locked-wrap { max-width: 520px; margin: 4rem auto; padding: 0 1rem; text-align: center; }
+  .locked-wrap h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: rgba(var(--text-rgb),1); }
+  .locked-wrap p { color: rgba(var(--text-rgb),0.55); margin-bottom: 1.5rem; }
+  .missing-list { list-style: none; padding: 0; margin: 0 0 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .missing-list li {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    color: rgba(var(--text-rgb),0.85);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .missing-list li a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.8rem; }
+  .missing-list li a:hover { text-decoration: underline; }
+  .btn-back { display: inline-block; padding: 0.6rem 1.5rem; border-radius: 10px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; }
+
+  html.theme-white .missing-list li { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+</style>
+
+<div class="locked-wrap">
+  <h2>Final Test Locked</h2>
+  <p>You need to complete all 6 phase quizzes first. These phases are still pending:</p>
+  <ul class="missing-list">
+    {% for p in missing %}
+    <li>
+      Phase {{ p }}: {{ phase_names[p] }}
+      <a href="{{ url_for('quiz.take_quiz', phase=p) }}">Take Now →</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('quiz.dashboard') }}" class="btn-back">Back to Dashboard</a>
+</div>
+{% endblock %}

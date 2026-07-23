@@ -1,0 +1,7 @@
+{% for msg in messages %}
+<div class="message-item">
+  <strong>{{ msg.author }}</strong>: {{ msg.message }}
+</div>
+{% else %}
+<p>No messages yet. Be the first!</p>
+{% endfor %}

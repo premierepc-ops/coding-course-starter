@@ -4,6 +4,11 @@
 
 {% block content %}
 <h1>Your coding course app</h1>
-<p>This is your starter Flask site. Customize the <a href="/aboutme/">About Me</a> page in Phase 1.</p>
-<p>Quiz and assessments live on the family site at <a href="https://family.rydzfski.com/quiz">family.rydzfski.com/quiz</a>.</p>
+<p>Everything for this course lives in <strong>this repo</strong> — your app, lessons, quizzes, and progress tracking.</p>
+<ul>
+  <li><a href="/aboutme/">About Me</a> — Phase 1 milestone page</li>
+  <li><a href="/guestbook/">Guestbook</a> — HTMX example for Phase 3</li>
+  <li><a href="/quiz/">Quiz</a> — phase quizzes and final exam (sign in first)</li>
+</ul>
+<p>Instructor: set <code>INSTRUCTOR_PASSWORD</code> in <code>.env</code>, then use <a href="{{ url_for('course_auth.login', instructor=1) }}">instructor login</a> for <code>/quiz/admin</code>.</p>
 {% endblock %}

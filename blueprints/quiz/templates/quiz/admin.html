@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}Quiz Review | Rydzfski Family{% endblock %}
+
+{% block content %}
+<style>
+  .admin-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  .admin-header { margin-bottom: 2rem; }
+  .admin-header h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 0.25rem; color: rgba(var(--text-rgb),1); }
+  .admin-header .sub { color: rgba(var(--text-rgb),0.45); font-size: 0.85rem; }
+
+  .learner-summary { margin-bottom: 1.75rem; }
+  .gpa-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .gpa-tile {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    border-radius: 12px;
+    padding: 0.9rem 1.25rem;
+    flex: 1;
+    min-width: 110px;
+    text-align: center;
+  }
+  .gpa-tile.highlight { border-color: rgba(var(--accent-rgb),0.5); }
+  .gpa-tile .tile-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(var(--text-rgb),0.45); margin-bottom: 0.25rem; }
+  .gpa-tile .tile-value { font-size: 1.7rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .gpa-tile .tile-sub { font-size: 0.72rem; color: rgba(var(--text-rgb),0.4); margin-top: 0.2rem; }
+
+  .attempt-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.15);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .attempt-card.has-session-feedback { border-color: rgba(var(--accent-rgb),0.45); }
+
+  .attempt-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .attempt-title { font-weight: 700; font-size: 0.95rem; color: rgba(var(--text-rgb),0.95); }
+  .attempt-meta { font-size: 0.78rem; color: rgba(var(--text-rgb),0.4); margin-top: 0.15rem; }
+  .score-pill { font-size: 1.3rem; font-weight: 800; text-align: right; color: rgba(var(--text-rgb),1); }
+  .score-pill .grade { font-size: 0.82rem; font-weight: 500; color: rgba(var(--text-rgb),0.5); display: block; margin-top: 0.1rem; }
+
+  .section-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(var(--text-rgb),0.38); font-weight: 700; margin-bottom: 0.4rem; }
+
+  .auto-feedback-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0,0,0,0.25);
+    border-radius: 8px;
+    border-left: 3px solid rgba(var(--accent-rgb),0.35);
+    color: rgba(var(--text-rgb),0.8);
+  }
+
+  .wrong-section { margin-bottom: 1rem; }
+  .wrong-item {
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.6rem;
+    background: rgba(239,68,68,0.05);
+  }
+  .wrong-q { font-size: 0.88rem; font-weight: 600; line-height: 1.45; margin-bottom: 0.6rem; white-space: pre-wrap; color: rgba(var(--text-rgb),0.9); }
+  .wrong-answers-row { display: flex; gap: 0.75rem; font-size: 0.82rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .wrong-given { color: rgba(252,165,165,0.9); }
+  .wrong-correct { color: rgba(134,239,172,0.95); font-weight: 600; }
+  .wrong-topic { font-size: 0.7rem; background: rgba(255,255,255,0.1); padding: 0.15rem 0.4rem; border-radius: 4px; color: rgba(var(--text-rgb),0.5); }
+  .wrong-explanation { font-size: 0.82rem; color: rgba(var(--text-rgb),0.6); line-height: 1.5; font-style: italic; border-left: 2px solid rgba(239,68,68,0.3); padding-left: 0.6rem; margin-top: 0.4rem; }
+
+  .session-feedback-section { margin-top: 1rem; border-top: 1px solid rgba(var(--accent-rgb),0.1); padding-top: 1rem; }
+  .existing-feedback {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    padding: 0.75rem 1rem;
+    background: rgba(var(--accent-rgb),0.08);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    border-left: 3px solid var(--accent);
+    color: rgba(var(--text-rgb),0.85);
+  }
+  .feedback-form { display: flex; gap: 0.5rem; align-items: flex-end; }
+  .feedback-form textarea {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(var(--accent-rgb),0.3);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    resize: vertical;
+    min-height: 70px;
+    background: rgba(255,255,255,0.07);
+    color: rgba(var(--text-rgb),1);
+    font-family: inherit;
+  }
+  .feedback-form textarea::placeholder { color: rgba(var(--text-rgb),0.3); }
+  .feedback-form textarea:focus { outline: none; border-color: var(--accent); }
+  .feedback-form button {
+    padding: 0.5rem 1.1rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+  .feedback-form button:hover { opacity: 0.85; }
+
+  .toggle-btn { font-size: 0.8rem; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 0.5rem; }
+  .toggle-btn:hover { text-decoration: underline; }
+  .hidden { display: none; }
+
+  .no-attempts { color: rgba(var(--text-rgb),0.35); text-align: center; padding: 3rem; }
+
+  .phase-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; background: rgba(255,255,255,0.1); color: rgba(var(--text-rgb),0.7); margin-right: 0.25rem; }
+  .phase-badge.final-badge { background: var(--accent); color: #fff; }
+
+  .self-note-card {
+    background: rgba(var(--accent-rgb),0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.3);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .self-note-text { font-size: 0.9rem; line-height: 1.65; color: rgba(var(--text-rgb),0.85); white-space: pre-wrap; }
+
+  /* White theme */
+  html.theme-white .self-note-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.15); }
+  html.theme-white .gpa-tile,
+  html.theme-white .attempt-card { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+  html.theme-white .attempt-card.has-session-feedback { border-color: rgba(0,0,0,0.25); }
+  html.theme-white .auto-feedback-text { background: rgba(0,0,0,0.06); border-left-color: rgba(0,0,0,0.2); }
+  html.theme-white .wrong-item { background: rgba(239,68,68,0.04); border-color: rgba(239,68,68,0.2); }
+  html.theme-white .wrong-given { color: #dc2626; }
+  html.theme-white .wrong-correct { color: #16a34a; }
+  html.theme-white .wrong-topic { background: rgba(0,0,0,0.08); }
+  html.theme-white .existing-feedback { background: rgba(0,0,0,0.05); }
+  html.theme-white .feedback-form textarea { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.15); }
+  html.theme-white .phase-badge { background: rgba(0,0,0,0.08); }
+</style>
+
+<div class="admin-wrap">
+  <div class="admin-header">
+    <h2>Quiz Review — Dad's Dashboard</h2>
+    <div class="sub">Every attempt, every wrong answer, auto-feedback, and your notes. Spare no punches.</div>
+  </div>
+
+  {% for ls in learner_summaries %}
+  <div class="learner-summary">
+    <div class="section-label" style="margin-bottom:0.6rem;font-size:0.8rem;">{{ display_of(ls.username) }}</div>
+    {% if ls.gpa_summary %}
+    <div class="gpa-row">
+      <div class="gpa-tile highlight">
+        <div class="tile-label">Cumulative GPA</div>
+        <div class="tile-value">{{ "%.2f"|format(ls.gpa_summary.cumulative) }}</div>
+        <div class="tile-sub">{{ ls.gpa_summary.phases_done }}/6 phases done</div>
+      </div>
+      {% for pd in ls.gpa_summary.phases %}
+      <div class="gpa-tile">
+        <div class="tile-label">Phase {{ pd.phase }}</div>
+        <div class="tile-value" style="font-size:1.3rem">{{ pd.letter }}</div>
+        <div class="tile-sub">{{ "%.0f"|format(pd.pct) }}% · {{ "%.1f"|format(pd.gpa) }} GPA</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if ls.self_note %}
+    <div class="self-note-card">
+      <div class="section-label" style="margin-bottom:0.5rem;">{{ display_of(ls.username) }}'s Session Notes</div>
+      <div class="self-note-text">{{ ls.self_note.note }}</div>
+      <div style="font-size:0.72rem;color:rgba(var(--text-rgb),0.35);margin-top:0.5rem;">Last updated {{ ls.self_note.updated_at[:16].replace('T',' ') }}</div>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  {% if not attempts %}
+  <div class="no-attempts">No quiz attempts yet.</div>
+  {% endif %}
+
+  {% for a in attempts %}
+  <div class="attempt-card {% if a.attempt.session_feedback %}has-session-feedback{% endif %}">
+    <div class="attempt-top">
+      <div>
+        <div class="attempt-title">
+          <span class="phase-badge {% if a.attempt.phase == 0 %}final-badge{% endif %}">
+            {% if a.attempt.phase == 0 %}Final{% else %}Phase {{ a.attempt.phase }}{% endif %}
+          </span>
+          {{ display_of(a.attempt.username) }}
+          {% if a.attempt.phase != 0 %}&nbsp;— {{ phase_names.get(a.attempt.phase, '') }}{% endif %}
+        </div>
+        <div class="attempt-meta">{{ a.attempt.completed_at[:16].replace('T', ' ') }} · attempt #{{ a.attempt_number }}</div>
+      </div>
+      <div class="score-pill">
+        {{ a.attempt.score }}/{{ a.attempt.total }}
+        <span class="grade">{{ a.attempt.letter_grade }} · {{ "%.0f"|format(a.attempt.percentage) }}% · {{ "%.1f"|format(a.attempt.gpa) }} GPA</span>
+      </div>
+    </div>
+
+    <div class="section-label">Automatic Assessment</div>
+    <div class="auto-feedback-text">{{ a.attempt.auto_feedback }}</div>
+
+    {% if a.wrong_answers %}
+    <div class="wrong-section">
+      <button class="toggle-btn" onclick="toggleWrong({{ a.attempt.id }})">
+        ▶ Show {{ a.wrong_answers | length }} wrong answer{% if a.wrong_answers | length != 1 %}s{% endif %} with explanations
+      </button>
+      <div id="wrong-{{ a.attempt.id }}" class="hidden">
+        {% for w in a.wrong_answers %}
+        <div class="wrong-item">
+          <div class="wrong-q">{{ w.text }}</div>
+          <div class="wrong-answers-row">
+            <span class="wrong-given">✗ {{ display_of(a.attempt.username) }} answered: <strong>{{ w.answer_given | upper }}. {{ w.given_text }}</strong></span>
+            <span class="wrong-correct">✓ Correct: {{ w.right_answer | upper }}. {{ w.correct_text }}</span>
+            <span class="wrong-topic">{{ w.topic }}</span>
+          </div>
+          <div class="wrong-explanation">{{ w.explanation }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div style="font-size:0.85rem;color:rgba(134,239,172,0.85);font-weight:600;margin-bottom:1rem;">✓ Perfect score — no wrong answers.</div>
+    {% endif %}
+
+    <div class="session-feedback-section">
+      <div class="section-label">Your Session Notes</div>
+      {% if a.attempt.session_feedback %}
+      <div class="existing-feedback">{{ a.attempt.session_feedback }}</div>
+      {% endif %}
+      <form method="POST" action="{{ url_for('quiz.add_feedback', attempt_id=a.attempt.id) }}" class="feedback-form">
+        <textarea name="feedback" placeholder="Add your observations — how they diagnosed errors, speed of understanding, quality of explanations, attitude, what to reinforce next session...">{% if a.attempt.session_feedback %}{{ a.attempt.session_feedback }}{% endif %}</textarea>
+        <button type="submit">{% if a.attempt.session_feedback %}Update{% else %}Save{% endif %}</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+function toggleWrong(id) {
+  var el = document.getElementById('wrong-' + id);
+  var btn = el.previousElementSibling;
+  if (el.classList.contains('hidden')) {
+    el.classList.remove('hidden');
+    btn.textContent = btn.textContent.replace('▶', '▼');
+  } else {
+    el.classList.add('hidden');
+    btn.textContent = btn.textContent.replace('▼', '▶');
+  }
+}
+</script>
+{% endblock %}

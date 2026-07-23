@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Final Test | Rydzfski Family{% endblock %}
+
+{% block content %}
+<style>
+  .quiz-wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+  .quiz-header { margin-bottom: 2rem; }
+  .quiz-header .back { font-size: 0.85rem; color: var(--accent); text-decoration: none; display: inline-block; margin-bottom: 0.75rem; }
+  .quiz-header .back:hover { text-decoration: underline; }
+  .quiz-header h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 0.3rem; color: rgba(var(--text-rgb),1); }
+  .quiz-header p { font-size: 0.9rem; color: rgba(var(--text-rgb),0.5); margin: 0; }
+
+  .warning-banner {
+    background: rgba(251,191,36,0.12);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    color: rgba(251,191,36,0.9);
+  }
+
+  .phase-section-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(var(--text-rgb),0.35);
+    font-weight: 700;
+    padding: 1.5rem 0 0.5rem;
+    border-bottom: 1px solid rgba(var(--accent-rgb),0.12);
+    margin-bottom: 1rem;
+  }
+
+  .question-block {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.15);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .question-block .q-num { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(var(--text-rgb),0.4); margin-bottom: 0.5rem; }
+  .question-block .q-text { font-weight: 600; font-size: 0.95rem; line-height: 1.55; margin-bottom: 1rem; white-space: pre-wrap; color: rgba(var(--text-rgb),0.95); }
+
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .option-label {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: rgba(var(--text-rgb),0.85);
+    background: rgba(255,255,255,0.03);
+    transition: border-color 0.15s;
+    user-select: none;
+  }
+  .option-label:hover { border-color: var(--accent); background: rgba(var(--accent-rgb),0.08); }
+  .option-label input[type="radio"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--accent); }
+  .option-label:has(input:checked) { border-color: var(--accent); background: rgba(var(--accent-rgb),0.12); color: rgba(var(--text-rgb),1); }
+
+  .submit-bar {
+    position: sticky; bottom: 0;
+    background: var(--bg);
+    border-top: 1px solid rgba(var(--accent-rgb),0.15);
+    padding: 1rem 0; margin-top: 1.5rem; text-align: center;
+  }
+  .submit-bar .progress-note { font-size: 0.8rem; color: rgba(var(--text-rgb),0.45); margin-bottom: 0.5rem; }
+  .btn-submit { background: var(--accent); color: #fff; border: none; padding: 0.75rem 2.5rem; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+  .btn-submit:hover { opacity: 0.85; }
+
+  /* White theme */
+  html.theme-white .question-block { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+  html.theme-white .option-label { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.12); }
+  html.theme-white .option-label:hover { background: rgba(0,0,0,0.06); }
+  html.theme-white .option-label:has(input:checked) { background: rgba(0,0,0,0.08); }
+  html.theme-white .submit-bar { background: #fcfcfc; border-color: rgba(0,0,0,0.1); }
+  html.theme-white .warning-banner { background: rgba(180,120,0,0.08); border-color: rgba(180,120,0,0.25); color: rgba(120,80,0,0.9); }
+</style>
+
+<div class="quiz-wrap">
+  <div class="quiz-header">
+    <a href="{{ url_for('quiz.dashboard') }}" class="back">← Back to Dashboard</a>
+    <h2>Final Test — {{ questions | length }} Questions</h2>
+    <p>Every topic from every phase. No notes, no lookups. This is the graduation test.</p>
+  </div>
+
+  <div class="warning-banner">
+    This test covers all 6 phases plus synthesis questions that combine multiple concepts. Graduation requires being able to explain every answer you give.
+  </div>
+
+  <form method="POST" id="quiz-form">
+    {% set ns = namespace(current_phase=0, q_num=0) %}
+    {% for q in questions %}
+      {% if q.phase != ns.current_phase %}
+        {% set ns.current_phase = q.phase %}
+        <div class="phase-section-label">
+          {% if q.phase == 0 %}Synthesis — Cross-Phase Integration
+          {% else %}Phase {{ q.phase }}
+          {% endif %}
+        </div>
+      {% endif %}
+      {% set ns.q_num = ns.q_num + 1 %}
+      <div class="question-block">
+        <div class="q-num">Question {{ ns.q_num }}</div>
+        <div class="q-text">{{ q.text }}</div>
+        <div class="options">
+          {% for letter, text in [('a', q.option_a), ('b', q.option_b), ('c', q.option_c), ('d', q.option_d)] %}
+          <label class="option-label">
+            <input type="radio" name="q_{{ q.id }}" value="{{ letter }}" required>
+            <span><strong>{{ letter | upper }}.</strong> {{ text }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+
+    <div class="submit-bar">
+      <div class="progress-note" id="progress-note">Answer all {{ questions | length }} questions to submit</div>
+      <button type="submit" class="btn-submit">Submit Final Test</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  var total = {{ questions | length }};
+  var form = document.getElementById('quiz-form');
+  var note = document.getElementById('progress-note');
+  form.addEventListener('change', function() {
+    var answered = form.querySelectorAll('input[type="radio"]:checked').length;
+    var remaining = total - answered;
+    if (remaining === 0) {
+      note.textContent = 'All questions answered. Ready to submit.';
+      note.style.color = 'var(--accent)';
+    } else {
+      note.textContent = remaining + ' question' + (remaining !== 1 ? 's' : '') + ' remaining';
+      note.style.color = '';
+    }
+  });
+</script>
+{% endblock %}

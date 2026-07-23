@@ -37,8 +37,8 @@ _Written by the Cursor agent during Phase 0. Shared with the learner in Phase 3.
 
 <anything surprising — flag in notes-for-dad.md>
 
-## Part B — Family site reference (Phase 3 addendum)
+## Part B — HTMX reference (Phase 3 addendum)
 
-_Filled in Phase 3 when copying HTMX patterns from family-rydzfski._
+_Filled in Phase 3 — trace `/guestbook/` in this repo._
 
 <HTMX flow traced, quiz login, reference blueprint>

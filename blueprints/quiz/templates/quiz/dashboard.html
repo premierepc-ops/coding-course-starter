@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% block title %}Quiz Dashboard | Rydzfski Family{% endblock %}
+
+{% block content %}
+<style>
+  .quiz-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1rem; }
+
+  .quiz-header { text-align: center; margin-bottom: 2.5rem; }
+  .quiz-header h2 { font-size: 2rem; font-weight: 700; margin: 0 0 0.5rem; color: rgba(var(--text-rgb),1); }
+  .quiz-header p { color: rgba(var(--text-rgb),0.5); margin: 0; }
+
+  .gpa-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.35);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .gpa-card .gpa-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(var(--text-rgb),0.5); margin-bottom: 0.3rem; }
+  .gpa-card .gpa-value { font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .gpa-card .gpa-sub { font-size: 0.9rem; color: rgba(var(--text-rgb),0.45); margin-top: 0.4rem; }
+
+  .phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+
+  .phase-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.15);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .phase-card.done { border-color: rgba(var(--accent-rgb),0.45); }
+
+  .phase-num { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(var(--text-rgb),0.4); }
+  .phase-name { font-weight: 600; font-size: 0.95rem; color: rgba(var(--text-rgb),0.9); }
+  .phase-score { font-size: 1.4rem; font-weight: 700; color: rgba(var(--text-rgb),1); }
+  .phase-score .grade { font-size: 0.9rem; font-weight: 600; margin-left: 0.4rem; color: rgba(var(--text-rgb),0.55); }
+  .phase-attempts { font-size: 0.8rem; color: rgba(var(--text-rgb),0.4); }
+  .phase-actions { margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+  .btn { display: inline-block; padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost { background: rgba(255,255,255,0.08); border: 1px solid rgba(var(--accent-rgb),0.3); color: rgba(var(--text-rgb),0.85); }
+  .btn-ghost:hover { border-color: var(--accent); color: rgba(var(--text-rgb),1); }
+
+  .not-taken { font-size: 0.85rem; color: rgba(var(--text-rgb),0.35); font-style: italic; }
+
+  .final-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px dashed rgba(var(--accent-rgb),0.25);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .final-card.unlocked { border-style: solid; border-color: rgba(var(--accent-rgb),0.5); background: rgba(255,255,255,0.07); }
+  .final-card h3 { margin: 0 0 0.4rem; font-size: 1.1rem; color: rgba(var(--text-rgb),0.95); }
+  .final-card p { margin: 0 0 1rem; font-size: 0.85rem; color: rgba(var(--text-rgb),0.5); }
+
+  .score-bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 0.4rem; overflow: hidden; }
+  .score-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+
+  .submitted-banner {
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 10px;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+    color: rgba(134,239,172,0.95);
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .notes-section {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .notes-header { margin-bottom: 1rem; }
+  .notes-title { font-weight: 700; font-size: 1rem; color: rgba(var(--text-rgb),0.95); margin-bottom: 0.25rem; }
+  .notes-sub { font-size: 0.82rem; color: rgba(var(--text-rgb),0.45); }
+  .notes-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.75rem 1rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(var(--accent-rgb),0.25);
+    border-radius: 10px;
+    color: rgba(var(--text-rgb),1);
+    font-size: 0.9rem;
+    font-family: inherit;
+    line-height: 1.6;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  .notes-textarea::placeholder { color: rgba(var(--text-rgb),0.3); }
+  .notes-textarea:focus { outline: none; border-color: var(--accent); }
+
+  /* White theme overrides */
+  html.theme-white .phase-card,
+  html.theme-white .gpa-card,
+  html.theme-white .final-card,
+  html.theme-white .notes-section { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); }
+  html.theme-white .btn-ghost { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.2); }
+  html.theme-white .score-bar { background: rgba(0,0,0,0.1); }
+  html.theme-white .notes-textarea { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.15); }
+  html.theme-white .submitted-banner { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25); color: #166534; }
+
+  @media (max-width: 480px) {
+    .phase-grid { grid-template-columns: 1fr; }
+    .gpa-card .gpa-value { font-size: 2.8rem; }
+  }
+</style>
+
+<div class="quiz-wrap">
+  <div class="quiz-header">
+    <h2>{{ display_of(current_user.username) }}'s Quiz Dashboard</h2>
+    <p>10 questions per phase. Final test: all 100. No partial credit. Spare no punches.</p>
+  </div>
+
+  <div class="gpa-card">
+    <div class="gpa-label">Cumulative GPA</div>
+    {% if cumulative_gpa is not none %}
+      <div class="gpa-value">{{ "%.2f"|format(cumulative_gpa) }}</div>
+      <div class="gpa-sub">based on best score per completed phase</div>
+    {% else %}
+      <div class="gpa-value" style="opacity:0.25">—</div>
+      <div class="gpa-sub">complete your first phase quiz to see your GPA</div>
+    {% endif %}
+  </div>
+
+  <div class="phase-grid">
+    {% for pd in phase_data %}
+    <div class="phase-card {% if pd.best %}done{% endif %}">
+      <div class="phase-num">Phase {{ pd.phase }}</div>
+      <div class="phase-name">{{ pd.name }}</div>
+
+      {% if pd.best %}
+        <div class="phase-score">
+          {{ pd.best.score }}/{{ pd.best.total }}
+          <span class="grade">{{ pd.best.letter_grade }} &middot; {{ "%.1f"|format(pd.best.gpa) }} GPA</span>
+        </div>
+        <div class="score-bar">
+          <div class="score-bar-fill" style="width:{{ pd.best.percentage }}%"></div>
+        </div>
+        <div class="phase-attempts">{{ pd.attempts }} attempt{% if pd.attempts != 1 %}s{% endif %} &middot; best: {{ "%.0f"|format(pd.best.percentage) }}%</div>
+      {% else %}
+        <div class="not-taken">Not taken yet</div>
+      {% endif %}
+
+      <div class="phase-actions">
+        <a href="{{ url_for('quiz.take_quiz', phase=pd.phase) }}" class="btn btn-primary">
+          {% if pd.best %}Retake{% else %}Take Quiz{% endif %}
+        </a>
+        {% if pd.best %}
+        <a href="{{ url_for('quiz.results', attempt_id=pd.best.id) }}" class="btn btn-ghost">Last Results</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% set all_phases_done = phase_data | selectattr('best') | list | length == 6 %}
+  <div class="final-card {% if all_phases_done %}unlocked{% endif %}">
+    <h3>Final Test — 100 Questions</h3>
+    {% if all_phases_done %}
+      <p>All phases complete. This is the graduation test. Every question from every phase, plus synthesis questions. No notes, no lookups.</p>
+      {% if final_best %}
+        <div style="margin-bottom:1rem;font-weight:600;color:rgba(var(--text-rgb),0.9)">
+          Best score: {{ final_best.score }}/{{ final_best.total }} &middot; {{ final_best.letter_grade }} &middot; {{ "%.1f"|format(final_best.gpa) }} GPA
+        </div>
+      {% endif %}
+      <a href="{{ url_for('quiz.final_test') }}" class="btn btn-primary">
+        {% if final_best %}Retake Final Test{% else %}Take Final Test{% endif %}
+      </a>
+    {% else %}
+      <p>Complete all 6 phase quizzes to unlock the final test.</p>
+      <div style="font-size:0.85rem;color:rgba(var(--text-rgb),0.4)">
+        {{ phase_data | selectattr('best') | list | length }}/6 phases completed
+      </div>
+    {% endif %}
+  </div>
+
+  {% if current_user.is_admin %}
+  <div style="text-align:center;margin-top:2rem;">
+    <a href="{{ url_for('quiz.admin_view') }}" class="btn btn-ghost">Admin View — All Results</a>
+  </div>
+  {% endif %}
+
+  {% if submitted %}
+  <div class="submitted-banner">
+    Quiz submitted. Dad will review your results. Write what you remember getting wrong below.
+  </div>
+  {% endif %}
+
+  <div class="notes-section">
+    <div class="notes-header">
+      <div class="notes-title">My Session Notes</div>
+      <div class="notes-sub">Your private space. Write what clicked, what didn't, questions you have. Dad can see these.</div>
+    </div>
+    <form method="POST" action="{{ url_for('quiz.save_student_notes') }}">
+      <textarea name="note" class="notes-textarea" placeholder="Write anything — what made sense today, what confused you, what you want to remember, what you'd do differently...">{{ student_note }}</textarea>
+      <button type="submit" class="btn btn-primary" style="margin-top:0.75rem;">Save Notes</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

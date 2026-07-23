@@ -5,12 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Coding Course{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav>
         <a href="/">Home</a>
         <a href="/aboutme/">About Me</a>
+        <a href="/guestbook/">Guestbook</a>
+        <a href="/quiz/">Quiz</a>
+        <a href="{{ url_for('course_auth.login') }}">Sign in</a>
     </nav>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
     <main>
         {% block content %}{% endblock %}
     </main>
