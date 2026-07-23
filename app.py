@@ -25,7 +25,7 @@ from blueprints.course_auth import course_auth_bp, init_auth
 from blueprints.aboutme import aboutme_bp
 from blueprints.guestbook import guestbook_bp
 from blueprints.quiz import quiz_bp
-from course_dashboard import build_dashboard
+from course_dashboard import build_dashboard, build_nav
 from start_guide import START_GUIDE
 from course_config import LEARNERS
 
@@ -51,6 +51,11 @@ def home():
 @app.route("/start")
 def start_here():
     return render_template("start.html", guide=START_GUIDE, learners=LEARNERS)
+
+
+@app.context_processor
+def inject_nav():
+    return {"nav": build_nav(current_user)}
 
 
 @app.template_global()

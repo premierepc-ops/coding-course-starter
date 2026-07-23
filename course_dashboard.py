@@ -296,3 +296,56 @@ def _pick_next_action(phases, learner, current_user, setup) -> dict:
         "href": "/quiz/",
         "label": "View quiz dashboard",
     }
+
+
+def current_phase_for_user(current_user=None) -> int:
+    """Return the learner's current phase number (0–6) for nav gating."""
+    if not current_user or not getattr(current_user, "is_authenticated", False):
+        return 0
+    if getattr(current_user, "is_admin", False):
+        return 6
+
+    slug = getattr(current_user, "slug", None)
+    if not slug:
+        return 0
+
+    parsed = _parse_phases_from_markdown(_read_progress_file(slug))
+    for num in range(7):
+        info = parsed.get(num, {})
+        if info.get("status") != "complete":
+            return num
+    return 6
+
+
+def build_nav(current_user=None) -> dict:
+    """Which nav links to show — unlock as the student reaches each phase."""
+    if current_user and getattr(current_user, "is_authenticated", False):
+        if getattr(current_user, "is_admin", False):
+            return {
+                "start": True,
+                "home": True,
+                "aboutme": True,
+                "guestbook": True,
+                "quiz": True,
+                "admin": True,
+            }
+
+        phase = current_phase_for_user(current_user)
+        return {
+            "start": True,
+            "home": True,
+            "aboutme": phase >= 1,
+            "guestbook": phase >= 3,
+            "quiz": phase >= 1,
+            "admin": False,
+        }
+
+    # Signed out — Session 1 only; no app sections until they're in the course.
+    return {
+        "start": True,
+        "home": True,
+        "aboutme": False,
+        "guestbook": False,
+        "quiz": False,
+        "admin": False,
+    }
