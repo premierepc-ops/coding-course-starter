@@ -1112,9 +1112,13 @@ body.welcome-open {
 
     display: block;
 
-    width: 96px;
+    width: 112px;
 
-    height: 96px;
+    height: auto;
+
+    image-rendering: pixelated;
+
+    image-rendering: crisp-edges;
 
 }
 
@@ -1250,9 +1254,7 @@ body.welcome-open {
 
     .welcome-mascot img {
 
-        width: 80px;
-
-        height: 80px;
+        width: 96px;
 
     }
 
