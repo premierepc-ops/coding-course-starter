@@ -13,8 +13,8 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Her repo stays on her GitHub. You are a collaborator on Railway. "
-        "She never signs up for Railway — she pastes one secret in GitHub only."
+        "Her repo stays on her GitHub. You run Railway. She never creates a Railway account — "
+        "she adds one GitHub secret. Merges to main auto-deploy via GitHub Actions."
     ),
     "steps": [
         {
@@ -53,21 +53,27 @@ START_GUIDE = {
         },
         {
             "num": "1b",
-            "title": "Wire her repo to your Railway project",
-            "summary": "Instructor sets up deploy — student pastes one GitHub secret (no Railway account).",
+            "title": "Wire deploy: her GitHub → your Railway",
+            "summary": "GitHub Actions runs `railway up` when she merges to main. No Railway login for her.",
             "student": [
-                "Repo → **Settings → Secrets and variables → Actions** → **New repository secret**.",
-                "Name: `RAILWAY_TOKEN` — value: paste the token your instructor sends you.",
-                "No railway.com login. GitHub only.",
+                "Open your repo on GitHub → **Settings** (repo settings, not your profile).",
+                "Left sidebar: **Secrets and variables** → **Actions**.",
+                "Click **New repository secret**.",
+                "Name (exactly): `RAILWAY_TOKEN`",
+                "Secret: paste the token your instructor sends you → **Add secret**.",
+                "Done. You never visit railway.com.",
             ],
             "instructor": [
-                "Railway → project **jaqira-course** → **Settings → Tokens** → create a **production** project token.",
-                "Push `.github/workflows/railway-deploy.yml` to her repo (already in the template if you pull latest).",
-                "Send her the token — she adds it as GitHub secret `RAILWAY_TOKEN` (Step 1b student lines above).",
-                "Optional: **web** service → **Settings → Source → Disconnect** so the template repo stops auto-deploying.",
-                "Trigger a test: push an empty commit to her `main` or use **Actions → Deploy to Railway → Run workflow**.",
-                f"Confirm {LIVE_SITE_URL}/healthz returns ok.",
-                "Keep existing Variables and the /data volume.",
+                "Open https://railway.com → project **jaqira-course** → **Settings** (gear, project level) → **Tokens**.",
+                "Create token for **production** → copy it immediately (shown once).",
+                "Confirm her repo has `.github/workflows/railway-deploy.yml` on `main` (push it if missing).",
+                "Send her the token (text or screen share — not in git).",
+                "She adds GitHub secret `RAILWAY_TOKEN` (student steps above).",
+                "Open **web** service → **Settings** → **Source** → **Disconnect** if it still points at `coding-course-starter`.",
+                "Test: her repo → **Actions** tab → **Deploy to Railway** → **Run workflow** → wait for green checkmark.",
+                "If it fails with `Invalid RAILWAY_TOKEN`: secret is missing or misnamed — she must see **`RAILWAY_TOKEN`** listed under repo **Settings → Secrets and variables → Actions**.",
+                f"Then open {LIVE_SITE_URL}/healthz — must say `ok`.",
+                "Do not delete Variables or the `/data` volume.",
             ],
         },
         {
@@ -135,7 +141,8 @@ START_GUIDE = {
                 "With your instructor: commit, push a branch, open a pull request on GitHub.",
             ],
             "instructor": [
-                "Review and **merge** the PR to `main` (only works if Step 1b Source is their repo).",
+                "Review and **merge** the PR to `main`.",
+                "GitHub Actions **Deploy to Railway** runs automatically (~2 min). Check green on her repo **Actions** tab.",
                 f"Student visits {LIVE_SITE_URL}/aboutme/ to verify.",
                 "Update `.learners/<slug>/progress.md` in their repo when Phase 1 is complete.",
             ],
@@ -162,7 +169,7 @@ SETUP_STEPS = [
     {
         "id": "railway_source",
         "step_num": "1b",
-        "label": "Instructor: connect Railway Source",
+        "label": "Instructor: wire GitHub Actions deploy",
         "manual": True,
         "instructor_only": True,
     },
