@@ -2,7 +2,7 @@
 
 from course_config import TEMPLATE_REPO
 
-INSTRUCTOR_GITHUB = "mrydzfski"
+INSTRUCTOR_GITHUB = "premierepc-ops"
 LIVE_SITE_URL = "https://web-production-41df3f.up.railway.app"
 
 START_GUIDE = {
@@ -10,13 +10,11 @@ START_GUIDE = {
     "time_estimate": "About 60–90 minutes with your instructor",
     "intro": (
         "Each step lists **Student** and **Instructor** actions separately. "
-        "The live site runs on your instructor's Railway account — students never log in to Railway "
-        "and never change GitHub↔Railway connections."
+        "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Railway is wired to your instructor's PremierePC account. "
-        "When your repo is ready, they change which GitHub repo Railway builds — "
-        "that does not give you Railway access and does not remove their setup."
+        "When your repo is ready, your instructor connects the live site to it. "
+        "That happens on their side — not in your GitHub settings."
     ),
     "steps": [
         {
@@ -46,7 +44,6 @@ START_GUIDE = {
                 "Click **Create repository**.",
                 f"Settings → Collaborators → invite **`{INSTRUCTOR_GITHUB}`**.",
                 "Copy HTTPS URL (Code → HTTPS) and send it to your instructor.",
-                "**Do not** create a Railway account or connect this repo to Railway yourself.",
             ],
             "instructor": [
                 "Wait for the student's repo HTTPS URL and collaborator invite.",
