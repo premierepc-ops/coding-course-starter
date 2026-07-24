@@ -13,8 +13,9 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "When your repo is ready, your instructor connects the live site to it. "
-        "That happens on their side — not in your GitHub settings."
+        "Her repo stays on her GitHub. You are a collaborator. "
+        "She allows the Railway GitHub App on that repo (GitHub only — not railway.com). "
+        "Then you connect Source on the web service."
     ),
     "steps": [
         {
@@ -44,11 +45,13 @@ START_GUIDE = {
                 "Click **Create repository**.",
                 f"Settings → Collaborators → invite **`{INSTRUCTOR_GITHUB}`**.",
                 "Copy HTTPS URL (Code → HTTPS) and send it to your instructor.",
+                "GitHub → **Settings → Applications → Installed GitHub Apps → Railway → Configure** → select **only** this repo.",
+                "If Railway is not listed: open https://github.com/apps/railway → **Install** → **Only select repositories** → pick this repo.",
             ],
             "instructor": [
-                "Wait for the student's repo HTTPS URL and collaborator invite.",
-                f"Accept the invite on GitHub (account: `{INSTRUCTOR_GITHUB}`).",
-                "Continue with Step 1b when you have the URL — student can start Step 2 in parallel.",
+                "Accept the collaborator invite: https://github.com/jungwon79/jaqira-coding-course/invitations (or your notifications bell).",
+                "Wait until the student completes the Railway GitHub App step above — her repo will not appear in Railway until then.",
+                "Continue with Step 1b.",
             ],
             "link": {"label": "Open the template on GitHub", "href": TEMPLATE_REPO},
         },
@@ -57,15 +60,16 @@ START_GUIDE = {
             "title": "Connect Railway to the student's repo",
             "summary": "Instructor only — same Railway project, different GitHub repo.",
             "student": [
-                "Nothing — wait for your instructor to confirm the live site is pointed at your repo.",
+                "Nothing on railway.com — your GitHub App step in Step 1 is enough.",
             ],
             "instructor": [
-                "Railway → project **jaqira-course** → service **web** → **Settings → Source**.",
-                "Change source to the **student's repo** (not `coding-course-starter`), branch **main**.",
-                "This only changes which repo builds at the existing URL. It does **not** disconnect premierepc-ops from Railway.",
-                "If the repo is missing: Railway project **Settings → GitHub → Configure** → grant access to **that repo only**.",
-                f"Wait for deploy green → confirm {LIVE_SITE_URL}/healthz returns ok.",
-                "Keep existing Variables and the /data volume — do not wipe the project.",
+                "Railway dashboard → open project **jaqira-course** → click the **web** service card.",
+                "Tab **Settings** → section **Source** → connect **`jungwon79/jaqira-coding-course`**, branch **main**.",
+                "If the repo is not in the list, the student has not finished the Railway GitHub App step in Step 1 yet.",
+                "Until then (same session): clone her repo locally → `railway link --project jaqira-course --service web` → `railway up` — deploys her code to the live URL without Source connect.",
+                "Or from terminal once Source works: `railway service source connect --repo jungwon79/jaqira-coding-course --branch main --service web`",
+                f"Wait for deploy green → {LIVE_SITE_URL}/healthz returns ok.",
+                "Keep existing Variables and the /data volume.",
             ],
         },
         {
