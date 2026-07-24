@@ -15,7 +15,7 @@ TOOLS_GUIDE = {
         {
             "name": "Python",
             "icon": "python",
-            "what": "A programming language — one way to write code. Friendly for beginners. You'll install it on your laptop.",
+            "what": "A programming language — one way to write code. Install from python.org on your laptop; Cursor helps you edit Python files but does not include Python itself.",
         },
         {
             "name": "This website",
@@ -45,7 +45,7 @@ TOOLS_GUIDE = {
         {
             "name": "Git",
             "icon": "git",
-            "what": "A save-history system for code. Every change can be saved with a message so you can undo mistakes and see what changed.",
+            "what": "Save-history for code. In this course you use Cursor's Source Control sidebar — you usually do not need a separate Git app.",
         },
         {
             "name": "Commit",
@@ -75,7 +75,7 @@ TOOLS_GUIDE = {
         {
             "name": "Railway",
             "icon": "railway",
-            "what": "Where the live site runs. Your instructor owns the account — you never log in. In Phase 4 they show you how a git push becomes the URL you visit.",
+            "what": "Where the live site runs. Your instructor owns the account — you never log in. Your code reaches it: Cursor → GitHub → Actions → Railway.",
         },
         {
             "name": "AI assistant",

@@ -10,7 +10,9 @@ Work top to bottom. Steps marked **[Instructor]** need the person running the co
 
 ## 0. Prerequisites
 
-- Student has a **GitHub account**, **Cursor** (free Hobby), **Python 3**, and **Git**
+- Student has a **GitHub account** and **Cursor** (free Hobby)
+- Student installs **Python 3** from python.org (Cursor does not include it — see Phase 1 Step 2)
+- Git: usually already available via Cursor; install git-scm.com only if `git --version` fails
 - **[Instructor]** Railway project ready (see step 5) and deploy wired (step 5b)
 - Read **`ARCHITECTURE.md`** and **`DEPLOY.md`** if anything about repos, login, or deploy is unclear
 

@@ -201,7 +201,7 @@ SESSION_4_GUIDE = {
             "summary": "Commit → push → build → live.",
             "directions": [
                 "Your instructor shares their screen on Railway Deployments tab (you do not log in).",
-                "Find together: her GitHub repo **Actions** tab (Deploy to Railway), branch `main`, latest green run.",
+                "Find together: the student's GitHub repo **Actions** tab (Deploy to Railway), branch `main`, latest green run.",
                 "Walk through: PR merges to main → GitHub Actions → `railway up` → Railway deployment → site updates.",
                 "Railway Source may show empty — that is normal for this course setup.",
                 "Visit /healthz on the live URL — should return ok.",

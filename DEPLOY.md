@@ -13,7 +13,7 @@ GitHub Actions  (.github/workflows/railway-deploy.yml)
     │  uses secret RAILWAY_TOKEN (Railway project token)
     │  runs: railway up --service web
     ▼
-Instructor's Railway project (e.g. jaqira-course, service web)
+Instructor's Railway project (your student project, service web)
     │
     ▼
 Live URL  (e.g. web-production-41df3f.up.railway.app)
@@ -29,13 +29,13 @@ For a repo on the **student's GitHub account** where the instructor is only a **
 - `railway service source connect` returned **User does not have access to the repo**.
 - Telling the student to install the Railway GitHub App (`github.com/apps/railway` **404s**; correct slug is `railway-app`) still requires GitHub-side setup and **no Railway account for the student** was the goal.
 
-**GitHub Actions + project token** works with the repo on her account and deploys to your Railway project.
+**GitHub Actions + project token** works with the repo on the student's GitHub account and deploys to your Railway project.
 
 ## One-time setup (instructor + student)
 
 ### Instructor
 
-1. Railway project exists (`jaqira-course`), service `web`, volume at `/data`, Variables set (`SECRET_KEY`, `DATA_DIR=/data`, `LEARNER_PIN`, `INSTRUCTOR_PASSWORD`, optional `LEARNER_*`).
+1. Railway project exists (e.g. your student's project), service `web`, volume at `/data`, Variables set (`SECRET_KEY`, `DATA_DIR=/data`, `LEARNER_PIN`, `INSTRUCTOR_PASSWORD`, optional `LEARNER_*`).
 2. **web** service → **Settings → Source → Disconnect** if it pointed at `premierepc-ops/coding-course-starter`.
 3. Project **Settings → Tokens** → Create Token → **production** → copy token (shown once).
 4. Confirm `.github/workflows/railway-deploy.yml` is on the student's `main` branch.

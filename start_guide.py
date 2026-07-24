@@ -13,7 +13,7 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Her repo on her GitHub. Your Railway project. She codes in Cursor — you merge PRs to `main` — "
+        "Student repo on their GitHub. Your Railway project. They code in Cursor — you merge PRs to `main` — "
         "GitHub Actions deploys to your live URL. Railway Source stays empty; that is normal."
     ),
     "deploy_pitfalls": [
@@ -21,7 +21,7 @@ START_GUIDE = {
         "Do not use Railway Source → Connect Repo for student-owned repos — it failed; use Actions instead.",
         "Do not use github.com/apps/railway (404). Student does not install any Railway GitHub App.",
         "Secret name must be exactly RAILWAY_TOKEN. Value is your Railway project token — not a Railway login.",
-        "After merge to main, check her repo Actions tab (~2 min), then the live URL — not Railway Source.",
+        "After merge to main, check the student's repo Actions tab (~2 min), then the live URL — not Railway Source.",
     ],
     "steps": [
         {
@@ -34,7 +34,7 @@ START_GUIDE = {
             ],
             "instructor": [
                 "Confirm the student can sign in at /login (LEARNER_PIN set on your Railway project).",
-                "If Step 1b deploy is wired, the live site runs her repo via GitHub Actions — not the template.",
+                "If Step 1b deploy is wired, the live site runs the student's repo via GitHub Actions — not the template.",
             ],
             "link": {"label": "Read the glossary", "href": "/tools"},
         },
@@ -46,7 +46,7 @@ START_GUIDE = {
                 f"Open {TEMPLATE_REPO}",
                 "Click green **Use this template** → **Create a new repository**.",
                 "Owner: **your** GitHub account (not premierepc-ops).",
-                "Name: e.g. `jaqira-coding-course` (lowercase, hyphens OK).",
+                "Name: e.g. `yourname-coding-course` (lowercase, hyphens OK).",
                 "Visibility: **Private** (required).",
                 "Click **Create repository**.",
                 f"Settings → Collaborators → invite **`{INSTRUCTOR_GITHUB}`**.",
@@ -54,14 +54,14 @@ START_GUIDE = {
             ],
             "instructor": [
                 "Accept the collaborator invite (GitHub notifications bell).",
-                "Continue with Step 1b — you wire deploy; she does not touch Railway.",
+                "Continue with Step 1b — you wire deploy; the student does not touch Railway.",
             ],
             "link": {"label": "Open the template on GitHub", "href": TEMPLATE_REPO},
         },
         {
             "num": "1b",
-            "title": "Wire deploy: her GitHub → your Railway",
-            "summary": "You create a token. She saves it as GitHub secret RAILWAY_TOKEN. Actions deploys on every merge to main.",
+            "title": "Wire deploy: student GitHub → your Railway",
+            "summary": "You create a token. Student saves it as GitHub secret RAILWAY_TOKEN. Actions deploys on every merge to main.",
             "student": [
                 "**Wait** until your instructor sends you a long token string (looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`).",
                 "Open your repo on GitHub → top tab **Settings** (the repo's settings — not your profile picture menu).",
@@ -74,29 +74,31 @@ START_GUIDE = {
                 "You never visit railway.com and you never install any Railway app.",
             ],
             "instructor": [
-                "**First — create the token (you only):** open https://railway.com → project **jaqira-course** → **Settings** (project gear, not the web service) → **Tokens** → **Create Token** → environment **production** → copy the token immediately (shown once).",
+                "**First — create the token (you only):** open https://railway.com → your student Railway project → **Settings** (project gear, not the web service) → **Tokens** → **Create Token** → environment **production** → copy the token immediately (shown once).",
                 "Send that token to the student by text or screen share — never commit it to git.",
-                "**Second — confirm workflow file:** her repo `main` branch must contain `.github/workflows/railway-deploy.yml` (already pushed for Jaqira).",
-                "**Third — student adds secret:** she follows the Student steps above. Verify with her on screen share: repo **Settings → Secrets and variables → Actions** must show **RAILWAY_TOKEN** in the list.",
+                "**Second — confirm workflow file:** the student's repo `main` branch must contain `.github/workflows/railway-deploy.yml`.",
+                "**Third — student adds secret:** they follow the Student steps above. Verify on screen share: repo **Settings → Secrets and variables → Actions** must show **RAILWAY_TOKEN** in the list.",
                 "**Fourth — disconnect old source:** **web** service → **Settings** → **Source** → **Disconnect** if it still shows `premierepc-ops/coding-course-starter`.",
-                "**Fifth — test deploy:** her repo → **Actions** tab → **Deploy to Railway** → **Run workflow** → wait for green checkmark (~2 min).",
+                "**Fifth — test deploy:** student repo → **Actions** tab → **Deploy to Railway** → **Run workflow** → wait for green checkmark (~2 min).",
                 f"**Sixth — verify live site:** open {LIVE_SITE_URL}/healthz — page must show `ok`.",
-                "**Railway web → Settings → Source will show empty** — correct. Deploys come from her repo Actions tab, not Source.",
+                "**Railway web → Settings → Source will show empty** — correct. Deploys come from the student's repo Actions tab, not Source.",
                 "Keep Railway Variables (`LEARNER_PIN`, etc.) and the `/data` volume — do not wipe the project.",
             ],
         },
         {
             "num": 2,
-            "title": "Install Cursor, Python 3, and Git",
-            "summary": "On the student's laptop only.",
+            "title": "Install Cursor and Python",
+            "summary": "Cursor is the editor. Python runs your code — Cursor does not include Python.",
             "student": [
-                "Install Cursor from https://cursor.com",
-                "Install Python 3 from https://python.org/downloads/ (Windows: check **Add Python to PATH**).",
-                "Install Git from https://git-scm.com/downloads if Cursor did not include it.",
-                "In Cursor terminal run: `python --version` and `git --version` — both must print a version.",
+                "Install **Cursor** from https://cursor.com",
+                "Install **Python 3** from https://python.org/downloads/ — required to run code in the terminal (Windows: check **Add Python to PATH**).",
+                "Cursor **Extensions → Python** (Microsoft) is optional — it helps edit `.py` files but does **not** replace installing Python from python.org.",
+                "**Git:** Cursor has Git built in (Source Control sidebar, **Git: Clone** in Step 3). In terminal run `git --version` — if you see a version, skip Git install. If not, install from https://git-scm.com/downloads once.",
+                "Verify in Cursor terminal: `python --version` must print a version. `git --version` must work before Step 3.",
             ],
             "instructor": [
-                "Watch installs; troubleshoot Windows PATH if `python` is not found.",
+                "Python missing or not on PATH is the usual Windows blocker — fix that before Step 5.",
+                "Use Cursor's Git UI for commit/push later; no need to teach git CLI commands in Phase 1.",
             ],
             "link": {"label": "Download Cursor", "href": "https://cursor.com"},
         },
@@ -153,7 +155,7 @@ START_GUIDE = {
             ],
             "instructor": [
                 "Review and **merge** the PR to `main`.",
-                "GitHub Actions **Deploy to Railway** runs automatically (~2 min). Check green on her repo **Actions** tab.",
+                "GitHub Actions **Deploy to Railway** runs automatically (~2 min). Check green on the student's repo **Actions** tab.",
                 f"Student visits {LIVE_SITE_URL}/aboutme/ to verify.",
                 "Update `.learners/<slug>/progress.md` in their repo when Phase 1 is complete.",
             ],
@@ -187,7 +189,7 @@ SETUP_STEPS = [
     {
         "id": "tools",
         "step_num": 2,
-        "label": "Install Cursor, Python 3, and Git",
+        "label": "Install Cursor and Python",
         "manual": True,
         "link": START_GUIDE["steps"][3]["link"],
     },
