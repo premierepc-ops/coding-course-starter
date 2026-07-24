@@ -26,7 +26,10 @@ Never commit `LEARNER_PIN` or `INSTRUCTOR_PASSWORD` to git.
 ## 1. Use this template and clone
 
 1. Student uses **Use this template** → create repo. Set visibility to **Private** (required).
-2. Clone their repo locally and open in Cursor
+2. Student copies the repo HTTPS URL and **invites the instructor as a collaborator** on that repo.
+3. Clone their repo locally and open in Cursor
+
+**Important:** The student's repo is under **their** GitHub account. It does **not** show up in `premierepc-ops` or in Railway until you connect it (step 5).
 
 ## 2. Create the learner folder
 
@@ -67,11 +70,11 @@ Instructor opens `/login?instructor=1` → `/quiz/admin` for GPA, wrong answers,
 
 One project per student under your workspace:
 
-1. Create project, connect **their repo**, deploy on push to `main`
+1. Create project (or use existing, e.g. `jaqira-course`), connect **their repo** as Source (Settings → Source — grant the Railway GitHub App access to their repo if it is missing from the list)
 2. Volume at `/data`, set `SECRET_KEY`, `DATA_DIR=/data`, `PORT=8080`, `INSTRUCTOR_PASSWORD`, `LEARNER_PIN`
 3. Invite student as **Editor** (Project Settings → Members)
 
-While waiting for the student's repo, you can deploy the template repo with env vars for a preview URL — then repoint Railway to their repo before Phase 1 sign-in.
+While waiting for the student's repo, deploy the template with env vars for Phase 0 — then **repoint Source to their repo** as soon as they send the URL and add you as collaborator.
 
 ## 6. Phase 0 recon → run the course
 
