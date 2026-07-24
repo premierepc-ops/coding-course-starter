@@ -163,7 +163,7 @@ def login():
         expected_pin = _expected_learner_pin(learner)
         if _pin_required():
             if not expected_pin:
-                flash("Student sign-in is not configured yet. Ask your instructor to set LEARNER_PIN on Railway.")
+                flash("Student sign-in is not configured yet. Ask your instructor for help.")
                 return redirect(url_for("course_auth.login"))
             if not _secrets_match(pin, expected_pin):
                 _record_login_attempt(rate_key)

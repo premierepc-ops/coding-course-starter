@@ -24,6 +24,18 @@
 </section>
 {% endif %}
 
+{% if is_instructor and guide.instructor_setup %}
+<section class="panel" id="instructor-setup">
+  <h2>Instructor — Railway &amp; deploy (not the student)</h2>
+  <p class="muted">Students do not have Railway access. You do this on your account while they work the steps below.</p>
+  <ol class="direction-list">
+    {% for line in guide.instructor_setup %}
+      <li>{{ line | linkify }}</li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
+
 <section class="panel next-panel">
   <h2>Do this first</h2>
   <p class="next-title">Work through the steps below in order.</p>

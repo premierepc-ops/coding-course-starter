@@ -185,13 +185,13 @@ SESSION_4_GUIDE = {
     "title": "Phase 4 — Railway & deploy",
     "time_estimate": "About 60–90 minutes",
     "intro": (
-        "Git push becomes a live site. You learn to read Railway logs when something breaks — "
-        "because something will break, and that's normal."
+        "Git push becomes a live site. Your instructor runs Railway — you watch, ask questions, "
+        "and learn the path when something breaks."
     ),
     "milestones": [
-        "Understand GitHub → Railway connection",
-        "Know where env vars live (Railway Variables, not code)",
-        "Watch a successful deploy after a merged PR",
+        "Can explain GitHub → live site (instructor's Railway project)",
+        "Know secrets stay out of git — instructor sets them on the host",
+        "Watch a successful deploy after your PR merges",
         "See your Phase 3 feature on your phone",
     ],
     "steps": [
@@ -200,9 +200,9 @@ SESSION_4_GUIDE = {
             "title": "Trace the deploy path",
             "summary": "Commit → push → build → live.",
             "directions": [
-                "With your instructor, open Railway dashboard for your project.",
-                "Find: connected GitHub repo, branch (main), latest deployment.",
-                "Walk through: you merge PR → GitHub webhook → Railway build → Gunicorn starts.",
+                "Your instructor shares their screen on Railway (you do not log in).",
+                "Find together: connected GitHub repo, branch (main), latest deployment.",
+                "Walk through: PR merges to main → GitHub webhook → build → site updates.",
                 "Visit /healthz on the live URL — should return ok.",
             ],
             "link": {"label": "Live health check", "href": "/healthz"},
@@ -212,8 +212,8 @@ SESSION_4_GUIDE = {
             "title": "Env vars and DATA_DIR",
             "summary": "Secrets and data live outside your code.",
             "directions": [
-                "In Railway Variables: SECRET_KEY, INSTRUCTOR_PASSWORD, LEARNER_PIN, DATA_DIR=/data.",
-                "Your instructor confirms the volume is mounted at /data.",
+                "Your instructor shows where production secrets live on Railway — you never type them.",
+                "They confirm the data volume is mounted so quiz scores persist.",
                 "Never put secrets in git — .env is local only, listed in .gitignore.",
             ],
         },
@@ -222,8 +222,8 @@ SESSION_4_GUIDE = {
             "title": "Ship your Phase 3 feature",
             "summary": "Merge the PR and watch it go live.",
             "directions": [
-                "Instructor merges your Phase 3 PR to main.",
-                "Watch the deploy in Railway — green checkmark.",
+                "Your instructor merges your Phase 3 PR to main.",
+                "Watch the deploy on their screen — green checkmark.",
                 "Hard-refresh the live site (Ctrl+Shift+R). Try your feature on your phone.",
             ],
         },
@@ -232,9 +232,9 @@ SESSION_4_GUIDE = {
             "title": "Debug drill — change not showing?",
             "summary": "Stale cache, wrong branch, or failed deploy.",
             "directions": [
-                "Your instructor may simulate a problem — find the real cause.",
+                "Your instructor may simulate a problem — find the real cause together.",
                 "Check: did the right branch merge? did deploy succeed? hard refresh?",
-                "Open Railway deploy logs and runtime logs. Read the traceback out loud.",
+                "They open deploy and runtime logs on Railway — read any traceback out loud.",
             ],
         },
         {
@@ -270,7 +270,7 @@ SESSION_5_GUIDE = {
             "title": "HTTPS on your live URL",
             "summary": "What the lock icon means — and doesn't mean.",
             "directions": [
-                "Open your Railway URL. Click the lock in the browser bar.",
+                "Open your live site URL. Click the lock in the browser bar.",
                 "Explain: HTTPS encrypts traffic in transit. It does not mean 'hackers can't touch my app.'",
             ],
         },
@@ -281,7 +281,7 @@ SESSION_5_GUIDE = {
             "directions": [
                 "Show .gitignore — .env should be listed.",
                 "Run git log -p on a safe example — your instructor shows why committed secrets are permanent.",
-                "Compare: code in GitHub vs secrets in Railway Variables.",
+                "Your instructor shows: code in GitHub vs secrets on the host — never in git.",
             ],
         },
         {

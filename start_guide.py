@@ -8,8 +8,16 @@ START_GUIDE = {
     "intro": (
         "Brand new to coding? Start with Phase 0 — read Meet your tools so the words make sense. "
         "Then follow these steps in order with your instructor. "
-        "When a step is done, come back to Course Home and sign in."
+        "Hosting and deploy are on your instructor's account — you work in GitHub and Cursor."
     ),
+    "instructor_setup": [
+        "**You** own Railway — the student never logs in there.",
+        "When she sends her repo URL: your Railway project → web service → Settings → Source → connect **her** repo (grant the GitHub App access to that repo if it is missing).",
+        "Confirm Variables: SECRET_KEY, DATA_DIR=/data, PORT=8080, LEARNER_SLUG, LEARNER_NAME, LEARNER_PIN, INSTRUCTOR_PASSWORD.",
+        "Confirm a volume is mounted at /data (quiz and feedback data).",
+        "After repoint: add her to course_config.py + .learners/<slug>/ in her repo, or keep LEARNER_* env vars until then.",
+        "You review and merge PRs — merge to main triggers deploy on the live URL she uses.",
+    ],
     "steps": [
         {
             "num": 0,
@@ -34,9 +42,9 @@ START_GUIDE = {
                 "Repository name: something like `yourname-coding-course` (lowercase, hyphens OK).",
                 "Visibility: **Private** — required. Your name and progress files must not be public on GitHub.",
                 "Leave everything else default. Click **Create repository**.",
-                "Copy the repo HTTPS URL (green Code button) — send it to your instructor. They need it for Railway.",
-                "Settings → Collaborators → invite your instructor's GitHub username so they can review PRs and connect deploy.",
-                "Your repo lives on **your** GitHub — it does not appear in premierepc-ops until you invite them.",
+                "Copy the repo HTTPS URL (green Code button) — send it to your instructor.",
+                "Settings → Collaborators → invite your instructor's GitHub username (so they can review your PRs).",
+                "Your repo is on **your** GitHub — your instructor connects the live site to it; you do not.",
             ],
             "link": {"label": "Open the template on GitHub", "href": TEMPLATE_REPO},
         },
@@ -70,10 +78,9 @@ START_GUIDE = {
             "title": "Sign in on this website",
             "summary": "So quizzes and your dashboard know it's you.",
             "directions": [
-                "Before sign-in works, your instructor registers you — either in course_config.py in your repo "
-                "or via Railway Variables (LEARNER_SLUG, LEARNER_NAME) on the live site.",
-                "Ask your instructor for your sign-in PIN and the live site URL (usually ends in .up.railway.app).",
-                "Open that URL in your browser — not localhost unless you're running the app yourself.",
+                "Your instructor registers you on the live site and gives you a PIN — you do not set this up yourself.",
+                "Ask for the live site URL (often ends in .up.railway.app) and your sign-in PIN.",
+                "Open that URL in your browser.",
                 "Click Sign in in the top menu.",
                 "Choose your name from the list, type your PIN, click Continue.",
                 "You'll land on Course Home with your name at the top.",
@@ -105,7 +112,7 @@ START_GUIDE = {
                 "In your repo, open blueprints/aboutme/templates/aboutme/index.html.",
                 "Change the placeholder text to something about you (hobbies, fun fact, photo link).",
                 "Save the file. Your instructor will help you commit, push, and open a pull request.",
-                "After the PR merges, open /aboutme/ on the live site (your Railway URL).",
+                "After the PR merges, open /aboutme/ on the live site URL your instructor gave you.",
                 "About Me also appears in the top menu once your instructor marks Phase 1 in your progress.",
             ],
             "link": {"label": "Preview About Me page", "href": "/aboutme/"},

@@ -75,7 +75,7 @@ TOOLS_GUIDE = {
         {
             "name": "Railway",
             "icon": "railway",
-            "what": "Where this app runs on the internet. Your instructor connects it to your repo in Phase 4 — then each push to GitHub can rebuild the live site.",
+            "what": "Where the live site runs. Your instructor owns the account — you never log in. In Phase 4 they show you how a git push becomes the URL you visit.",
         },
         {
             "name": "AI assistant",
