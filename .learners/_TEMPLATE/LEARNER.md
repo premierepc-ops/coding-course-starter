@@ -24,5 +24,5 @@
 - [ ] Forked and cloned; opened in Cursor
 - [ ] Entry added to `course_config.py`
 - [ ] `.learners/<slug>/` filled in
-- [ ] Railway project connected to their repo
+- [ ] GitHub Actions deploy wired (`RAILWAY_TOKEN` secret + `railway-deploy.yml`) — see DEPLOY.md
 - [ ] Phase 0 recon written

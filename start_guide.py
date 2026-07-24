@@ -13,16 +13,15 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Her repo on her GitHub. Your Railway project. She never signs up for Railway. "
-        "You create a project token; she pastes it as one GitHub secret named `RAILWAY_TOKEN`."
+        "Her repo on her GitHub. Your Railway project. She codes in Cursor — you merge PRs to `main` — "
+        "GitHub Actions deploys to your live URL. Railway Source stays empty; that is normal."
     ),
     "deploy_pitfalls": [
-        "Do not use github.com/apps/railway — that URL 404s. We do not use the Railway GitHub App for student repos.",
-        "Do not use Railway Source → connect her repo — that path failed for collaborator-owned repos.",
-        "The GitHub secret name must be exactly RAILWAY_TOKEN — not RAILWAY, not RAILWAY_API_TOKEN.",
-        "The secret value is a Railway project token you create (Step 1b) — not her GitHub password, not a Railway login.",
-        "If Actions fails with Invalid RAILWAY_TOKEN, the secret is missing: repo Settings → Secrets and variables → Actions must list RAILWAY_TOKEN.",
-        "All three deploy attempts failed on 2026-07-24 because no secret was saved on the repo yet.",
+        "Working setup: GitHub Actions + secret RAILWAY_TOKEN + empty Railway Source (see DEPLOY.md).",
+        "Do not use Railway Source → Connect Repo for student-owned repos — it failed; use Actions instead.",
+        "Do not use github.com/apps/railway (404). Student does not install any Railway GitHub App.",
+        "Secret name must be exactly RAILWAY_TOKEN. Value is your Railway project token — not a Railway login.",
+        "After merge to main, check her repo Actions tab (~2 min), then the live URL — not Railway Source.",
     ],
     "steps": [
         {
@@ -35,7 +34,7 @@ START_GUIDE = {
             ],
             "instructor": [
                 "Confirm the student can sign in at /login (LEARNER_PIN set on your Railway project).",
-                "The live site still builds the **template** repo for now — that is OK for Phase 0.",
+                "If Step 1b deploy is wired, the live site runs her repo via GitHub Actions — not the template.",
             ],
             "link": {"label": "Read the glossary", "href": "/tools"},
         },
@@ -82,6 +81,7 @@ START_GUIDE = {
                 "**Fourth — disconnect old source:** **web** service → **Settings** → **Source** → **Disconnect** if it still shows `premierepc-ops/coding-course-starter`.",
                 "**Fifth — test deploy:** her repo → **Actions** tab → **Deploy to Railway** → **Run workflow** → wait for green checkmark (~2 min).",
                 f"**Sixth — verify live site:** open {LIVE_SITE_URL}/healthz — page must show `ok`.",
+                "**Railway web → Settings → Source will show empty** — correct. Deploys come from her repo Actions tab, not Source.",
                 "Keep Railway Variables (`LEARNER_PIN`, etc.) and the `/data` volume — do not wipe the project.",
             ],
         },
@@ -148,6 +148,8 @@ START_GUIDE = {
             "student": [
                 "Edit `blueprints/aboutme/templates/aboutme/index.html` with something about you.",
                 "With your instructor: commit, push a branch, open a pull request on GitHub.",
+                "After they merge to `main`, wait ~2 min — your repo **Actions** tab runs **Deploy to Railway** automatically.",
+                "Then visit the live About Me page (link below) to see your change.",
             ],
             "instructor": [
                 "Review and **merge** the PR to `main`.",

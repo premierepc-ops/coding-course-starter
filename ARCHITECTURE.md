@@ -8,19 +8,22 @@ Read this if something feels "off" about who can see what, or why the app knows 
 |-------|------------|-------------|
 | **Template repo** | `premierepc-ops/coding-course-starter` on GitHub | Instructor — generic, no student data |
 | **Student repo** | Student clicks **Use this template** → their own private GitHub repo | Student — their code, their `.learners/<slug>/`, their `course_config.py` |
-| **Railway project** | One deploy per student (e.g. `student-course`) | Instructor workspace — connected to **the student's repo**, not the template |
+| **Railway project** | One deploy per student (e.g. `jaqira-course`) | Instructor workspace — receives deploys from **GitHub Actions** in the student's repo |
 
-**The live URL always serves whatever repo Railway is connected to.** If Railway points at the template, you are previewing the generic starter — not the student's real course instance.
+**The live URL serves whatever was last deployed to that Railway project** — usually from the student's repo via GitHub Actions (`railway up`), not from Railway Source.
 
 ## Intended Phase 1 flow
 
 1. Student uses **Use this template** on GitHub → creates their **private** repo.
-2. Student clones **their repo**, adds themselves to `course_config.py`, creates `.learners/<slug>/`.
-3. Instructor **repoints Railway** Source to the student's repo (Settings → Source).
-4. Instructor sets Railway Variables: `SECRET_KEY`, `INSTRUCTOR_PASSWORD`, **`LEARNER_PIN`** (student sign-in PIN — not in git).
-5. Push to `main` → Railway redeploys **their** app at the same URL.
+2. Student invites instructor as **collaborator**; instructor accepts.
+3. Instructor creates Railway project + Variables; **disconnects** Railway Source if it pointed at the template.
+4. Instructor creates a **project token**; student saves it as GitHub secret **`RAILWAY_TOKEN`**.
+5. `.github/workflows/railway-deploy.yml` on student's `main` runs **`railway up`** on every merge to `main`.
+6. Student clones **their repo**, signs in on the live URL with `LEARNER_PIN`.
 
-Until step 3, the deployed site is a generic demo. It should **not** show a student's name or progress from the template repo.
+Railway **Source (Connect Repo) stays empty** — that is correct. See **`DEPLOY.md`**.
+
+Do **not** use Railway Source → connect student repo unless you deliberately switch deploy models.
 
 ## What is public vs protected
 
@@ -67,10 +70,10 @@ You do **not** need one giant update. Ship in slices:
 **Workflow after Phase 1:**
 
 1. Edit in template (`premierepc-ops/coding-course-starter`) or directly in the student's repo.
-2. Push to `main` on whichever repo **Railway is connected to** — that redeploys the live URL in ~1 min.
+2. Push to `main` on the **student's repo** — GitHub Actions redeploys the live URL in ~2 min.
 3. If you fixed the template and they already have a repo: pull template updates into their repo, then push.
 
-**Rule of thumb:** Railway deploys **one GitHub repo**. Unpushed local edits and unpulled template updates are **not** on the live site until they're on that repo's `main`.
+**Rule of thumb:** The live site updates when the student's repo **`main`** branch runs **Deploy to Railway** successfully. Check their repo **Actions** tab, not Railway Source.
 
 ## Phase unlocks (progress.md, not quiz pass)
 

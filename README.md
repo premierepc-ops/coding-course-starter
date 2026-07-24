@@ -27,11 +27,12 @@ Visit http://localhost:5000
 
 ## Onboarding a student
 
-See `ONBOARDING.md`. Summary: **Use this template** → `.learners/<slug>/` → add to `course_config.py` → Railway project.
+See `ONBOARDING.md` and **`DEPLOY.md`**. Summary: **Use this template** → collaborator invite → `RAILWAY_TOKEN` secret → GitHub Actions deploys to your Railway project.
 
 ## Course docs
 
 - `TRAINING_PROGRAM.md` — agent handoff / curriculum
+- `DEPLOY.md` — student repo → GitHub Actions → Railway (read this first for deploy)
 - `ONBOARDING.md` — setup checklist
 - `.learners/<slug>/` — profile, progress, recon, capstone
 

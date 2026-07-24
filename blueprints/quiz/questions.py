@@ -1334,7 +1334,7 @@ QUESTIONS = [
         "c": "Hosts the live site on the internet — rebuilds when you push to GitHub.",
         "d": "Only runs quizzes on your laptop.",
         "correct": "c",
-        "explanation": "Railway connects to your GitHub repo and deploys pushes so anyone with the link sees your app.",
+        "explanation": "Merges to main on the student's repo trigger GitHub Actions, which runs railway up to the instructor's Railway project. Anyone with the live link sees the updated app.",
         "topic": "railway",
         "difficulty": 1
     },
