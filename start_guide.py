@@ -46,7 +46,7 @@ START_GUIDE = {
                 f"Settings → Collaborators → invite **`{INSTRUCTOR_GITHUB}`**.",
                 "Copy HTTPS URL (Code → HTTPS) and send it to your instructor.",
                 "GitHub → **Settings → Applications → Installed GitHub Apps → Railway → Configure** → select **only** this repo.",
-                "If Railway is not listed: open https://github.com/apps/railway → **Install** → **Only select repositories** → pick this repo.",
+                "If Railway is not listed: open https://github.com/apps/railway-app → **Install** → **Only select repositories** → pick this repo.",
             ],
             "instructor": [
                 "Accept the collaborator invite: https://github.com/jungwon79/jaqira-coding-course/invitations (or your notifications bell).",
