@@ -250,6 +250,8 @@ def build_dashboard(current_user=None, host: str = "") -> dict:
     setup = []
     current_step_marked = False
     for step in SETUP_STEPS:
+        if step.get("instructor_only") and not is_instructor:
+            continue
         done = step["id"] in setup_done
         is_current = not done and not current_step_marked
         if is_current:

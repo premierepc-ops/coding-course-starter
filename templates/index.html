@@ -137,7 +137,9 @@
           </span>
           <div class="course-timeline-body">
             <span class="course-timeline-label">{{ step.label }}</span>
-            {% if not step.done and step.manual %}
+            {% if step.instructor_only %}
+              <span class="course-timeline-note">Instructor only</span>
+            {% elif not step.done and step.manual %}
               <span class="course-timeline-note">Instructor confirms</span>
             {% endif %}
             <a class="course-timeline-action" href="/start#step-{{ step.step_num }}">Directions</a>

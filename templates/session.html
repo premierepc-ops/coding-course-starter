@@ -8,6 +8,9 @@
   <p class="eyebrow">Phase {{ guide.phase_num }}</p>
   <h1>{{ guide.title }}</h1>
   <p class="lede">{{ guide.intro }}</p>
+  {% if guide.roles_note %}
+    <p class="muted">{{ guide.roles_note }}</p>
+  {% endif %}
   {% if guide.time_estimate %}
     <p class="meta">{{ guide.time_estimate }}</p>
   {% endif %}
@@ -21,18 +24,6 @@
       <li>{{ item }}</li>
     {% endfor %}
   </ul>
-</section>
-{% endif %}
-
-{% if is_instructor and guide.instructor_setup %}
-<section class="panel" id="instructor-setup">
-  <h2>Instructor — Railway &amp; deploy (not the student)</h2>
-  <p class="muted">Students do not have Railway access. You do this on your account while they work the steps below.</p>
-  <ol class="direction-list">
-    {% for line in guide.instructor_setup %}
-      <li>{{ line | linkify }}</li>
-    {% endfor %}
-  </ol>
 </section>
 {% endif %}
 
@@ -54,11 +45,32 @@
     <h2 class="step-title">{{ step.title }}</h2>
   </div>
   <p class="muted step-summary">{{ step.summary }}</p>
-  <ol class="direction-list">
-    {% for line in step.directions %}
-      <li>{{ line | linkify }}</li>
-    {% endfor %}
-  </ol>
+
+  {% if step.student is defined or step.instructor is defined %}
+    {% if step.student %}
+    <h3 class="step-role-heading">Student</h3>
+    <ol class="direction-list">
+      {% for line in step.student %}
+        <li>{{ line | linkify }}</li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+    {% if step.instructor %}
+    <h3 class="step-role-heading step-role-heading-instructor">Instructor</h3>
+    <ol class="direction-list">
+      {% for line in step.instructor %}
+        <li>{{ line | linkify }}</li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+  {% elif step.directions %}
+    <ol class="direction-list">
+      {% for line in step.directions %}
+        <li>{{ line | linkify }}</li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+
   {% if step.link %}
     <a class="button button-secondary" href="{{ step.link.href }}" {% if step.link.href.startswith('http') %}target="_blank" rel="noopener"{% endif %}>{{ step.link.label }}</a>
   {% endif %}
