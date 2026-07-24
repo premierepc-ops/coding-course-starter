@@ -13,9 +13,17 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Her repo stays on her GitHub. You run Railway. She never creates a Railway account — "
-        "she adds one GitHub secret. Merges to main auto-deploy via GitHub Actions."
+        "Her repo on her GitHub. Your Railway project. She never signs up for Railway. "
+        "You create a project token; she pastes it as one GitHub secret named `RAILWAY_TOKEN`."
     ),
+    "deploy_pitfalls": [
+        "Do not use github.com/apps/railway — that URL 404s. We do not use the Railway GitHub App for student repos.",
+        "Do not use Railway Source → connect her repo — that path failed for collaborator-owned repos.",
+        "The GitHub secret name must be exactly RAILWAY_TOKEN — not RAILWAY, not RAILWAY_API_TOKEN.",
+        "The secret value is a Railway project token you create (Step 1b) — not her GitHub password, not a Railway login.",
+        "If Actions fails with Invalid RAILWAY_TOKEN, the secret is missing: repo Settings → Secrets and variables → Actions must list RAILWAY_TOKEN.",
+        "All three deploy attempts failed on 2026-07-24 because no secret was saved on the repo yet.",
+    ],
     "steps": [
         {
             "num": 0,
@@ -54,26 +62,27 @@ START_GUIDE = {
         {
             "num": "1b",
             "title": "Wire deploy: her GitHub → your Railway",
-            "summary": "GitHub Actions runs `railway up` when she merges to main. No Railway login for her.",
+            "summary": "You create a token. She saves it as GitHub secret RAILWAY_TOKEN. Actions deploys on every merge to main.",
             "student": [
-                "Open your repo on GitHub → **Settings** (repo settings, not your profile).",
-                "Left sidebar: **Secrets and variables** → **Actions**.",
+                "**Wait** until your instructor sends you a long token string (looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`).",
+                "Open your repo on GitHub → top tab **Settings** (the repo's settings — not your profile picture menu).",
+                "Left sidebar → **Secrets and variables** → **Actions**.",
                 "Click **New repository secret**.",
-                "Name (exactly): `RAILWAY_TOKEN`",
-                "Secret: paste the token your instructor sends you → **Add secret**.",
-                "Done. You never visit railway.com.",
+                "**Name** field — type exactly: `RAILWAY_TOKEN` (all caps, underscore, no spaces).",
+                "**Secret** field — paste the entire token string from your instructor (one line, ~36 characters).",
+                "Click **Add secret**.",
+                "Confirm: the Actions secrets page now shows a row named **RAILWAY_TOKEN** (GitHub hides the value — that is normal).",
+                "You never visit railway.com and you never install any Railway app.",
             ],
             "instructor": [
-                "Open https://railway.com → project **jaqira-course** → **Settings** (gear, project level) → **Tokens**.",
-                "Create token for **production** → copy it immediately (shown once).",
-                "Confirm her repo has `.github/workflows/railway-deploy.yml` on `main` (push it if missing).",
-                "Send her the token (text or screen share — not in git).",
-                "She adds GitHub secret `RAILWAY_TOKEN` (student steps above).",
-                "Open **web** service → **Settings** → **Source** → **Disconnect** if it still points at `coding-course-starter`.",
-                "Test: her repo → **Actions** tab → **Deploy to Railway** → **Run workflow** → wait for green checkmark.",
-                "If it fails with `Invalid RAILWAY_TOKEN`: secret is missing or misnamed — she must see **`RAILWAY_TOKEN`** listed under repo **Settings → Secrets and variables → Actions**.",
-                f"Then open {LIVE_SITE_URL}/healthz — must say `ok`.",
-                "Do not delete Variables or the `/data` volume.",
+                "**First — create the token (you only):** open https://railway.com → project **jaqira-course** → **Settings** (project gear, not the web service) → **Tokens** → **Create Token** → environment **production** → copy the token immediately (shown once).",
+                "Send that token to the student by text or screen share — never commit it to git.",
+                "**Second — confirm workflow file:** her repo `main` branch must contain `.github/workflows/railway-deploy.yml` (already pushed for Jaqira).",
+                "**Third — student adds secret:** she follows the Student steps above. Verify with her on screen share: repo **Settings → Secrets and variables → Actions** must show **RAILWAY_TOKEN** in the list.",
+                "**Fourth — disconnect old source:** **web** service → **Settings** → **Source** → **Disconnect** if it still shows `premierepc-ops/coding-course-starter`.",
+                "**Fifth — test deploy:** her repo → **Actions** tab → **Deploy to Railway** → **Run workflow** → wait for green checkmark (~2 min).",
+                f"**Sixth — verify live site:** open {LIVE_SITE_URL}/healthz — page must show `ok`.",
+                "Keep Railway Variables (`LEARNER_PIN`, etc.) and the `/data` volume — do not wipe the project.",
             ],
         },
         {

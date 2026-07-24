@@ -38,6 +38,17 @@
   {% endif %}
 </section>
 
+  {% if guide.deploy_pitfalls %}
+<section class="panel">
+  <h2>Do not repeat these mistakes</h2>
+  <ul class="welcome-list">
+    {% for item in guide.deploy_pitfalls %}
+      <li>{{ item | linkify }}</li>
+    {% endfor %}
+  </ul>
+</section>
+  {% endif %}
+
 {% for step in guide.steps %}
 <section class="panel step-panel" id="step-{{ step.num }}">
   <div class="step-head">
