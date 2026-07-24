@@ -13,9 +13,8 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Her repo stays on her GitHub. You are a collaborator. "
-        "She allows the Railway GitHub App on that repo (GitHub only — not railway.com). "
-        "Then you connect Source on the web service."
+        "Her repo stays on her GitHub. You are a collaborator on Railway. "
+        "She never signs up for Railway — she pastes one secret in GitHub only."
     ),
     "steps": [
         {
@@ -45,30 +44,29 @@ START_GUIDE = {
                 "Click **Create repository**.",
                 f"Settings → Collaborators → invite **`{INSTRUCTOR_GITHUB}`**.",
                 "Copy HTTPS URL (Code → HTTPS) and send it to your instructor.",
-                "GitHub → **Settings → Applications → Installed GitHub Apps → Railway → Configure** → select **only** this repo.",
-                "If Railway is not listed: open https://github.com/apps/railway-app → **Install** → **Only select repositories** → pick this repo.",
             ],
             "instructor": [
-                "Accept the collaborator invite: https://github.com/jungwon79/jaqira-coding-course/invitations (or your notifications bell).",
-                "Wait until the student completes the Railway GitHub App step above — her repo will not appear in Railway until then.",
-                "Continue with Step 1b.",
+                "Accept the collaborator invite (GitHub notifications bell).",
+                "Continue with Step 1b — you wire deploy; she does not touch Railway.",
             ],
             "link": {"label": "Open the template on GitHub", "href": TEMPLATE_REPO},
         },
         {
             "num": "1b",
-            "title": "Connect Railway to the student's repo",
-            "summary": "Instructor only — same Railway project, different GitHub repo.",
+            "title": "Wire her repo to your Railway project",
+            "summary": "Instructor sets up deploy — student pastes one GitHub secret (no Railway account).",
             "student": [
-                "Nothing on railway.com — your GitHub App step in Step 1 is enough.",
+                "Repo → **Settings → Secrets and variables → Actions** → **New repository secret**.",
+                "Name: `RAILWAY_TOKEN` — value: paste the token your instructor sends you.",
+                "No railway.com login. GitHub only.",
             ],
             "instructor": [
-                "Railway dashboard → open project **jaqira-course** → click the **web** service card.",
-                "Tab **Settings** → section **Source** → connect **`jungwon79/jaqira-coding-course`**, branch **main**.",
-                "If the repo is not in the list, the student has not finished the Railway GitHub App step in Step 1 yet.",
-                "Until then (same session): clone her repo locally → `railway link --project jaqira-course --service web` → `railway up` — deploys her code to the live URL without Source connect.",
-                "Or from terminal once Source works: `railway service source connect --repo jungwon79/jaqira-coding-course --branch main --service web`",
-                f"Wait for deploy green → {LIVE_SITE_URL}/healthz returns ok.",
+                "Railway → project **jaqira-course** → **Settings → Tokens** → create a **production** project token.",
+                "Push `.github/workflows/railway-deploy.yml` to her repo (already in the template if you pull latest).",
+                "Send her the token — she adds it as GitHub secret `RAILWAY_TOKEN` (Step 1b student lines above).",
+                "Optional: **web** service → **Settings → Source → Disconnect** so the template repo stops auto-deploying.",
+                "Trigger a test: push an empty commit to her `main` or use **Actions → Deploy to Railway → Run workflow**.",
+                f"Confirm {LIVE_SITE_URL}/healthz returns ok.",
                 "Keep existing Variables and the /data volume.",
             ],
         },
