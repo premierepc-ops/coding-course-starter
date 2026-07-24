@@ -39,8 +39,8 @@ TOOLS_GUIDE = {
         },
         {
             "name": "Use this template",
-            "icon": "fork",
-            "what": "How you get your own private copy of the course starter on GitHub. In Phase 1, click the green **Use this template** button on the starter repo.",
+            "icon": "template",
+            "what": "The green button on the starter repo — **Use this template** → Create a new repository. **Not Fork.** Creates your own private repo on your GitHub account.",
         },
         {
             "name": "Git",

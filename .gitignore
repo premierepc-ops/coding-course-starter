@@ -7,7 +7,7 @@ venv/
 instance/
 *.db
 
-# Student data belongs in their fork only — never commit real learner folders to the template.
+# Student data belongs in their own repo only — never commit real learner folders to the template.
 .learners/*
 !.learners/_TEMPLATE/
 !.learners/_TEMPLATE/**

@@ -23,7 +23,7 @@ Read their profile first: **`.learners/<slug>/LEARNER.md`** — name, age, prior
 username, and learner slug (`course_config.py`). Everything about pacing and tone flexes off that profile. Then read
 **`.learners/<slug>/progress.md`** to see where they are before every session.
 
-- They work entirely in **their fork of this repo** — app, quiz, HTMX examples, and `.learners/<slug>/` all live here.
+- They work entirely in **their own repo** (created with **Use this template**) — app, quiz, HTMX examples, and `.learners/<slug>/` all live here.
 - **Quizzes** are at `/quiz` in this same app (sign in at `/login`).
 - **HTMX patterns** for Phase 3 come from `/guestbook` in this repo — not an external codebase.
 - The **instructor** (you) uses `INSTRUCTOR_PASSWORD` for `/quiz/admin`. Review PRs; students never merge their own.
@@ -226,7 +226,7 @@ action, see Maggie's Phase 1 recovery in the archived family-site learner log if
 
 ## Phase 0 — Recon (do this BEFORE the first session)
 
-You can't run the course without knowing the terrain. Recon the learner's **starter repo fork** first.
+You can't run the course without knowing the terrain. Recon the learner's **repo** first.
 
 ### Part A — Student's own repo (before Session 1)
 
@@ -262,13 +262,13 @@ to their live Railway app.
 
 **Milestones (non-negotiable):**
 - Cursor + Python + Git installed and working; usage dashboard checked.
-- Forked `coding-course-starter` and cloned locally.
+- Created their repo with **Use this template** and cloned locally.
 - Has run a Python script they typed themselves (no AI).
 - Can describe `add` / `commit` / `push` in their own words.
 - One PR merged to `main` customizing their About Me page (`/aboutme`), live on Railway.
 
 **Suggested activities:**
-- Setup session. End with `python --version`, `git --version`, and Cursor open on their fork.
+- Setup session. End with `python --version`, `git --version`, and Cursor open on their repo.
 - `lessons/<learner>/hello.py` typed by hand. Run it. Break it on purpose. Read the error.
 - Git: commit practice file to `main`.
 - First Composer session — one scoped prompt like *"Make a script that asks my favorite color and tells

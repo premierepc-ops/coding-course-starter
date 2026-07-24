@@ -21,7 +21,7 @@ START_GUIDE = {
         "Do not use Railway Source → Connect Repo for student-owned repos — it failed; use Actions instead.",
         "Do not use github.com/apps/railway (404). Student does not install any Railway GitHub App.",
         "Secret name must be exactly RAILWAY_TOKEN. Value is your Railway project token — not a Railway login.",
-        "After merge to main, check the student's repo Actions tab (~2 min), then the live URL — not Railway Source.",
+        "Do not click **Fork** on GitHub — that is a different button. Use **Use this template** only.",
     ],
     "steps": [
         {
@@ -44,7 +44,7 @@ START_GUIDE = {
             "summary": "Your repo on your GitHub account — not the shared template.",
             "student": [
                 f"Open {TEMPLATE_REPO}",
-                "Click green **Use this template** → **Create a new repository**.",
+                "Click green **Use this template** → **Create a new repository** — **not Fork** (Fork is wrong for this course).",
                 "Owner: **your** GitHub account (not premierepc-ops).",
                 "Name: e.g. `yourname-coding-course` (lowercase, hyphens OK).",
                 "Visibility: **Private** (required).",

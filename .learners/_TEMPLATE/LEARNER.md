@@ -21,7 +21,7 @@
 
 ## Onboarding (see ONBOARDING.md)
 
-- [ ] Forked and cloned; opened in Cursor
+- [ ] Used **Use this template** (not Fork); cloned; opened in Cursor
 - [ ] Entry added to `course_config.py`
 - [ ] `.learners/<slug>/` filled in
 - [ ] GitHub Actions deploy wired (`RAILWAY_TOKEN` secret + `railway-deploy.yml`) — see DEPLOY.md

@@ -18,7 +18,7 @@ _Updated by the agent at the end of every session. Read this at the start of the
 
 **Milestones:**
 - [ ] Cursor + Python + Git installed; Cursor usage dashboard checked
-- [ ] Forked starter repo and cloned locally
+- [ ] Created repo via **Use this template** and cloned locally
 - [ ] Ran a Python script they typed themselves (no AI)
 - [ ] Can describe add / commit / push in their own words
 - [ ] About-Me page customized — merged to main and live on Railway
