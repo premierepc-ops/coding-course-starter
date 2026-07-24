@@ -10,7 +10,34 @@ Read this if something feels "off" about who can see what, or why the app knows 
 | **Student repo** | Student clicks **Use this template** → their own private GitHub repo | Student — their code, their `.learners/<slug>/`, their `course_config.py` |
 | **Railway project** | One deploy per student (e.g. `jaqira-course`) | Instructor workspace — receives deploys from **GitHub Actions** in the student's repo |
 
-**The live URL serves whatever was last deployed to that Railway project** — usually from the student's repo via GitHub Actions (`railway up`), not from Railway Source.
+**The live URL serves whatever was last deployed to that Railway project** — from the **student's repo** via GitHub Actions, not from the template and not from Railway Source.
+
+## Not a GitHub Fork — and that is correct
+
+**Use this template** creates a **new independent repo** on the student's account. On GitHub it shows `fork: false` with **no parent link** to `coding-course-starter`. That is expected — it is **not** broken.
+
+| GitHub action | Result | Use in this course? |
+|---------------|--------|---------------------|
+| **Use this template** | New repo on student's account, private, no fork link | **Yes — Phase 1 Step 1** |
+| **Fork** | Fork relationship to upstream, different permissions model | **No** |
+
+So yes — **two repos exist** (template + student). That is the design, not a failure:
+
+| Repo | Purpose | Drives live site? |
+|------|---------|-------------------|
+| `premierepc-ops/coding-course-starter` | Master template for the **next** student; platform fixes | **No** |
+| `student/yourname-coding-course` | **This student's** code, progress, deploys | **Yes** — via GitHub Actions |
+
+While a student is active, treat **their repo as the source of truth** for the live URL. Edit there (or push there as collaborator). Sync improvements back to the template when stable — not the other way around during a session.
+
+To pull template fixes into an existing student repo later:
+
+```bash
+git remote add template https://github.com/premierepc-ops/coding-course-starter.git
+git fetch template
+git merge template/main   # resolve conflicts; keep their .learners/<slug>/
+git push origin main
+```
 
 ## Intended Phase 1 flow
 

@@ -13,15 +13,14 @@ START_GUIDE = {
         "Your instructor hosts the live site — you work in GitHub and Cursor."
     ),
     "roles_note": (
-        "Student repo on their GitHub. Your Railway project. They code in Cursor — you merge PRs to `main` — "
-        "GitHub Actions deploys to your live URL. Railway Source stays empty; that is normal."
+        "Two GitHub repos (template + theirs) is normal — theirs is not a Fork. "
+        "Only their repo deploys to your Railway. They code in Cursor; you merge PRs to main."
     ),
     "deploy_pitfalls": [
-        "Working setup: GitHub Actions + secret RAILWAY_TOKEN + empty Railway Source (see DEPLOY.md).",
-        "Do not use Railway Source → Connect Repo for student-owned repos — it failed; use Actions instead.",
-        "Do not use github.com/apps/railway (404). Student does not install any Railway GitHub App.",
-        "Secret name must be exactly RAILWAY_TOKEN. Value is your Railway project token — not a Railway login.",
-        "Do not click **Fork** on GitHub — that is a different button. Use **Use this template** only.",
+        "Their repo from Use this template is independent (fork: false on GitHub) — that is correct, not broken.",
+        "Live site deploys from the student repo only — template repo never drives their Railway URL.",
+        "Working setup: GitHub Actions + RAILWAY_TOKEN + empty Railway Source (see DEPLOY.md).",
+        "Do not click Fork when creating the repo — click Use this template.",
     ],
     "steps": [
         {
@@ -44,7 +43,8 @@ START_GUIDE = {
             "summary": "Your repo on your GitHub account — not the shared template.",
             "student": [
                 f"Open {TEMPLATE_REPO}",
-                "Click green **Use this template** → **Create a new repository** — **not Fork** (Fork is wrong for this course).",
+                "Click green **Use this template** → **Create a new repository** (do **not** click Fork).",
+                "GitHub creates a new repo on your account — it will **not** show as a Fork of the template. That is correct.",
                 "Owner: **your** GitHub account (not premierepc-ops).",
                 "Name: e.g. `yourname-coding-course` (lowercase, hyphens OK).",
                 "Visibility: **Private** (required).",

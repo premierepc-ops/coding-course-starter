@@ -27,9 +27,19 @@ For a repo on the **student's GitHub account** where the instructor is only a **
 
 - Railway Source → Connect Repo often **does not list** the repo.
 - `railway service source connect` returned **User does not have access to the repo**.
-- Telling the student to install the Railway GitHub App (`github.com/apps/railway` **404s**; correct slug is `railway-app`) still requires GitHub-side setup and **no Railway account for the student** was the goal.
 
-**GitHub Actions + project token** works with the repo on the student's GitHub account and deploys to your Railway project.
+**GitHub Actions + project token** works and deploys to your Railway project. The student never needs a Railway account.
+
+## Two repos (not a Fork)
+
+**Use this template** creates a **new independent repo** (`fork: false` on GitHub — no parent link). That is correct, not a broken fork.
+
+| Repo | Drives live site? |
+|------|-------------------|
+| Template (`premierepc-ops/coding-course-starter`) | No — master copy for next student |
+| Student repo | **Yes** — GitHub Actions → your Railway |
+
+While teaching, edit the **student repo** (live source of truth). Sync to template later when stable.
 
 ## One-time setup (instructor + student)
 
